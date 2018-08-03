@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Elevations</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Orientation</th>
+      <th>U location</th>
+      <th>Part number</th>
+      <th>Sku</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @elevations.each do |elevation| %>
+      <tr>
+        <td><%= elevation.orientation %></td>
+        <td><%= elevation.u_location %></td>
+        <td><%= elevation.part_number %></td>
+        <td><%= elevation.sku %></td>
+        <td><%= link_to 'Show', elevation %></td>
+        <td><%= link_to 'Edit', edit_elevation_path(elevation) %></td>
+        <td><%= link_to 'Destroy', elevation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Elevation', new_elevation_path %>

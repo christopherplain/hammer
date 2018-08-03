@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Rack Configs</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Customer</th>
+      <th>Sku</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @rack_configs.each do |rack_config| %>
+      <tr>
+        <td><%= rack_config.customer %></td>
+        <td><%= rack_config.sku %></td>
+        <td><%= link_to 'Show', rack_config %></td>
+        <td><%= link_to 'Edit', edit_rack_config_path(rack_config) %></td>
+        <td><%= link_to 'Destroy', rack_config, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Rack Config', new_rack_config_path %>

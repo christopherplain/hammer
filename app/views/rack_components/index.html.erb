@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Rack Components</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>U location</th>
+      <th>Orientation</th>
+      <th>Part number</th>
+      <th>Sku</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @rack_components.each do |rack_component| %>
+      <tr>
+        <td><%= rack_component.u_location %></td>
+        <td><%= rack_component.orientation %></td>
+        <td><%= rack_component.part_number %></td>
+        <td><%= rack_component.sku %></td>
+        <td><%= link_to 'Show', rack_component %></td>
+        <td><%= link_to 'Edit', edit_rack_component_path(rack_component) %></td>
+        <td><%= link_to 'Destroy', rack_component, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Rack Component', new_rack_component_path %>

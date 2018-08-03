@@ -1,0 +1,37 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Customer:</strong>
+  <%= @rack_config.customer %>
+</p>
+
+<p>
+  <strong>SKU:</strong>
+  <%= @rack_config.sku %>
+</p>
+
+<p>
+  <strong>Created:</strong>
+  <%= @rack_config.created_at %>
+</p>
+
+<p>
+  <strong>Updated:</strong>
+  <%= @rack_config.updated_at %>
+</p>
+
+<p>
+  <%= link_to 'Elevation', elevation_path(@rack_config.elevation) %>
+</p>
+
+<h3>Import CSV</h3>
+
+<%= form_tag import_rack_config_path, multipart: true do %>
+  <%= file_field_tag :file %>
+  <%= submit_tag "Import" %>
+<% end %>
+
+<br>
+
+<%= link_to 'Edit', edit_rack_config_path(@rack_config) %> |
+<%= link_to 'Back', rack_configs_path %>

@@ -1,0 +1,37 @@
+<%= form_with(model: rack_component, local: true) do |form| %>
+  <% if rack_component.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(rack_component.errors.count, "error") %> prohibited this rack_component from being saved:</h2>
+
+      <ul>
+      <% rack_component.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :u_location %>
+    <%= form.number_field :u_location %>
+  </div>
+
+  <div class="field">
+    <%= form.label :orientation %>
+    <%= form.text_field :orientation %>
+  </div>
+
+  <div class="field">
+    <%= form.label :part_number %>
+    <%= form.text_field :part_number %>
+  </div>
+
+  <div class="field">
+    <%= form.label :sku %>
+    <%= form.text_field :sku %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

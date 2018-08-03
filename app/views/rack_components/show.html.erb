@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>U location:</strong>
+  <%= @rack_component.u_location %>
+</p>
+
+<p>
+  <strong>Orientation:</strong>
+  <%= @rack_component.orientation %>
+</p>
+
+<p>
+  <strong>Part number:</strong>
+  <%= @rack_component.part_number %>
+</p>
+
+<p>
+  <strong>Sku:</strong>
+  <%= @rack_component.sku %>
+</p>
+
+<%= link_to 'Edit', edit_rack_component_path(@rack_component) %> |
+<%= link_to 'Back', rack_components_path %>
