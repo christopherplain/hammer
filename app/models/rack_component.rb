@@ -3,6 +3,7 @@ class RackComponent
   include Mongoid::Timestamps
   field :u_location, type: Integer
   field :orientation, type: String
+  field :u_size, type: Integer
   field :part_number, type: String
   field :sku, type: String
   embedded_in :elevation

@@ -54,9 +54,10 @@ class ElevationsController < ApplicationController
   # DELETE /elevations/1
   # DELETE /elevations/1.json
   def destroy
+    # @elevation.destroy
     @elevation.destroy
     respond_to do |format|
-      format.html { redirect_to elevations_url, notice: 'Elevation was successfully destroyed.' }
+      format.html { redirect_to @rack_config, notice: 'Elevation was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -64,11 +65,17 @@ class ElevationsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_elevation
-      @elevation = Elevation.find(params[:id])
+      # @elevation = Elevation.find(params[:id])
+      set_rack_config
+      @elevation = @rack_config.elevation
+    end
+
+    def set_rack_config
+      @rack_config = RackConfig.find(params[:rack_config_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def elevation_params
-      params.require(:elevation).permit(:orientation, :u_location, :part_number, :sku)
+      params.require(:elevation).permit(:sku, :part_number)
     end
 end

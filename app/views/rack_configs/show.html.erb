@@ -1,5 +1,7 @@
 <p id="notice"><%= notice %></p>
 
+<h1>Rack Configuration</h1>
+
 <p>
   <strong>Customer:</strong>
   <%= @rack_config.customer %>
@@ -21,17 +23,51 @@
 </p>
 
 <p>
-  <%= link_to 'Elevation', elevation_path(@rack_config.elevation) %>
+  <strong>Import CSV:</strong>
+  <%= form_tag import_rack_config_path, multipart: true do %>
+    <%= file_field_tag :file %>
+    <%= submit_tag "Import" %>
+  <% end %>
+  <!-- <%= form_tag import_rack_config_path, multipart: true do %>
+    <label class="btn btn-primary">
+      Choose File
+      <span style="display:none">
+        <%= file_field_tag :file %>
+      </span>
+    </label>
+    <%= submit_tag "Import" %>
+  <% end %> -->
 </p>
 
-<h3>Import CSV</h3>
+<p>
+  <%= link_to 'Edit', edit_rack_config_path(@rack_config) %> |
+  <%= link_to 'Back', rack_configs_path %>
+</p>
 
-<%= form_tag import_rack_config_path, multipart: true do %>
-  <%= file_field_tag :file %>
-  <%= submit_tag "Import" %>
+<h2>Elevation</h2>
+<% if @elevation %>
+  <p>
+    <strong>Rack Part Number:</strong>
+    <%= @elevation.part_number %>
+  </p>
+
+  <p>
+    <strong>Rack SKU:</strong>
+    <%= @elevation.sku %>
+  </p>
+
+  <% rack_u = @elevation.u_size %>
+  <p>
+    <strong>Rack Height:</strong>
+    <%= rack_u %>U
+  </p>
+
+  <div class="row">
+    <%= render 'elevation', orientation: "front", rack_u: rack_u %>
+    <%= render 'elevation', orientation: "rear", rack_u: rack_u %>
+  </div>
+
+  <p>
+    <%= link_to 'Destroy', rack_config_elevation_path(@rack_config, @elevation), method: :delete, data: { confirm: 'Are you sure?' } %>
+  </p>
 <% end %>
-
-<br>
-
-<%= link_to 'Edit', edit_rack_config_path(@rack_config) %> |
-<%= link_to 'Back', rack_configs_path %>

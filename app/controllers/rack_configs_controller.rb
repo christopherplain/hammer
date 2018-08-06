@@ -1,5 +1,6 @@
 class RackConfigsController < ApplicationController
   before_action :set_rack_config, only: [:import, :show, :edit, :update, :destroy]
+  before_action :set_elevation, only: :show
 
   # GET /rack_configs
   # GET /rack_configs.json
@@ -10,7 +11,7 @@ class RackConfigsController < ApplicationController
   # POST /import_rack_configs
   def import
     RackConfig.import(params[:file], @rack_config)
-    redirect_to root_url, notice: "Rack configuration imported."
+    redirect_to rack_config_path(@rack_config), notice: "Rack configuration imported."
   end
 
   # GET /rack_configs/1
@@ -70,7 +71,12 @@ class RackConfigsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_rack_config
-      @rack_config = RackConfig.find(params[:id])
+      @rack_config ||= RackConfig.find(params[:id])
+    end
+
+    def set_elevation
+      set_rack_config
+      @elevation ||= @rack_config.elevation
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
