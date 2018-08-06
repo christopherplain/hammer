@@ -70,4 +70,6 @@
   <p>
     <%= link_to 'Destroy', rack_config_elevation_path(@rack_config, @elevation), method: :delete, data: { confirm: 'Are you sure?' } %>
   </p>
+<% else %>
+  <p>Please upload elevation CSV.</p>
 <% end %>

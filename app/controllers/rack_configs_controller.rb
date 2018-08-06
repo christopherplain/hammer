@@ -8,7 +8,7 @@ class RackConfigsController < ApplicationController
     @rack_configs = RackConfig.all
   end
 
-  # POST /import_rack_configs
+  # POST /import_rack_config
   def import
     RackConfig.import(params[:file], @rack_config)
     redirect_to rack_config_path(@rack_config), notice: "Rack configuration imported."

@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   root to: "rack_configs#index"
 
+  resources :parts do
+    collection { post :import }
+  end
+
   resources :rack_configs do
     resources :elevations, only: :destroy
   end
