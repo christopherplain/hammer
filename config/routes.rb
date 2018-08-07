@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  root to: "rack_configs#index"
+  get 'static_pages/home'
+  get 'static_pages/about'
+  get 'static_pages/help'
 
   resources :parts do
     collection { post :import }
@@ -10,5 +12,7 @@ Rails.application.routes.draw do
   end
 
   post 'rack_configs/:id/import(.:format)', to: 'rack_configs#import', as: 'import_rack_config'
+
+  root 'static_pages#home'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
