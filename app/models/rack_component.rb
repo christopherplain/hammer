@@ -4,8 +4,7 @@ class RackComponent
   field :u_location, type: Integer
   field :orientation, type: String
   field :u_size, type: Integer
-  field :part_number, type: String
   field :sku, type: String
   embedded_in :elevation
-  references_one :part
+  has_and_belongs_to_many :parts, inverse_of: nil
 end

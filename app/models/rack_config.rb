@@ -50,13 +50,16 @@ class RackConfig
     rack_component_hash = row_hash.slice(*RackComponent.fields.keys.drop(3))
     u_location = rack_component_hash["u_location"].to_i
     orientation = rack_component_hash["orientation"]
-    rack_component = rack_config.elevation.rack_components.where(u_location: u_location, orientation: orientation)
+    part_number = row_hash["part_number"]
+    rack_component = rack_config.elevation.rack_components.where(u_location: u_location, orientation: orientation).first
+    part = Part.where(part_number: part_number).first
 
     # Create new RackComponent or update existing document.
-    if rack_component.first.nil?
-      rack_config.elevation.rack_components.create!(rack_component_hash)
+    if rack_component.nil?
+      rack_component = rack_config.elevation.rack_components.create!(rack_component_hash)
     else
-      rack_component.first.update_attributes!(rack_component_hash)
+      rack_component.update_attributes!(rack_component_hash)
     end
+    rack_component.parts.push(part) if part
   end
 end
