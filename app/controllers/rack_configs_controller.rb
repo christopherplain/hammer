@@ -81,6 +81,6 @@ class RackConfigsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def rack_config_params
-      params.require(:rack_config).permit(:customer, :sku)
+      params.require(:rack_config).permit(:customer_id, :sku)
     end
 end

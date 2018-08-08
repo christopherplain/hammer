@@ -17,7 +17,7 @@
         <tbody>
           <% @rack_configs.each do |rack_config| %>
             <tr>
-              <td><%= rack_config.customer %></td>
+              <td><%= rack_config.customer.name %></td>
               <td><%= rack_config.sku %></td>
               <td>
                 <%= link_to 'Show', rack_config %> |
