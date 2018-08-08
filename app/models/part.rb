@@ -1,4 +1,5 @@
 class Part
+  require 'csv'
   include Mongoid::Document
   include Mongoid::Timestamps
   field :part_number, type: String
