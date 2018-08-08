@@ -13,6 +13,8 @@ Rails.application.routes.draw do
     resources :elevations, only: :destroy
   end
 
+  resources :network_connections
+
   post 'rack_configs/:id/import(.:format)', to: 'rack_configs#import', as: 'import_rack_config'
 
   root 'static_pages#home'

@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Device1 port:</strong>
+  <%= @network_connection.device1_port %>
+</p>
+
+<p>
+  <strong>Device2 port:</strong>
+  <%= @network_connection.device2_port %>
+</p>
+
+<p>
+  <strong>Cable type:</strong>
+  <%= @network_connection.cable_type %>
+</p>
+
+<p>
+  <strong>Cable color:</strong>
+  <%= @network_connection.cable_color %>
+</p>
+
+<p>
+  <strong>Cable length:</strong>
+  <%= @network_connection.cable_length %>
+</p>
+
+<%= link_to 'Edit', edit_network_connection_path(@network_connection) %> |
+<%= link_to 'Back', network_connections_path %>

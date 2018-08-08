@@ -1,0 +1,2 @@
+module NetworkConnectionsHelper
+end
