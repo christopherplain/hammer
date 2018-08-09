@@ -21,8 +21,6 @@ class RackConfig
       case doc_type
       when "elevation"
         update_elevation(row_hash, rack_config)
-      when "network"
-        update_network_connection(row_hash, rack_config)
       end
     end
   end
@@ -67,30 +65,5 @@ class RackConfig
       rack_component.update_attributes!(rack_component_hash)
     end
     rack_component.parts.push(part) if part
-  end
-
-  # Not working. Need to complete.
-  def self.update_network_connection(row_hash, rack_config)
-    # Grab network connection data and search for existing NetworkConnection.
-    rack_component_hash = row_hash.slice(*NetworkConnection.field_keys)
-    device1_u = rack_component_hash["device1_u"].to_i
-    device1_orientation = rack_component_hash["device1_orientation"]
-    device1 = rack_config.elevation.rack_components.where(u_location: device1_u, orientation: device1_orientation).first.parts.first
-    device2_u = rack_component_hash["device2_u"].to_i
-    device2_orientation = rack_component_hash["device2_orientation"]
-    device2 = rack_config.elevation.rack_components.where(
-      u_location: device2_u, orientation: device2_orientation).first.parts.first
-
-    device1_port = rack_component_hash["device1_port"]
-    network_connection = rack_config.network_connection.where(device1: device1, device1_port: device1_port).first
-
-    # Create new NetworkConnection or update existing document.
-    if network_connection.nil?
-      network_connection = rack_config.rack_connection.create!(network_connection_hash)
-    else
-      network_connection.update_attributes!(network_connection_hash)
-    end
-    network_connection.device1.push(device1) if device1
-    network_connection.device2.push(device2) if device2
   end
 end
