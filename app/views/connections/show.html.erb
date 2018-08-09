@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Connection type:</strong>
+  <%= @connection.connection_type %>
+</p>
+
+<p>
+  <strong>Local port:</strong>
+  <%= @connection.local_port %>
+</p>
+
+<p>
+  <strong>Remote port:</strong>
+  <%= @connection.remote_port %>
+</p>
+
+<p>
+  <strong>Cable type:</strong>
+  <%= @connection.cable_type %>
+</p>
+
+<p>
+  <strong>Cable color:</strong>
+  <%= @connection.cable_color %>
+</p>
+
+<p>
+  <strong>Cable length:</strong>
+  <%= @connection.cable_length %>
+</p>
+
+<%= link_to 'Edit', edit_connection_path(@connection) %> |
+<%= link_to 'Back', connections_path %>
