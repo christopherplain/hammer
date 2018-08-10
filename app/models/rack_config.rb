@@ -63,17 +63,25 @@ class RackConfig
   end
 
   def self.update_connection(row_hash, rack_component)
-    # Grab connection data and search for existing Connection.
-    connection_hash = row_hash.slice(*Connection.field_keys)
-    local_port = connection_hash["local_port"]
-    connection = rack_component.connections.where(local_port: local_port).first
+    # # Grab connection data and search for existing Connection.
+    # connection_hash = row_hash.slice(*Connection.field_keys)
+    # local_port = connection_hash["local_port"]
+    # connection = rack_component.connections.where(local_port: local_port).first
 
-    # Create new Connection or update existing document.
-    if connection.nil?
-      connection = rack_component.connections.create!(connection_hash)
-    else
-      connection.update_attributes!(connection_hash)
+    (1..1000).each do |n|
+      # Grab connection data and search for existing Connection.
+      keys = Connection.field_keys.map { |key| key + n.to_s }
+      connection_hash = row_hash.slice(*keys).transform_keys { |key| key[/^([^\d])+/] }
+      break if connection_hash.empty?
+      local_port = connection_hash["local_port"]
+      connection = rack_component.connections.where(local_port: local_port).first
+
+      # Create new Connection or update existing document.
+      if connection.nil? && local_port
+        rack_component.connections.create!(connection_hash)
+      elsif local_port
+        connection.update_attributes!(connection_hash)
+      end
     end
-    connection
   end
 end
