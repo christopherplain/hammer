@@ -36,10 +36,10 @@ class RackConfig
       elevation = rack_config.create_elevation(elevation_hash)
     elsif new_elevation_without_rack
       elevation = rack_config.create_elevation()
-    else
+    elsif rack
       elevation.update_attributes!(elevation_hash)
     end
-    return elevation
+    elevation
   end
 
   def self.update_rack_component(row_hash, elevation)
@@ -59,7 +59,7 @@ class RackConfig
       rack_component.update_attributes!(rack_component_hash)
     end
     rack_component.parts.push(part) if part
-    return rack_component
+    rack_component
   end
 
   def self.update_connection(row_hash, rack_component)
@@ -74,6 +74,6 @@ class RackConfig
     else
       connection.update_attributes!(connection_hash)
     end
-    return connection
+    connection
   end
 end
