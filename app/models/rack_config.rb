@@ -64,34 +64,35 @@ class RackConfig
   end
 
   def self.update_connections(row_hash, rack_config)
-    (1..1000).each do |n|
+    (1..100).each do |n|
       # Grab interface data and search for existing Interface.
       interface_keys = Interface.field_keys.map { |key| key + n.to_s }
       interface_hash = row_hash.slice(*interface_keys).transform_keys { |key| key[/^([^\d])+/] }
       interface_group = interface_hash["interface_group"]
-      break if interface_group.nil?
       interface = rack_config.interfaces.where(interface_group: interface_group).first
 
       # Create new Interface or update existing document.
-      if interface.nil?
+      if interface.nil? && interface_group
         interface = rack_config.interfaces.create!(interface_hash)
-      else
+      elsif interface_group
         interface.update_attributes!(interface_hash)
+      else
+        break
       end
 
       # Grab connection data and search for existing Connection.
       connection_keys = Connection.field_keys.map { |key| key + n.to_s }
       connection_hash = row_hash.slice(*connection_keys).transform_keys { |key| key[/^([^\d])+/] }
       local_port = connection_hash["local_port"]
-      break if local_port.nil?
-      connection_hash[:local_u] = row_hash["u_location"]
+      local_u = row_hash["u_location"]
+      connection_hash[:local_u] = local_u
       connection_hash[:local_orientation] = row_hash["orientation"]
-      connection = interface.connections.where(local_port: local_port).first
+      connection = interface.connections.where(local_u: local_u, local_port: local_port).first
 
       # Create new Connection or update existing document.
-      if connection.nil?
+      if connection.nil? && local_port
         interface.connections.create!(connection_hash)
-      else
+      elsif local_port
         connection.update_attributes!(connection_hash)
       end
     end

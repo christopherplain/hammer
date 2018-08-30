@@ -71,8 +71,9 @@
   <p>Please upload elevation CSV.</p>
 <% end %>
 
-<!-- <% if @elevation %>
+<% if @rack_config.interfaces.first %>
   <h2>Network</h2>
     <div class="row">
+      <%= render 'network' %>
     </div>
-<% end %> -->
+<% end %>
