@@ -6,7 +6,6 @@ class RackComponent
   field :u_size, type: Integer
   field :sku, type: String
   embedded_in :elevation
-  embeds_many :connections
   has_and_belongs_to_many :parts, inverse_of: nil
 
   def self.field_keys

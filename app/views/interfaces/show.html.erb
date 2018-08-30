@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Interface group:</strong>
+  <%= @interface.interface_group %>
+</p>
+
+<p>
+  <strong>Interface type:</strong>
+  <%= @interface.interface_type %>
+</p>
+
+<%= link_to 'Edit', edit_interface_path(@interface) %> |
+<%= link_to 'Back', interfaces_path %>

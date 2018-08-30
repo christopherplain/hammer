@@ -4,8 +4,9 @@ class RackConfig
   include Mongoid::Timestamps
   field :sku, type: String
   embeds_one :elevation
+  embeds_many :interfaces
   belongs_to :customer
-  accepts_nested_attributes_for :elevation
+  accepts_nested_attributes_for :elevation, :interfaces
 
   def self.field_keys
     RackConfig.fields.keys.drop(3)
@@ -17,7 +18,7 @@ class RackConfig
 
       elevation = update_elevation(row_hash, rack_config)
       rack_component = update_rack_component(row_hash, elevation)
-      update_connection(row_hash, rack_component)
+      update_connections(row_hash, rack_config)
     end
   end
 
@@ -62,24 +63,35 @@ class RackConfig
     rack_component
   end
 
-  def self.update_connection(row_hash, rack_component)
-    # # Grab connection data and search for existing Connection.
-    # connection_hash = row_hash.slice(*Connection.field_keys)
-    # local_port = connection_hash["local_port"]
-    # connection = rack_component.connections.where(local_port: local_port).first
-
+  def self.update_connections(row_hash, rack_config)
     (1..1000).each do |n|
+      # Grab interface data and search for existing Interface.
+      interface_keys = Interface.field_keys.map { |key| key + n.to_s }
+      interface_hash = row_hash.slice(*interface_keys).transform_keys { |key| key[/^([^\d])+/] }
+      interface_group = interface_hash["interface_group"]
+      break if interface_group.nil?
+      interface = rack_config.interfaces.where(interface_group: interface_group).first
+
+      # Create new Interface or update existing document.
+      if interface.nil?
+        interface = rack_config.interfaces.create!(interface_hash)
+      else
+        interface.update_attributes!(interface_hash)
+      end
+
       # Grab connection data and search for existing Connection.
-      keys = Connection.field_keys.map { |key| key + n.to_s }
-      connection_hash = row_hash.slice(*keys).transform_keys { |key| key[/^([^\d])+/] }
-      break if connection_hash.empty?
+      connection_keys = Connection.field_keys.map { |key| key + n.to_s }
+      connection_hash = row_hash.slice(*connection_keys).transform_keys { |key| key[/^([^\d])+/] }
       local_port = connection_hash["local_port"]
-      connection = rack_component.connections.where(local_port: local_port).first
+      break if local_port.nil?
+      connection_hash[:local_u] = row_hash["u_location"]
+      connection_hash[:local_orientation] = row_hash["orientation"]
+      connection = interface.connections.where(local_port: local_port).first
 
       # Create new Connection or update existing document.
-      if connection.nil? && local_port
-        rack_component.connections.create!(connection_hash)
-      elsif local_port
+      if connection.nil?
+        interface.connections.create!(connection_hash)
+      else
         connection.update_attributes!(connection_hash)
       end
     end

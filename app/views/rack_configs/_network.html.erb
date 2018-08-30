@@ -1,0 +1,65 @@
+<% network_interfaces = @rack_config.interfaces.where(interface_type: "network") %>
+<% interface_groups = network_interfaces.distinct(:interface_group) %>
+<% interface_groups.each do |group| %>
+  <div class="col-12">
+    <h3><%= group.capitalize %></h3>
+
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">U</th>
+          <th scope="col">Part Number</th>
+          <th scope="col">Man/Model</th>
+          <th scope="col">Local Port</th>
+          <th scope="col">Remote Port</th>
+          <th scope="col">Type</th>
+          <th scope="col">Length</th>
+          <th scope="col">Color</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% u_array = [] %>
+        <% (rack_u).downto(1) do |u| %>
+          <% component = @elevation.rack_components.where(u_location: u, orientation: orientation).first %>
+          <% part = component.parts.first if component %>
+          <% connection = component.connections.first %>
+          <% u_array.push(u) %>
+
+          <% unless part.nil? %>
+            <% u_size = component.u_size %>
+            <% if connection %>
+              <tr>
+                <td><%= u_array.shift %></td>
+                <td rowspan="<%= u_size %>"><%= part.part_number %></td>
+                <td rowspan="<%= u_size %>"><%= part.manufacturer %> <%= part.model %></td>
+                <td rowspan="<%= u_size %>"><%= "U" + component.u_location.to_s + ":" + connection.local_port %></td>
+                <td rowspan="<%= u_size %>"><%= "U" + connection.remote_u.to_s + ":" + connection.remote_port %></td>
+                <td rowspan="<%= u_size %>"><%= connection.cable_type %></td>
+                <td rowspan="<%= u_size %>"><%= connection.cable_length %></td>
+                <td rowspan="<%= u_size %>"><%= connection.cable_color %></td>
+              </tr>
+            <% else %>
+              <tr>
+                <td><%= u_array.shift %></td>
+                <td rowspan="<%= u_size %>"></td>
+                <td rowspan="<%= u_size %>"></td>
+                <td rowspan="<%= u_size %>"></td>
+                <td rowspan="<%= u_size %>"></td>
+                <td rowspan="<%= u_size %>"></td>
+                <td rowspan="<%= u_size %>"></td>
+                <td rowspan="<%= u_size %>"></td>
+              </tr>
+            <% end %>
+
+            <% until u_array.empty? %>
+              <tr>
+                <td><%= u_array.shift %></td>
+              </tr>
+            <% end %>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>
