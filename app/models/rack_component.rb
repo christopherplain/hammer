@@ -5,8 +5,10 @@ class RackComponent
   field :orientation, type: String
   field :u_size, type: Integer
   field :sku, type: String
-  field :part_id, type: BSON::ObjectId
   embedded_in :elevation
+
+  # Create manual relation to Part
+  field :part_id, type: BSON::ObjectId
 
   def part
     Part.find(self.part_id) if self.part_id
