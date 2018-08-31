@@ -1,11 +1,7 @@
 class Connection
   include Mongoid::Document
   include Mongoid::Timestamps
-  field :local_u, type: Integer
-  field :local_orientation, type: String
   field :local_port, type: String
-  field :remote_u, type: Integer
-  field :remote_orientation, type: String
   field :remote_port, type: String
   field :cable_type, type: String
   field :cable_color, type: String
@@ -32,22 +28,22 @@ class Connection
     Connection.fields.keys.drop(3)
   end
 
-  def self.update(row_hash, interface, component, n)
+  def self.update(row_hash, interface, n)
     # Grab connection data and search for existing Connection.
+    local_u = row_hash["u_location"]
+    local_orientation = row_hash["orientation"]
+    elevation = interface.rack_config.elevation
+    local = elevation.rack_components.where(u_location: local_u, orientation: local_orientation).first
+    remote_u = row_hash["remote_u#{n}"]
+    remote_orientation = row_hash["remote_orientation#{n}"]
+    remote = elevation.rack_components.where(u_location: remote_u, orientation: remote_orientation).first
     connection_keys = self.field_keys.map { |key| key + n.to_s }
     connection_hash = row_hash.slice(*connection_keys).transform_keys { |key| key[/^([^\d])+/] }
-    local_port = connection_hash["local_port"]
-    local_u = row_hash["u_location"]
-    connection_hash[:local_u] = local_u
-    connection_hash[:local_orientation] = row_hash["orientation"]
-    connection = interface.connections.where(local_u: local_u, local_port: local_port).first
-
-    connection_hash[:local_device_id] = component.id
-    remote_u = connection_hash["remote_u"]
-    remote_orientation = connection_hash["remote_orientation"]
-    elevation = interface.rack_config.elevation
-    remote = elevation.rack_components.where(u_location: remote_u, orientation: remote_orientation).first
+    connection_hash[:local_device_id] = local.id
     connection_hash[:remote_device_id] = remote.id
+    local_port = connection_hash["local_port"]
+    connection = interface.connections.where(local_device_id: local.id, local_port: local_port).first
+
 
     # Create new Connection or update existing document.
     if connection.nil? && local_port

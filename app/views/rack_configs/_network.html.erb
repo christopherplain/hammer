@@ -20,20 +20,19 @@
 
       <tbody>
         <% interface = @rack_config.interfaces.where(interface_group: group).first %>
-        <% connections = interface.connections.all.sort_by { |hash| hash[:local_u] } %>
+        <% connections = interface.connections.all.sort_by { |hash| @rack_config.elevation.rack_components.find(hash[:local_device_id]).u_location } %>
         <% connections.reverse.each do |connection| %>
-          <% u_location = connection.local_u %>
-          <% orientation = connection.local_orientation %>
-          <% component = @elevation.rack_components.where(u_location: u_location, orientation: orientation).first %>
-          <% part = component.part if component %>
+          <% local_device = connection.local_device %>
+          <% remote_device = connection.remote_device %>
+          <% part = local_device.part %>
 
           <% unless part.nil? %>
               <tr>
-                <td><%= u_location %></td>
+                <td><%= local_device.u_location %></td>
                 <td><%= part.part_number %></td>
                 <td><%= part.manufacturer %> <%= part.model %></td>
-                <td><%= "U" + connection.local_u.to_s + ":" + connection.local_port %></td>
-                <td><%= "U" + connection.remote_u.to_s + ":" + connection.remote_port %></td>
+                <td><%= "U" + local_device.u_location.to_s + ":" + connection.local_port %></td>
+                <td><%= "U" + remote_device.u_location.to_s + ":" + connection.remote_port %></td>
                 <td><%= connection.cable_type %></td>
                 <td><%= connection.cable_length %></td>
                 <td><%= connection.cable_color %></td>

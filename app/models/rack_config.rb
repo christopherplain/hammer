@@ -13,15 +13,22 @@ class RackConfig
   end
 
   def self.import(file, rack_config)
+    # Create/update Elevation and RackComponents
     CSV.foreach(file.path, headers: true) do |row|
       row_hash = row.to_hash
 
       elevation = update_elevation(row_hash, rack_config)
       component = update_rack_component(row_hash, elevation)
+    end
+
+    # Create/update Interfaces and Connections
+    CSV.foreach(file.path, headers: true) do |row|
+      row_hash = row.to_hash
+
       (1..100).each do |n|
         interface = Interface.update(row_hash, rack_config, n)
         break if interface.nil?
-        Connection.update(row_hash, interface, component, n)
+        Connection.update(row_hash, interface, n)
       end
     end
   end
