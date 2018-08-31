@@ -77,3 +77,10 @@
       <%= render 'network' %>
     </div>
 <% end %>
+
+<% if @rack_config.interfaces.first %>
+  <h2>Power</h2>
+    <div class="row">
+      <%= render 'power' %>
+    </div>
+<% end %>
