@@ -17,8 +17,12 @@ class RackConfig
       row_hash = row.to_hash
 
       elevation = update_elevation(row_hash, rack_config)
-      update_rack_component(row_hash, elevation)
-      update_connections(row_hash, rack_config)
+      component = update_rack_component(row_hash, elevation)
+      (1..100).each do |n|
+        interface = Interface.update(row_hash, rack_config, n)
+        break if interface.nil?
+        Connection.update(row_hash, interface, component, n)
+      end
     end
   end
 
@@ -65,40 +69,5 @@ class RackConfig
       rack_component.update_attributes!(rack_component_hash)
     end
     rack_component
-  end
-
-  def self.update_connections(row_hash, rack_config)
-    (1..100).each do |n|
-      # Grab interface data and search for existing Interface.
-      interface_keys = Interface.field_keys.map { |key| key + n.to_s }
-      interface_hash = row_hash.slice(*interface_keys).transform_keys { |key| key[/^([^\d])+/] }
-      interface_group = interface_hash["interface_group"]
-      interface = rack_config.interfaces.where(interface_group: interface_group).first
-
-      # Create new Interface or update existing document.
-      if interface.nil? && interface_group
-        interface = rack_config.interfaces.create!(interface_hash)
-      elsif interface_group
-        interface.update_attributes!(interface_hash)
-      else
-        break
-      end
-
-      # Grab connection data and search for existing Connection.
-      connection_keys = Connection.field_keys.map { |key| key + n.to_s }
-      connection_hash = row_hash.slice(*connection_keys).transform_keys { |key| key[/^([^\d])+/] }
-      local_port = connection_hash["local_port"]
-      local_u = row_hash["u_location"]
-      connection_hash[:local_u] = local_u
-      connection_hash[:local_orientation] = row_hash["orientation"]
-      connection = interface.connections.where(local_u: local_u, local_port: local_port).first
-
-      # Create new Connection or update existing document.
-      if connection.nil? && local_port
-        interface.connections.create!(connection_hash)
-      elsif local_port
-        connection.update_attributes!(connection_hash)
-      end
-    end
   end
 end
