@@ -25,7 +25,7 @@
           <% u_location = connection.local_u %>
           <% orientation = connection.local_orientation %>
           <% component = @elevation.rack_components.where(u_location: u_location, orientation: orientation).first %>
-          <% part = component.parts.first if component %>
+          <% part = component.part if component %>
 
           <% unless part.nil? %>
               <tr>

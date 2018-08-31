@@ -17,7 +17,7 @@ class RackConfig
       row_hash = row.to_hash
 
       elevation = update_elevation(row_hash, rack_config)
-      rack_component = update_rack_component(row_hash, elevation)
+      update_rack_component(row_hash, elevation)
       update_connections(row_hash, rack_config)
     end
   end
@@ -52,6 +52,11 @@ class RackConfig
     rack_component = elevation.rack_components.where(
       u_location: u_location, orientation: orientation).first
     part = Part.where(part_number: part_number).first
+    if part
+      rack_component_hash[:part_id] = part.id
+    else
+      rack_component_hash[:part_id] = nil
+    end
 
     # Create new RackComponent or update existing document.
     if rack_component.nil?
@@ -59,7 +64,6 @@ class RackConfig
     else
       rack_component.update_attributes!(rack_component_hash)
     end
-    rack_component.parts.push(part) if part
     rack_component
   end
 

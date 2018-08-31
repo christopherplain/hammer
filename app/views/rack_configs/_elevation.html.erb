@@ -15,7 +15,7 @@
       <% u_array = [] %>
       <% (rack_u).downto(1) do |u| %>
         <% component = @elevation.rack_components.where(u_location: u, orientation: orientation).first %>
-        <% part = component.parts.first if component %>
+        <% part = component.part if component %>
         <% u_array.push(u) %>
 
         <% unless part.nil? %>

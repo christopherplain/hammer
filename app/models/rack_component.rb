@@ -5,8 +5,12 @@ class RackComponent
   field :orientation, type: String
   field :u_size, type: Integer
   field :sku, type: String
+  field :part_id, type: BSON::ObjectId
   embedded_in :elevation
-  has_and_belongs_to_many :parts, inverse_of: nil
+
+  def part
+    Part.find(self.part_id) if self.part_id
+  end
 
   def self.field_keys
     RackComponent.fields.keys.drop(3)
