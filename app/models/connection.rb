@@ -46,11 +46,8 @@ class Connection
 
 
     # Create new Connection or update existing document.
-    if connection.nil? && local_port
-      return interface.connections.create!(connection_hash)
-    elsif local_port
-      connection.update_attributes!(connection_hash)
-      return connection
-    end
+    return interface.connections.create!(connection_hash) if connection.nil? && local_port
+    connection.update_attributes!(connection_hash) if local_port
+    connection
   end
 end

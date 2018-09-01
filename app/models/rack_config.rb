@@ -6,7 +6,7 @@ class RackConfig
   embeds_one :elevation
   embeds_many :interfaces
   belongs_to :customer
-  accepts_nested_attributes_for :elevation, :interfaces
+  # accepts_nested_attributes_for :elevation, :interfaces
 
   def self.field_keys
     RackConfig.fields.keys.drop(3)
@@ -17,7 +17,7 @@ class RackConfig
     CSV.foreach(file.path, headers: true) do |row|
       row_hash = row.to_hash
 
-      elevation = update_elevation(row_hash, rack_config)
+      elevation = Elevation.update(row_hash, rack_config)
       RackComponent.update(row_hash, elevation)
     end
 
@@ -31,26 +31,5 @@ class RackConfig
         Connection.update(row_hash, interface, n)
       end
     end
-  end
-
-  def self.update_elevation(row_hash, rack_config)
-    # Grab elevation data and search for existing Elevation.
-    elevation_hash = row_hash.slice(*Elevation.field_keys)
-    elevation = rack_config.elevation
-    rack = false
-    rack = row_hash["rack"].downcase == "true" unless row_hash["rack"].nil?
-
-    # Create new Elevation or update existing docuement.
-    new_elevation_with_rack = elevation.nil? && rack
-    new_elevation_without_rack = elevation.nil? && !rack
-
-    if new_elevation_with_rack
-      elevation = rack_config.create_elevation(elevation_hash)
-    elsif new_elevation_without_rack
-      elevation = rack_config.create_elevation()
-    elsif rack
-      elevation.update_attributes!(elevation_hash)
-    end
-    elevation
   end
 end

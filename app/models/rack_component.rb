@@ -27,18 +27,12 @@ class RackComponent
     rack_component = elevation.rack_components.where(
       u_location: u_location, orientation: orientation).first
     part = Part.where(part_number: part_number).first
-    if part
-      rack_component_hash[:part_id] = part.id
-    else
-      rack_component_hash[:part_id] = nil
-    end
+    rack_component_hash[:part_id] = part.id if part
+    rack_component_hash[:part_id] = nil unless part
 
     # Create new RackComponent or update existing document.
-    if rack_component.nil?
-      return elevation.rack_components.create!(rack_component_hash)
-    else
-      rack_component.update_attributes!(rack_component_hash)
-      return rack_component
-    end
+    return elevation.rack_components.create!(rack_component_hash) if rack_component.nil?
+    rack_component.update_attributes!(rack_component_hash)
+    rack_component
   end
 end

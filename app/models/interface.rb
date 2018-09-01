@@ -18,11 +18,8 @@ class Interface
     interface = rack_config.interfaces.where(interface_group: interface_group).first
 
     # Create new Interface or update existing document.
-    if interface.nil? && interface_group
-      return rack_config.interfaces.create!(interface_hash)
-    elsif interface_group
-      interface.update_attributes!(interface_hash)
-      return interface
-    end
+    return rack_config.interfaces.create!(interface_hash) if interface.nil? && interface_group
+    interface.update_attributes!(interface_hash) if interface_group
+    interface
   end
 end
