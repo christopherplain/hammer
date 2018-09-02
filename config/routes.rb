@@ -10,10 +10,7 @@ Rails.application.routes.draw do
     collection { post :import }
   end
 
-  resources :rack_configs do
-    resources :elevations, only: :destroy
-  end
-
+  resources :rack_configs
 
   post 'rack_configs/:id/import(.:format)', to: 'rack_configs#import', as: 'import_rack_config'
 

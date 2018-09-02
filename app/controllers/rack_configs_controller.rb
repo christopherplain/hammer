@@ -1,6 +1,5 @@
 class RackConfigsController < ApplicationController
   before_action :set_rack_config, only: [:import, :show, :edit, :update, :destroy]
-  before_action :set_elevation, only: :show
 
   # GET /rack_configs
   # GET /rack_configs.json
@@ -72,11 +71,6 @@ class RackConfigsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_rack_config
       @rack_config ||= RackConfig.find(params[:id])
-    end
-
-    def set_elevation
-      set_rack_config
-      @elevation ||= @rack_config.elevation
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

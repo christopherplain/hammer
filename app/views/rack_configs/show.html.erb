@@ -35,19 +35,22 @@
   <%= link_to 'Back', rack_configs_path %>
 </p>
 
-<h2>Elevation</h2>
-<% if @elevation %>
+<% if @rack_config.rack_components.first %>
+  <h2>Elevation</h2>
+
+  <% rack = @rack_config.rack_components.where(component_type: "rack").first %>
+
   <p>
     <strong>Rack Part Number:</strong>
-    <%= @elevation.part_number %>
+    <%= rack.part.part_number %>
   </p>
 
   <p>
     <strong>Rack SKU:</strong>
-    <%= @elevation.sku %>
+    <%= rack.sku %>
   </p>
 
-  <% rack_u = @elevation.u_size %>
+  <% rack_u = rack.u_size %>
   <p>
     <strong>Rack Height:</strong>
     <%= rack_u %>U
@@ -59,7 +62,7 @@
   </div>
 
 <% else %>
-  <p>Please upload elevation CSV.</p>
+  <p>Please upload rack configuration CSV.</p>
 <% end %>
 
 <% if @rack_config.connections.first %>
@@ -87,7 +90,7 @@
 
           <tbody>
             <% connections = @rack_config.connections.where(connection_group: group) %>
-            <% connections = connections.sort_by { |hash| @rack_config.elevation.rack_components.find(hash[:local_device_id]).u_location } %>
+            <% connections = connections.sort_by { |hash| @rack_config.rack_components.find(hash[:local_device_id]).u_location } %>
             <% connections.reverse.each do |connection| %>
               <% local_device = connection.local_device %>
               <% remote_device = connection.remote_device %>
@@ -136,7 +139,7 @@
 
           <tbody>
             <% connections = @rack_config.connections.where(connection_group: group) %>
-            <% connections = connections.sort_by { |hash| @rack_config.elevation.rack_components.find(hash[:local_device_id]).u_location } %>
+            <% connections = connections.sort_by { |hash| @rack_config.rack_components.find(hash[:local_device_id]).u_location } %>
             <% connections.reverse.each do |connection| %>
               <% local_device = connection.local_device %>
               <% part = local_device.part %>

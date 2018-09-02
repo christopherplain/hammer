@@ -15,11 +15,11 @@ class Connection
   field :remote_device_id, type: BSON::ObjectId
 
   def local_device
-    rack_config.elevation.rack_components.find(self.local_device_id) if local_device_id
+    rack_config.rack_components.find(self.local_device_id) if local_device_id
   end
 
   def remote_device
-    rack_config.elevation.rack_components.find(self.remote_device_id) if remote_device_id
+    rack_config.rack_components.find(self.remote_device_id) if remote_device_id
   end
 
   def self.field_keys
@@ -30,12 +30,11 @@ class Connection
     # Grab connection data and search for existing Connection.
     local_u = row_hash["u_location"]
     local_orientation = row_hash["orientation"]
-    elevation = rack_config.elevation
-    local = elevation.rack_components.where(u_location: local_u, orientation: local_orientation).first
+    local = rack_config.rack_components.where(u_location: local_u, orientation: local_orientation).first
 
     remote_u = row_hash["remote_u#{n}"]
     remote_orientation = row_hash["remote_orientation#{n}"]
-    remote = elevation.rack_components.where(u_location: remote_u, orientation: remote_orientation).first
+    remote = rack_config.rack_components.where(u_location: remote_u, orientation: remote_orientation).first
 
     connection_keys = self.field_keys.map { |key| key + n.to_s }
     connection_hash = row_hash.slice(*connection_keys).transform_keys { |key| key[/^([^\d])+/] }
