@@ -4,9 +4,8 @@ class RackConfig
   include Mongoid::Timestamps
   field :sku, type: String
   embeds_one :elevation
-  embeds_many :interfaces
+  embeds_many :connections
   belongs_to :customer
-  # accepts_nested_attributes_for :elevation, :interfaces
 
   def self.field_keys
     RackConfig.fields.keys.drop(3)
@@ -21,14 +20,13 @@ class RackConfig
       RackComponent.update(row_hash, elevation)
     end
 
-    # Create/update Interfaces and Connections
+    # Create/update Connections
     CSV.foreach(file.path, headers: true) do |row|
       row_hash = row.to_hash
 
       (1..100).each do |n|
-        interface = Interface.update(row_hash, rack_config, n)
-        break if interface.nil?
-        Connection.update(row_hash, interface, n)
+        connection = Connection.update(row_hash, rack_config, n)
+        break if connection.nil?
       end
     end
   end

@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :interfaces
   resources :connections
   get 'static_pages/home'
   get 'static_pages/about'

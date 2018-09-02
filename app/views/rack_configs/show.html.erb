@@ -28,15 +28,6 @@
     <%= file_field_tag :file %>
     <%= submit_tag "Import" %>
   <% end %>
-  <!-- <%= form_tag import_rack_config_path, multipart: true do %>
-    <label class="btn btn-primary">
-      Choose File
-      <span style="display:none">
-        <%= file_field_tag :file %>
-      </span>
-    </label>
-    <%= submit_tag "Import" %>
-  <% end %> -->
 </p>
 
 <p>
@@ -71,16 +62,99 @@
   <p>Please upload elevation CSV.</p>
 <% end %>
 
-<% if @rack_config.interfaces.first %>
+<% if @rack_config.connections.first %>
   <h2>Network</h2>
-    <div class="row">
-      <%= render 'network' %>
-    </div>
+  <div class="row">
+    <% network_connections = @rack_config.connections.where(connection_type: "network") %>
+    <% connection_groups = network_connections.distinct(:connection_group) %>
+    <% connection_groups.each do |group| %>
+      <div class="col-12">
+        <h3><%= group %></h3>
+
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">U</th>
+              <th scope="col">Part Number</th>
+              <th scope="col">Man/Model</th>
+              <th scope="col">Local Port</th>
+              <th scope="col">Remote Port</th>
+              <th scope="col">Type</th>
+              <th scope="col">Length</th>
+              <th scope="col">Color</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% connections = @rack_config.connections.where(connection_group: group) %>
+            <% connections = connections.sort_by { |hash| @rack_config.elevation.rack_components.find(hash[:local_device_id]).u_location } %>
+            <% connections.reverse.each do |connection| %>
+              <% local_device = connection.local_device %>
+              <% remote_device = connection.remote_device %>
+              <% part = local_device.part %>
+
+              <tr>
+                <td><%= local_device.u_location %></td>
+                <td><%= part.part_number %></td>
+                <td><%= part.manufacturer %> <%= part.model %></td>
+                <td><%= "U" + local_device.u_location.to_s + ":" + connection.local_port %></td>
+                <td><%= "U" + remote_device.u_location.to_s + ":" + connection.remote_port %></td>
+                <td><%= connection.cable_type %></td>
+                <td><%= connection.cable_length %></td>
+                <td><%= connection.cable_color %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
+  </div>
 <% end %>
 
-<% if @rack_config.interfaces.first %>
+<% if @rack_config.connections.first %>
   <h2>Power</h2>
-    <div class="row">
-      <%= render 'power' %>
-    </div>
+  <div class="row">
+    <% power_connections = @rack_config.connections.where(connection_type: "power") %>
+    <% connection_groups = power_connections.distinct(:connection_group) %>
+    <% connection_groups.each do |group| %>
+      <div class="col-12">
+        <h3><%= group %></h3>
+
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col">U</th>
+              <th scope="col">Part Number</th>
+              <th scope="col">Man/Model</th>
+              <th scope="col">PSU</th>
+              <th scope="col">PDU Port</th>
+              <th scope="col">Type</th>
+              <th scope="col">Length</th>
+              <th scope="col">Color</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% connections = @rack_config.connections.where(connection_group: group) %>
+            <% connections = connections.sort_by { |hash| @rack_config.elevation.rack_components.find(hash[:local_device_id]).u_location } %>
+            <% connections.reverse.each do |connection| %>
+              <% local_device = connection.local_device %>
+              <% part = local_device.part %>
+
+              <tr>
+                <td><%= local_device.u_location %></td>
+                <td><%= part.part_number %></td>
+                <td><%= part.manufacturer %> <%= part.model %></td>
+                <td><%= "U" + local_device.u_location.to_s + ":" + connection.local_port %></td>
+                <td><%= group + ":" + connection.remote_port %></td>
+                <td><%= connection.cable_type %></td>
+                <td><%= connection.cable_length %></td>
+                <td><%= connection.cable_color %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
+  </div>
 <% end %>
