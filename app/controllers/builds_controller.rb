@@ -5,7 +5,7 @@ class BuildsController < ApplicationController
   # GET /customers/1/builds
   # GET /customers/1/builds.json
   def index
-    @builds = Build.all
+    @builds = @customer.builds
   end
 
   # GET /builds/1
