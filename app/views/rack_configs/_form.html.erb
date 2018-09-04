@@ -1,27 +1,32 @@
-<%= form_with(model: rack_config, local: true) do |form| %>
-  <% if rack_config.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(rack_config.errors.count, "error") %> prohibited this rack_config from being saved:</h2>
+<% if @rack_config.new_record? %>
+  <%= simple_form_for [@customer, @rack_config] do |f| %>
+    <%= f.error_notification %>
+    <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
 
-      <ul>
-      <% rack_config.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
+    <div class="form-inputs">
+      <%= f.hidden_field :customer_id, value: @customer.id %>
+      <%= f.input :sku, label: "SKU" %>
+    </div>
+
+    <div class="form-actions">
+      <%= f.button :submit, "Save", class: "btn btn-outline-primary" %>
+      <%= link_to "Cancel", :back, class: "btn btn-outline-secondary" %>
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :customer %>
-    <%= form.collection_select :customer_id, Customer.all, :id, :name %>
-  </div>
+<% else %>
+  <%= simple_form_for @rack_config do |f| %>
+    <%= f.error_notification %>
+    <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
 
-  <div class="field">
-    <%= form.label :sku, "SKU" %>
-    <%= form.text_field :sku %>
-  </div>
+    <div class="form-inputs">
+      <%= f.input :sku, label: "SKU" %>
+    </div>
 
-  <div class="actions">
-    <%= form.submit %>
-  </div>
+    <div class="form-actions">
+      <%= f.button :submit, "Update", class: "btn btn-outline-primary" %>
+      <%= link_to "Cancel", :back, class: "btn btn-outline-secondary" %>
+      <%= link_to 'Delete', rack_config, method: :delete, class: "btn btn-outline-danger", data: { confirm: "Are you sure? This action can't be undone!" } %>
+    </div>
+  <% end %>
 <% end %>

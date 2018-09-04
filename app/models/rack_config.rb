@@ -7,6 +7,7 @@ class RackConfig
   embeds_many :connections
   belongs_to :customer
   has_many :builds
+  validates :sku, presence: true
 
   def self.field_keys
     self.fields.keys.drop(3)

@@ -1,5 +1,4 @@
-<h1>New Rack Config</h1>
+<h1><%= @customer.name %></h1>
+<h2>New rack config</h2>
 
-<%= render 'form', rack_config: @rack_config %>
-
-<%= link_to 'Back', rack_configs_path %>
+<%= render 'form', customer: @customer, rack_config: @rack_config %>

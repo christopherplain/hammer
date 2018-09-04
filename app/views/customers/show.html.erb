@@ -1,20 +1,19 @@
 <h1><%= @customer.name %></h1>
 
-<% if @builds.first %>
-  <h2><%= link_to 'Builds', customer_builds_path(@customer) %></h2>
+<h2><%= link_to 'Builds', customer_builds_path(@customer) %></h2>
+<div class="row">
+  <div class="col-12">
+    <table class="table table-borderless table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Project name</th>
+          <th scope="col">Project reference</th>
+          <th scope="col">Build type</th>
+          <th scope="col">Updated</th>
+        </tr>
+      </thead>
 
-  <div class="row">
-    <div class="col-12">
-      <table class="table table-borderless table-hover">
-        <thead>
-          <tr>
-            <th scope="col">Project name</th>
-            <th scope="col">Project reference</th>
-            <th scope="col">Build type</th>
-            <th scope="col">Updated</th>
-          </tr>
-        </thead>
-
+      <% if @builds.first %>
         <tbody>
           <% @builds.each do |build| %>
             <tr>
@@ -25,16 +24,35 @@
             </tr>
           <% end %>
         </tbody>
-      </table>
-    </div>
+      <% end %>
+    </table>
   </div>
+</div>
 
-  <%= link_to 'New', new_customer_build_path(@customer), class: "btn btn-outline-primary"%>
-<% end %>
+<h2><%= link_to 'Rack configs', customer_rack_configs_path(@customer) %></h2>
+<div class="row">
+  <div class="col-12">
+    <table class="table table-borderless table-hover">
+      <thead>
+        <tr>
+          <th scope="col">SKU</th>
+          <th scope="col">Updated</th>
+        </tr>
+      </thead>
 
-<% if @customer.rack_configs.first %>
-  <h2>Rack Configs</h2>
-<% end %>
+      <% if @rack_configs.first %>
+        <tbody>
+          <% @rack_configs.each do |rack_config| %>
+            <tr>
+              <td><%= link_to rack_config.sku, rack_config %></td>
+              <td><%= rack_config.updated_at %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      <% end %>
+    </table>
+  </div>
+</div>
 
 <% if false %>
   <h2>Switch Configs</h2>

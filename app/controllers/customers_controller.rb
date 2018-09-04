@@ -11,6 +11,7 @@ class CustomersController < ApplicationController
   # GET /customers/1.json
   def show
     @builds = @customer.builds.order_by(updated_at: :desc).limit(10)
+    @rack_configs = @customer.rack_configs.order_by(updated_at: :desc).limit(10)
   end
 
   # GET /customers/new

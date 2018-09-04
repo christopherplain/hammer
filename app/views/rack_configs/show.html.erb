@@ -1,60 +1,59 @@
-<p id="notice"><%= notice %></p>
+<h1><%= @customer.name %></h1>
+<h2>Rack Config</h2>
 
-<h1>Rack Configuration</h1>
+<div class="row">
+  <div class="col-auto">
+    <table class="table table-borderless">
+      <tbody>
+        <tr>
+          <td><strong>SKU:</strong></td>
+          <td><%= @rack_config.sku %></td>
+        </tr>
+        <tr>
+          <td><strong>Created:</strong></td>
+          <td><%= @rack_config.created_at %></td>
+        </tr>
+        <tr>
+          <td><strong>Updated:</strong></td>
+          <td><%= @rack_config.updated_at %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 
-<p>
-  <strong>Customer:</strong>
-  <%= @rack_config.customer.name %>
-</p>
-
-<p>
-  <strong>SKU:</strong>
-  <%= @rack_config.sku %>
-</p>
-
-<p>
-  <strong>Created:</strong>
-  <%= @rack_config.created_at %>
-</p>
-
-<p>
-  <strong>Updated:</strong>
-  <%= @rack_config.updated_at %>
-</p>
-
-<p>
-  <strong>Import CSV:</strong>
-  <%= form_tag import_rack_config_path, multipart: true do %>
-    <%= file_field_tag :file %>
-    <%= submit_tag "Import" %>
-  <% end %>
-</p>
-
-<p>
-  <%= link_to 'Edit', edit_rack_config_path(@rack_config) %> |
-  <%= link_to 'Back', rack_configs_path %>
-</p>
+<h3>Import CSV</h3>
+<%= form_tag import_rack_config_path, multipart: true do %>
+  <%= file_field_tag :file %>
+  <%= submit_tag "Import" %>
+<% end %>
 
 <% if @rack_config.rack_components.first %>
-  <h2>Elevation</h2>
+  <h3>Elevation</h3>
 
   <% rack = @rack_config.rack_components.where(component_type: "rack").first %>
-
-  <p>
-    <strong>Rack Part Number:</strong>
-    <%= rack.part.part_number %>
-  </p>
-
-  <p>
-    <strong>Rack SKU:</strong>
-    <%= rack.sku %>
-  </p>
-
   <% rack_u = rack.u_size %>
-  <p>
-    <strong>Rack Height:</strong>
-    <%= rack_u %>U
-  </p>
+
+  <div class="row">
+    <div class="col-auto">
+      <table class="table table-borderless">
+        <tbody>
+          <tr>
+            <td><strong>Rack part number:</strong></td>
+            <td><%= rack.part.part_number %></td>
+          </tr>
+          <tr>
+            <td><strong>Rack SKU:</strong></td>
+            <td><%= rack.sku %></td>
+          </tr>
+          <tr>
+            <td><strong>Rack height:</strong></td>
+            <td><%= rack_u %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
   <div class="row">
     <%= render 'elevation', orientation: "front", rack_u: rack_u %>
@@ -66,7 +65,7 @@
 <% end %>
 
 <% if @rack_config.connections.first %>
-  <h2>Network</h2>
+  <h3>Network</h3>
   <div class="row">
     <% network_connections = @rack_config.connections.where(connection_type: "network") %>
     <% connection_groups = network_connections.distinct(:connection_group) %>
@@ -74,7 +73,7 @@
       <div class="col-12">
         <h3><%= group %></h3>
 
-        <table class="table table-bordered">
+        <table class="table table-bordered table-hover">
           <thead>
             <tr>
               <th scope="col">U</th>
@@ -115,7 +114,7 @@
 <% end %>
 
 <% if @rack_config.connections.first %>
-  <h2>Power</h2>
+  <h3>Power</h3>
   <div class="row">
     <% power_connections = @rack_config.connections.where(connection_type: "power") %>
     <% connection_groups = power_connections.distinct(:connection_group) %>
@@ -123,7 +122,7 @@
       <div class="col-12">
         <h3><%= group %></h3>
 
-        <table class="table table-bordered">
+        <table class="table table-bordered table-hover">
           <thead>
             <tr>
               <th scope="col">U</th>
@@ -161,3 +160,6 @@
     <% end %>
   </div>
 <% end %>
+
+<%= link_to 'Edit', edit_rack_config_path(@rack_config), class: "btn btn-outline-primary" %>
+<%= link_to 'Back', customer_rack_configs_path(@customer), class: "btn btn-outline-secondary" %>

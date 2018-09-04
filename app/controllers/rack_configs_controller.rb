@@ -1,16 +1,17 @@
 class RackConfigsController < ApplicationController
   before_action :set_rack_config, only: [:import, :show, :edit, :update, :destroy]
+  before_action :set_customer, only: [:index, :show, :new, :edit, :create, :destroy]
 
-  # GET /rack_configs
-  # GET /rack_configs.json
+  # GET /customers/1/rack_configs
+  # GET /customers/1/rack_configs.json
   def index
-    @rack_configs = RackConfig.all
+    @rack_configs = @customer.rack_configs
   end
 
-  # POST /import_rack_config
+  # POST /rack_configs/1/import
   def import
     RackConfig.import(params[:file], @rack_config)
-    redirect_to rack_config_path(@rack_config), notice: "Rack configuration imported."
+    redirect_to rack_config_path(@rack_config), flash: { success: "Rack configuration successfully imported." }
   end
 
   # GET /rack_configs/1
@@ -18,7 +19,7 @@ class RackConfigsController < ApplicationController
   def show
   end
 
-  # GET /rack_configs/new
+  # GET /customers/1/rack_configs/new
   def new
     @rack_config = RackConfig.new
   end
@@ -27,14 +28,14 @@ class RackConfigsController < ApplicationController
   def edit
   end
 
-  # POST /rack_configs
-  # POST /rack_configs.json
+  # POST /customers/1/rack_configs
+  # POST /customers/1/rack_configs.json
   def create
     @rack_config = RackConfig.new(rack_config_params)
 
     respond_to do |format|
       if @rack_config.save
-        format.html { redirect_to @rack_config, notice: 'Rack config was successfully created.' }
+        format.html { redirect_to @rack_config, flash: { success: 'Rack config was successfully created.' } }
         format.json { render :show, status: :created, location: @rack_config }
       else
         format.html { render :new }
@@ -48,7 +49,7 @@ class RackConfigsController < ApplicationController
   def update
     respond_to do |format|
       if @rack_config.update(rack_config_params)
-        format.html { redirect_to @rack_config, notice: 'Rack config was successfully updated.' }
+        format.html { redirect_to @rack_config, flash: { success: 'Rack config was successfully updated.' } }
         format.json { render :show, status: :ok, location: @rack_config }
       else
         format.html { render :edit }
@@ -62,7 +63,7 @@ class RackConfigsController < ApplicationController
   def destroy
     @rack_config.destroy
     respond_to do |format|
-      format.html { redirect_to rack_configs_url, notice: 'Rack config was successfully destroyed.' }
+      format.html { redirect_to customer_rack_configs_path(@customer), flash: { success: 'Rack config was successfully deleted.' } }
       format.json { head :no_content }
     end
   end
@@ -71,6 +72,11 @@ class RackConfigsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_rack_config
       @rack_config ||= RackConfig.find(params[:id])
+    end
+
+    def set_customer
+      @customer ||= Customer.find(params[:customer_id]) if params[:customer_id]
+      @customer ||= @rack_config.customer
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
