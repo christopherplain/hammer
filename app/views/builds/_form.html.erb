@@ -1,0 +1,38 @@
+<% if @build.new_record? %>
+  <%= simple_form_for [@customer, @build] do |f| %>
+    <%= f.error_notification %>
+    <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+
+    <div class="form-inputs">
+      <%= f.hidden_field :customer_id, value: @customer.id %>
+      <%= f.input :project_name %>
+      <%= f.input :project_reference %>
+      <%= f.input :build_type, collection: Build::BUILDTYPE, prompt: "Select build type" %>
+      <%= f.input :rack_config_id, collection: RackConfig.where(customer_id: @customer.id), label_method: :sku, prompt: "Select the Rack Config" %>
+    </div>
+
+    <div class="form-actions">
+      <%= f.button :submit, "Save", class: "btn btn-outline-primary" %>
+      <%= link_to "Cancel", :back, class: "btn btn-outline-secondary" %>
+    </div>
+  <% end %>
+
+<% else %>
+  <%= simple_form_for @build do |f| %>
+    <%= f.error_notification %>
+    <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+
+    <div class="form-inputs">
+      <%= f.input :project_name %>
+      <%= f.input :project_reference %>
+      <%= f.input :build_type, collection: Build::BUILDTYPE, prompt: "Select build type" %>
+      <%= f.input :rack_config_id, collection: RackConfig.where(customer_id: @customer.id), label_method: :sku, prompt: "Select the Rack Config" %>
+    </div>
+
+    <div class="form-actions">
+      <%= f.button :submit, "Update", class: "btn btn-outline-primary" %>
+      <%= link_to "Cancel", :back, class: "btn btn-outline-secondary" %>
+      <%= link_to 'Delete', build, method: :delete, class: "btn btn-outline-danger", data: { confirm: "Are you sure? This action can't be undone!" } %>
+    </div>
+  <% end %>
+<% end %>

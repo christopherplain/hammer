@@ -6,9 +6,10 @@ class RackConfig
   embeds_many :rack_components
   embeds_many :connections
   belongs_to :customer
+  has_many :builds
 
   def self.field_keys
-    RackConfig.fields.keys.drop(3)
+    self.fields.keys.drop(3)
   end
 
   def self.import(file, rack_config)

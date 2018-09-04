@@ -69,6 +69,6 @@ class RackComponentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def rack_component_params
-      params.require(:rack_component).permit(:u_location, :orientation, :part_number, :sku)
+      params.require(:rack_component).permit(*RackComponent.field_keys)
     end
 end

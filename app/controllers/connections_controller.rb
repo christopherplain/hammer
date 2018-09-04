@@ -69,6 +69,6 @@ class ConnectionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def connection_params
-      params.require(:connection).permit(:connection_type, :local_port, :remote_port, :cable_type, :cable_color, :cable_length)
+      params.require(:connection).permit(*Connection.field_keys)
     end
 end

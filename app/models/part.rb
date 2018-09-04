@@ -7,6 +7,10 @@ class Part
   field :model, type: String
   field :description, type: String
 
+  def self.field_keys
+    self.fields.keys.drop(3)
+  end
+
   def self.import(file)
     CSV.foreach(file.path, headers: true) do |row|
       row_hash = row.to_hash

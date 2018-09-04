@@ -10,6 +10,7 @@ class CustomersController < ApplicationController
   # GET /customers/1
   # GET /customers/1.json
   def show
+    @builds = @customer.builds
   end
 
   # GET /customers/new
@@ -64,11 +65,11 @@ class CustomersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_customer
-      @customer = Customer.find(params[:id])
+      @customer ||= Customer.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def customer_params
-      params.require(:customer).permit(:name)
+      params.require(:customer).permit(*Customer.field_keys)
     end
 end

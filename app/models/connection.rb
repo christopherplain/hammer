@@ -23,7 +23,7 @@ class Connection
   end
 
   def self.field_keys
-    Connection.fields.keys.drop(3)
+    self.fields.keys.drop(3)
   end
 
   def self.update(row_hash, rack_config, n)

@@ -1,0 +1,28 @@
+<h1><%= @customer.name %></h1>
+<h2>Build</h2>
+
+<div class="row">
+  <div class="col-auto">
+    <table class="table table-borderless">
+      <tbody>
+        <tr>
+          <td><strong>Project name:</strong></td>
+          <td><%= @build.project_name %></td>
+        </tr>
+        <tr>
+          <td><strong>Project reference:</strong></td>
+          <td><%= @build.project_reference %></td>
+        </tr>
+        <tr>
+          <td><strong>Build type:</strong></td>
+          <td><%= @build.build_type %></td>
+        </tr>
+        <tr>
+          <td><strong>Updated:</strong></td>
+          <td><%= @build.updated_at %></td>
+        </tr>
+      </tbody>
+    </table>
+
+<%= link_to 'Edit', edit_build_path(@build), class: "btn btn-outline-primary" %>
+<%= link_to 'Back', customer_builds_path(@customer), class: "btn btn-outline-secondary" %>

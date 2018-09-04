@@ -1,9 +1,18 @@
 <p id="notice"><%= notice %></p>
 
+<h1><%= @customer.name %></h1>
+
+<h2>Builds</h2>
+
 <p>
-  <strong>Name:</strong>
-  <%= @customer.name %>
+  <%= link_to 'Show Builds', customer_builds_path(@customer) %>
 </p>
 
-<%= link_to 'Edit', edit_customer_path(@customer) %> |
-<%= link_to 'Back', customers_path %>
+<p>
+  <%= link_to 'New Build', new_customer_build_path(@customer) %>
+</p>
+
+<p>
+  <%= link_to 'Edit', edit_customer_path(@customer) %> |
+  <%= link_to 'Back', customers_path %>
+</p>
