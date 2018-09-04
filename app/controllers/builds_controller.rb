@@ -6,7 +6,6 @@ class BuildsController < ApplicationController
   # GET /customers/1/builds.json
   def index
     @builds = Build.all
-    @build = Build.new
   end
 
   # GET /builds/1

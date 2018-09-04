@@ -1,6 +1,4 @@
-<h1>Editing Customer</h1>
+<h1><%= @customer.name %></h1>
+<h2>Edit customer</h2>
 
 <%= render 'form', customer: @customer %>
-
-<%= link_to 'Show', @customer %> |
-<%= link_to 'Back', customers_path %>

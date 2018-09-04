@@ -1,4 +1,3 @@
-
 <%= simple_form_for(@customer) do |f| %>
   <%= f.error_notification %>
   <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
@@ -7,7 +6,16 @@
     <%= f.input :name %>
   </div>
 
-  <div class="form-actions">
-    <%= f.button :submit %>
-  </div>
+  <% if @customer.new_record? %>
+    <div class="form-actions">
+      <%= f.button :submit, "Save", class: "btn btn-outline-primary" %>
+      <%= link_to "Cancel", :back, class: "btn btn-outline-secondary" %>
+    </div>
+  <% else %>
+    <div class="form-actions">
+      <%= f.button :submit, "Update", class: "btn btn-outline-primary" %>
+      <%= link_to "Cancel", :back, class: "btn btn-outline-secondary" %>
+      <%= link_to 'Delete', customer, method: :delete, class: "btn btn-outline-danger", data: { confirm: "Are you sure? This action can't be undone!" } %>
+    </div>
+  <% end %>
 <% end %>

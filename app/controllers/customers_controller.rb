@@ -10,7 +10,7 @@ class CustomersController < ApplicationController
   # GET /customers/1
   # GET /customers/1.json
   def show
-    @builds = @customer.builds
+    @builds = @customer.builds.order_by(updated_at: :desc).limit(10)
   end
 
   # GET /customers/new
@@ -29,7 +29,7 @@ class CustomersController < ApplicationController
 
     respond_to do |format|
       if @customer.save
-        format.html { redirect_to @customer, notice: 'Customer was successfully created.' }
+        format.html { redirect_to @customer, flash: { success: 'Customer was successfully created.' } }
         format.json { render :show, status: :created, location: @customer }
       else
         format.html { render :new }
@@ -43,7 +43,7 @@ class CustomersController < ApplicationController
   def update
     respond_to do |format|
       if @customer.update(customer_params)
-        format.html { redirect_to @customer, notice: 'Customer was successfully updated.' }
+        format.html { redirect_to @customer, flash: { success: 'Customer was successfully updated.' } }
         format.json { render :show, status: :ok, location: @customer }
       else
         format.html { render :edit }
@@ -57,7 +57,7 @@ class CustomersController < ApplicationController
   def destroy
     @customer.destroy
     respond_to do |format|
-      format.html { redirect_to customers_url, notice: 'Customer was successfully destroyed.' }
+      format.html { redirect_to customers_url, flash: { success: 'Customer was successfully destroyed.' } }
       format.json { head :no_content }
     end
   end

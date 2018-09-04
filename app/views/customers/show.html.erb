@@ -1,18 +1,56 @@
-<p id="notice"><%= notice %></p>
-
 <h1><%= @customer.name %></h1>
 
-<h2>Builds</h2>
+<% if @builds.first %>
+  <h2><%= link_to 'Builds', customer_builds_path(@customer) %></h2>
 
-<p>
-  <%= link_to 'Show Builds', customer_builds_path(@customer) %>
-</p>
+  <div class="row">
+    <div class="col-12">
+      <table class="table table-borderless table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Project name</th>
+            <th scope="col">Project reference</th>
+            <th scope="col">Build type</th>
+            <th scope="col">Updated</th>
+          </tr>
+        </thead>
 
-<p>
-  <%= link_to 'New Build', new_customer_build_path(@customer) %>
-</p>
+        <tbody>
+          <% @builds.each do |build| %>
+            <tr>
+              <td><%= link_to build.project_name, build %></td>
+              <td><%= build.project_reference %></td>
+              <td><%= build.build_type %></td>
+              <td><%= build.updated_at %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-<p>
-  <%= link_to 'Edit', edit_customer_path(@customer) %> |
-  <%= link_to 'Back', customers_path %>
-</p>
+  <%= link_to 'New', new_customer_build_path(@customer), class: "btn btn-outline-primary"%>
+<% end %>
+
+<% if @customer.rack_configs.first %>
+  <h2>Rack Configs</h2>
+<% end %>
+
+<% if false %>
+  <h2>Switch Configs</h2>
+<% end %>
+
+<% if false %>
+  <h2>Server Configs</h2>
+<% end %>
+
+<% if false %>
+  <h2>Storage Configs</h2>
+<% end %>
+
+<% if false %>
+  <h2>PDU Configs</h2>
+<% end %>
+
+<%= link_to 'Edit', edit_customer_path(@customer), class: "btn btn-outline-primary" %>
+<%= link_to 'Back', customers_path, class: "btn btn-outline-secondary" %>
