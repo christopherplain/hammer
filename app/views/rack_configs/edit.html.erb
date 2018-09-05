@@ -1,4 +1,8 @@
 <h1><%= @customer.name %></h1>
-<h2>Edit rack config</h2>
+<% if @import %>
+  <h2>Import CSV</h2>
+<% else %>
+  <h2>Edit rack config</h2>
+<% end %>
 
 <%= render 'form', rack_config: @rack_config %>
