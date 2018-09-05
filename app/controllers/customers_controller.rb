@@ -4,14 +4,14 @@ class CustomersController < ApplicationController
   # GET /customers
   # GET /customers.json
   def index
-    @customers = Customer.all
+    # @customers set in ApplicationController
   end
 
   # GET /customers/1
   # GET /customers/1.json
   def show
-    @builds = @customer.builds.order_by(updated_at: :desc).limit(10)
-    @rack_configs = @customer.rack_configs.order_by(updated_at: :desc).limit(10)
+    @builds = @customer.builds.order_by(updated_at: :desc).limit(5)
+    @rack_configs = @customer.rack_configs.order_by(updated_at: :desc).limit(5)
   end
 
   # GET /customers/new
@@ -64,13 +64,13 @@ class CustomersController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_customer
-      @customer ||= Customer.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_customer
+    @customer ||= Customer.find(params[:id])
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def customer_params
-      params.require(:customer).permit(*Customer.field_keys)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def customer_params
+    params.require(:customer).permit(*Customer.field_keys)
+  end
 end
