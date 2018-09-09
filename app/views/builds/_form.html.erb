@@ -1,38 +1,79 @@
 <% if @build.new_record? %>
-  <%= simple_form_for [@customer, @build] do |f| %>
-    <%= f.error_notification %>
-    <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+  <%= form_with model: [@customer, @build], local: true do |f| %>
+    <% if @build.errors.any? %>
+      <div class="alert alert-danger">
+        <h2>This form contains <%= pluralize(@build.errors.count, "error") %></h2>
 
-    <div class="form-inputs">
-      <%= f.hidden_field :customer_id, value: @customer.id %>
-      <%= f.input :project_name %>
-      <%= f.input :project_reference %>
-      <%= f.input :build_type, collection: Build::BUILDTYPE, prompt: "Select build type" %>
-      <%= f.input :rack_config_id, collection: RackConfig.where(customer_id: @customer.id), label_method: :sku, prompt: "Select the Rack Config" %>
+        <ul>
+        <% @build.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= f.label "Project name"%>
+      <%= f.text_field :project_name, class: "form-control" %>
     </div>
 
-    <div class="form-actions">
-      <%= f.button :submit, "Save", class: "btn btn-outline-primary" %>
-      <%= link_to "Cancel", :back, class: "btn btn-outline-secondary" %>
+    <div class="form-group">
+      <%= f.label "Project reference"%>
+      <%= f.text_field :project_reference, class: "form-control" %>
     </div>
+
+    <div class="form-group">
+      <%= f.label "Build type"%>
+      <%= f.select :build_type, Build::BUILDTYPE, { prompt: "Select build type" }, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label "Rack config"%>
+      <%= f.collection_select :rack_config_id, RackConfig.where(customer_id: @customer.id), :id, :sku, { prompt: "Select the rack config" }, class: "form-control" %>
+    </div>
+
+    <%= f.hidden_field :customer_id, value: @customer.id %>
+
+    <%= f.submit "Save", class: "btn btn-outline-primary" %>
+    <%= link_to "Cancel", :back, class: "btn btn-outline-secondary" %>
   <% end %>
 
 <% else %>
-  <%= simple_form_for @build do |f| %>
-    <%= f.error_notification %>
-    <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+  <%= form_with model: @build, local: true do |f| %>
+    <% if @build.errors.any? %>
+      <div class="alert alert-danger">
+        <h2>This form contains <%= pluralize(@build.errors.count, "error") %></h2>
 
-    <div class="form-inputs">
-      <%= f.input :project_name %>
-      <%= f.input :project_reference %>
-      <%= f.input :build_type, collection: Build::BUILDTYPE, prompt: "Select build type" %>
-      <%= f.input :rack_config_id, collection: RackConfig.where(customer_id: @customer.id), label_method: :sku, prompt: "Select the Rack Config" %>
+        <ul>
+        <% @build.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= f.label "Project name"%>
+      <%= f.text_field :project_name, class: "form-control" %>
     </div>
 
-    <div class="form-actions">
-      <%= f.button :submit, "Update", class: "btn btn-outline-primary" %>
-      <%= link_to "Cancel", :back, class: "btn btn-outline-secondary" %>
-      <%= link_to 'Delete', build, method: :delete, class: "btn btn-outline-danger", data: { confirm: "Are you sure? This action can't be undone!" } %>
+    <div class="form-group">
+      <%= f.label "Project reference"%>
+      <%= f.text_field :project_reference, class: "form-control" %>
     </div>
+
+    <div class="form-group">
+      <%= f.label "Build type"%>
+      <%= f.select :build_type, Build::BUILDTYPE, { prompt: "Select build type" }, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label "Rack config"%>
+      <%= f.collection_select :rack_config_id, RackConfig.where(customer_id: @build.customer.id), :id, :sku, { prompt: "Select the rack config" }, class: "form-control" %>
+    </div>
+
+    <%= f.submit "Update", class: "btn btn-outline-primary" %>
+    <%= link_to "Cancel", :back, class: "btn btn-outline-secondary" %>
+    <%= link_to 'Delete', build, method: :delete, class: "btn btn-outline-danger", data: { confirm: "Are you sure? This action can't be undone!" } %>
   <% end %>
 <% end %>
