@@ -6,6 +6,7 @@ class RackComponent
   field :orientation, type: String
   field :u_size, type: Integer
   field :sku, type: String
+  field :scan_serial, type: Boolean
   embedded_in :rack_config
 
   # Create manual relation to Part

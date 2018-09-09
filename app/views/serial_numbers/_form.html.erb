@@ -1,0 +1,51 @@
+<%= form_with model: [@build, @serial_number], local: true do |f| %>
+
+  <h2>Rack</h2>
+  <% serial = @serial_numbers[:rack] %>
+  <%= fields_for "serial_numbers[]", serial do |field| %>
+    <div class="form-group">
+      <%= field.label serial.rack_component.part.part_number %>
+      <%= field.text_field :num, class: "form-control" %>
+      <%= field.hidden_field :rack_component_id, value: serial.rack_component_id %>
+    </div>
+  <% end %>
+
+  <h2>Front</h2>
+  <% front = @serial_numbers[:front] %>
+  <% front.each do |serial| %>
+    <%= fields_for "serial_numbers[]", serial do |field| %>
+      <div class="form-group">
+        <%= field.label "U#{serial.rack_component.u_location} #{serial.rack_component.part.part_number}" %>
+        <%= field.text_field :num, class: "form-control" %>
+        <%= field.hidden_field :rack_component_id, value: serial.rack_component_id %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <h2>Rear</h2>
+  <% rear = @serial_numbers[:rear] %>
+  <% rear.each do |serial| %>
+    <%= fields_for "serial_numbers[]", serial do |field| %>
+      <div class="form-group">
+        <%= field.label "U#{serial.rack_component.u_location} #{serial.rack_component.part.part_number}" %>
+        <%= field.text_field :num, class: "form-control" %>
+        <%= field.hidden_field :rack_component_id, value: serial.rack_component_id %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <h2>Zero U</h2>
+  <% zero_u = @serial_numbers[:zero_u] %>
+  <% zero_u.each do |serial| %>
+    <%= fields_for "serial_numbers[]", serial do |field| %>
+      <div class="form-group">
+        <%= field.label "#{serial.rack_component.orientation} #{serial.rack_component.part.part_number}" %>
+        <%= field.text_field :num, class: "form-control" %>
+        <%= field.hidden_field :rack_component_id, value: serial.rack_component_id %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <%= f.submit "Save", class: "btn btn-primary" %>
+  <%= link_to "Cancel", :back, class: "btn btn-outline-secondary" %>
+<% end %>

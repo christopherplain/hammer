@@ -25,7 +25,6 @@ class BuildsController < ApplicationController
   # POST /customers/1/builds
   # POST /customers/1/builds.json
   def create
-    # build_params[:customer_id] = params[:customer_id]
     @build = Build.new(build_params)
 
     respond_to do |format|

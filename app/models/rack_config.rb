@@ -5,13 +5,9 @@ class RackConfig
   field :sku, type: String
   embeds_many :rack_components
   embeds_many :connections
-  belongs_to :customer
   has_many :builds
+  belongs_to :customer
   validates :sku, presence: true
-
-  def self.field_keys
-    self.fields.keys.drop(3)
-  end
 
   def self.import(file, rack_config)
     # Create/update RackComponents.
@@ -30,5 +26,9 @@ class RackConfig
         break if connection.nil?
       end
     end
+  end
+
+  def self.field_keys
+    self.fields.keys.drop(3)
   end
 end

@@ -4,6 +4,7 @@ class Build
   field :build_type, type: String
   field :project_name, type: String
   field :project_reference, type: String
+  embeds_many :serial_numbers
   belongs_to :customer
   belongs_to :rack_config, optional: true
   validates :build_type, :project_name, presence: true

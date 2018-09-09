@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Serial Numbers</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Num</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @serial_numbers.each do |serial_number| %>
+      <tr>
+        <td><%= serial_number.num %></td>
+        <td><%= link_to 'Show', serial_number %></td>
+        <td><%= link_to 'Edit', edit_serial_number_path(serial_number) %></td>
+        <td><%= link_to 'Destroy', serial_number, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Serial Number', new_serial_number_path %>
