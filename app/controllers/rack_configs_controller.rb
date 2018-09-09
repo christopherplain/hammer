@@ -27,6 +27,7 @@ class RackConfigsController < ApplicationController
   # GET /rack_configs/1/edit
   def edit
     @import = params[:import]
+    @rack_components = @rack_config.rack_components.all
   end
 
   # POST /customers/1/rack_configs

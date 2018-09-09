@@ -22,15 +22,11 @@ class RackComponent
 
   def self.update(row_hash, rack_config)
     # Grab rack component data and search for existing RackComponent.
-    rack_component_hash = row_hash.slice(*RackComponent.field_keys)
-    u_location = rack_component_hash["u_location"].to_i
-    orientation = rack_component_hash["orientation"]
+    rack_component_hash = row_hash.slice("id", *RackComponent.field_keys)
+    rack_component = rack_config.rack_components.where(id: rack_component_hash["id"]).first
     part_number = row_hash["part_number"]
-    rack_component = rack_config.rack_components.where(
-      u_location: u_location, orientation: orientation).first
     part = Part.where(part_number: part_number).first
-    rack_component_hash[:part_id] = part.id if part
-    rack_component_hash[:part_id] = nil unless part
+    rack_component_hash[:part_id] = part ? part.id : nil
 
     # Create new RackComponent or update existing document.
     return rack_config.rack_components.create!(rack_component_hash) if rack_component.nil?
