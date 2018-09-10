@@ -1,18 +1,45 @@
-
 <%= simple_form_for(@connection) do |f| %>
-  <%= f.error_notification %>
-  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+  <% if @connection.errors.any? %>
+    <div class="alert alert-danger">
+      <h2>This form contains <%= pluralize(@build.errors.count, "error") %></h2>
 
-  <div class="form-inputs">
-    <%= f.input :connection_type %>
-    <%= f.input :local_port %>
-    <%= f.input :remote_port %>
-    <%= f.input :cable_type %>
-    <%= f.input :cable_color %>
-    <%= f.input :cable_length %>
+      <ul>
+      <% @connection.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label "Connection type"%>
+    <%= f.text_field :connection_type, class: "form-control" %>
   </div>
 
-  <div class="form-actions">
-    <%= f.button :submit %>
+  <div class="form-group">
+    <%= f.label "Local port"%>
+    <%= f.text_field :local_port, class: "form-control" %>
   </div>
+
+  <div class="form-group">
+    <%= f.label "Remote port"%>
+    <%= f.text_field :remote_port, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label "Cable type"%>
+    <%= f.text_field :cable_type, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label "Cable color"%>
+    <%= f.text_field :cable_color, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label "Cable length"%>
+    <%= f.text_field :cable_length, class: "form-control" %>
+  </div>
+
+  <%= f.submit %>
 <% end %>
