@@ -1,31 +1,37 @@
 <% if @rack_config.new_record? %>
-  <%= simple_form_for [@customer, @rack_config] do |f| %>
-    <%= f.error_notification %>
-    <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+  <%= form_with model: [@customer, @rack_config], local: true do |f| %>
+    <% if @rack_config.errors.any? %>
+      <div class="alert alert-danger">
+        <h2>This form contains <%= pluralize(@rack_config.errors.count, "error") %></h2>
 
-    <div class="form-inputs">
-      <%= f.hidden_field :customer_id, value: @customer.id %>
-      <%= f.input :sku, label: "SKU" %>
+        <ul>
+        <% @rack_config.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= f.label "SKU"%>
+      <%= f.text_field :sku, class: "form-control" %>
     </div>
 
-    <div class="form-actions">
-      <%= f.button :submit, "Save", class: "btn btn-outline-primary" %>
-      <%= link_to "Cancel", :back, class: "btn btn-outline-secondary" %>
-    </div>
+    <%= f.hidden_field :customer_id, value: @customer.id %>
+
+    <%= f.submit "Save", class: "btn btn-outline-primary" %>
+    <%= link_to "Cancel", :back, class: "btn btn-outline-secondary" %>
   <% end %>
 
 <% elsif @import %>
-  <%= form_tag import_rack_config_path, multipart: true do %>
+  <%= form_with url: import_rack_config_path, local: true do |f| %>
 
-    <div class="form-inputs">
-      <%= file_field_tag :file %>
+    <div class="form-group">
+      <%= f.file_field :file, class: "form-control-file" %>
     </div>
 
-    <div class="form-actions">
-      <br>
-      <%= submit_tag "Import", class: "btn btn-outline-success" %>
-      <%= link_to "Cancel", :back, class: "btn btn-outline-secondary" %>
-    </div>
+    <%= f.submit "Import", class: "btn btn-outline-success" %>
+    <%= link_to "Cancel", :back, class: "btn btn-outline-secondary" %>
   <% end %>
 
   <div class="row">
@@ -53,18 +59,26 @@
   </div>
 
 <% else %>
-  <%= simple_form_for @rack_config do |f| %>
-    <%= f.error_notification %>
-    <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+  <%= form_with model: @rack_config, local: true do |f| %>
+    <% if @rack_config.errors.any? %>
+      <div class="alert alert-danger">
+        <h2>This form contains <%= pluralize(@rack_config.errors.count, "error") %></h2>
 
-    <div class="form-inputs">
-      <%= f.input :sku, label: "SKU" %>
+        <ul>
+        <% @rack_config.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= f.label "SKU"%>
+      <%= f.text_field :sku, class: "form-control" %>
     </div>
 
-    <div class="form-actions">
-      <%= f.button :submit, "Update", class: "btn btn-outline-primary" %>
-      <%= link_to "Cancel", :back, class: "btn btn-outline-secondary" %>
-      <%= link_to 'Delete', rack_config, method: :delete, class: "btn btn-outline-danger", data: { confirm: "Are you sure? This action can't be undone!" } %>
-    </div>
+    <%= f.submit "Update", class: "btn btn-outline-primary" %>
+    <%= link_to "Cancel", :back, class: "btn btn-outline-secondary" %>
+    <%= link_to 'Delete', rack_config, method: :delete, class: "btn btn-outline-danger", data: { confirm: "Are you sure? This action can't be undone!" } %>
   <% end %>
 <% end %>
