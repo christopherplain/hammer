@@ -1,21 +1,27 @@
-<%= simple_form_for(@customer) do |f| %>
-  <%= f.error_notification %>
-  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+<%= form_with model: @customer, local: true do |f| %>
+  <% if @customer.errors.any? %>
+    <div class="alert alert-danger">
+      <h2>This form contains <%= pluralize(@customer.errors.count, "error") %></h2>
 
-  <div class="form-inputs">
-    <%= f.input :name %>
+      <ul>
+      <% @customer.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label "Name"%>
+    <%= f.text_field :name, class: "form-control" %>
   </div>
 
   <% if @customer.new_record? %>
-    <div class="form-actions">
-      <%= f.button :submit, "Save", class: "btn btn-outline-primary" %>
-      <%= link_to "Cancel", :back, class: "btn btn-outline-secondary" %>
-    </div>
+    <%= f.submit "Save", class: "btn btn-outline-primary" %>
+    <%= link_to "Cancel", :back, class: "btn btn-outline-secondary" %>
   <% else %>
-    <div class="form-actions">
-      <%= f.button :submit, "Update", class: "btn btn-outline-primary" %>
-      <%= link_to "Cancel", :back, class: "btn btn-outline-secondary" %>
-      <%= link_to 'Delete', customer, method: :delete, class: "btn btn-outline-danger", data: { confirm: "Are you sure? This action can't be undone!" } %>
-    </div>
+    <%= f.submit "Update", class: "btn btn-outline-primary" %>
+    <%= link_to "Cancel", :back, class: "btn btn-outline-secondary" %>
+    <%= link_to 'Delete', customer, method: :delete, class: "btn btn-outline-danger", data: { confirm: "Are you sure? This action can't be undone!" } %>
   <% end %>
 <% end %>

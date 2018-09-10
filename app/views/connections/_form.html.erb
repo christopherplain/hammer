@@ -1,4 +1,4 @@
-<%= simple_form_for(@connection) do |f| %>
+<%= form_with model: @connection, local: true do |f| %>
   <% if @connection.errors.any? %>
     <div class="alert alert-danger">
       <h2>This form contains <%= pluralize(@build.errors.count, "error") %></h2>
