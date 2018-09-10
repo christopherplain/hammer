@@ -1,16 +1,35 @@
+<%= form_with model: @part, local: true do |f| %>
+  <% if @part.errors.any? %>
+    <div class="alert alert-danger">
+      <h2>This form contains <%= pluralize(@part.errors.count, "error") %></h2>
 
-<%= simple_form_for(@part) do |f| %>
-  <%= f.error_notification %>
-  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+      <ul>
+      <% @part.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
 
-  <div class="form-inputs">
-    <%= f.input :part_number %>
-    <%= f.input :manufacturer %>
-    <%= f.input :model %>
-    <%= f.input :description %>
+  <div class="form-group">
+    <%= f.label "Part number"%>
+    <%= f.text_field :part_number, class: "form-control" %>
   </div>
 
-  <div class="form-actions">
-    <%= f.button :submit %>
+  <div class="form-group">
+    <%= f.label "Manufacturer"%>
+    <%= f.text_field :manufacturer, class: "form-control" %>
   </div>
+
+  <div class="form-group">
+    <%= f.label "Model"%>
+    <%= f.text_field :model, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label "Description"%>
+    <%= f.text_field :description, class: "form-control" %>
+  </div>
+
+  <%= f.submit %>
 <% end %>
