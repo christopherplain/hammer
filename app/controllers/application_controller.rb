@@ -3,6 +3,6 @@ class ApplicationController < ActionController::Base
 
   # Load Customers for navbar links.
   def set_customers
-    @customers ||= Customer.all.order_by(name: :asc)
+    @customers ||= Customer.all.order(name: :asc)
   end
 end

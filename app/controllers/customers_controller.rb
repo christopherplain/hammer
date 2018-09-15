@@ -10,8 +10,8 @@ class CustomersController < ApplicationController
   # GET /customers/1
   # GET /customers/1.json
   def show
-    @builds = @customer.builds.order_by(updated_at: :desc).limit(5)
-    @rack_configs = @customer.rack_configs.order_by(updated_at: :desc).limit(5)
+    @builds = @customer.builds.order(updated_at: :desc).limit(5)
+    @rack_configs = @customer.rack_configs.order(updated_at: :desc).limit(5)
   end
 
   # GET /customers/new

@@ -83,7 +83,7 @@
 
           <tbody>
             <% connections = @rack_config.connections.where(connection_group: group) %>
-            <% connections = connections.sort_by { |hash| @rack_config.rack_components.find(hash[:local_device_id]).u_location } %>
+            <% connections = connections.sort_by { |hash| @rack_config.rack_components.find(hash[:local_device_id]).u_location.to_i } %>
             <% connections.reverse.each do |connection| %>
               <% local_device = connection.local_device %>
               <% remote_device = connection.remote_device %>
@@ -132,7 +132,7 @@
 
           <tbody>
             <% connections = @rack_config.connections.where(connection_group: group) %>
-            <% connections = connections.sort_by { |hash| @rack_config.rack_components.find(hash[:local_device_id]).u_location } %>
+            <% connections = connections.sort_by { |hash| @rack_config.rack_components.find(hash[:local_device_id]).u_location.to_i } %>
             <% connections.reverse.each do |connection| %>
               <% local_device = connection.local_device %>
               <% part = local_device.part %>

@@ -21,21 +21,21 @@ class SerialNumber
     serial_numbers[:rack] = build_serial_number(build, rack)
 
     front = build.rack_config.rack_components.where(orientation: 'front',
-      scan_serial: true).order_by(u_location: :desc)
+      scan_serial: true).order(u_location: :desc)
     serial_numbers[:front] = []
     front.each do |component|
       serial_numbers[:front] << build_serial_number(build, component)
     end
 
     rear = build.rack_config.rack_components.where(orientation: 'rear',
-      scan_serial: true).order_by(u_location: :desc)
+      scan_serial: true).order(u_location: :desc)
     serial_numbers[:rear] = []
     rear.each do |component|
       serial_numbers[:rear] << build_serial_number(build, component)
     end
 
     zero_u = build.rack_config.rack_components.where(u_location: 0,
-      scan_serial: true).order_by(orientation: :asc)
+      scan_serial: true).order(orientation: :asc)
     serial_numbers[:zero_u] = []
     zero_u.each do |component|
       serial_numbers[:zero_u] << build_serial_number(build, component)

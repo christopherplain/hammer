@@ -5,7 +5,7 @@ class RackConfigsController < ApplicationController
   # GET /customers/1/rack_configs
   # GET /customers/1/rack_configs.json
   def index
-    @rack_configs = @customer.rack_configs.order_by(sku: :asc)
+    @rack_configs = @customer.rack_configs.order(sku: :asc)
   end
 
   # POST /rack_configs/1/import
@@ -28,6 +28,7 @@ class RackConfigsController < ApplicationController
   def edit
     @import = params[:import]
     @rack_components = @rack_config.rack_components.all
+    @rack_components.order(row_order: :desc)
   end
 
   # POST /customers/1/rack_configs
