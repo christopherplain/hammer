@@ -2,6 +2,7 @@ class SerialNumber
   include Mongoid::Document
   include Mongoid::Timestamps
   field :num, type: String
+  field :row_order, type: Integer
   embedded_in :build
 
   # Create manual relation to RackComponent

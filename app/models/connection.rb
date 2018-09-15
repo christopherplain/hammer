@@ -8,6 +8,7 @@ class Connection
   field :cable_type, type: String
   field :cable_color, type: String
   field :cable_length, type: String
+  field :row_order, type: Integer
   embedded_in :rack_config
 
   # Create manual relations to RackComponent
