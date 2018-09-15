@@ -1,0 +1,67 @@
+<%= form_with model: @build, local: true do |f| %>
+  <% if @build.errors.any? %>
+    <div class="alert alert-danger">
+      <% count = 0 %>
+
+      <% @build.asset_numbers.each do |asset| %>
+        <% count += asset.errors.count if asset.errors.any? %>
+      <% end %>
+
+      Please correct <%= pluralize(count, "error") %> below.
+    </div>
+  <% end %>
+
+  <p class="lead">Please scan asset numbers.</p>
+
+  <% @build.asset_numbers.each do |asset| %>
+    <%= f.fields_for :asset_numbers, asset do |asset_form| %>
+      <%= asset_form.hidden_field :id, value: asset.id %>
+      <div class="form-group row">
+        <% component = asset.rack_component %>
+        <% rack = component.component_type.eql?("rack") %>
+        <% label = "Rack" if rack %>
+        <% label = "U#{component.u_location}
+            #{component.orientation.capitalize}
+            #{component.part.part_number}" unless rack %>
+        <%= asset_form.label :scanned_asset, label, class: "col-md-4 col-form-label font-weight-bold" %>
+
+        <% if asset.validated? %>
+          <div class="col-md-4">
+            <%= asset_form.text_field :scanned_asset, class: "form-control is-valid" %>
+            <div class="valid-feedback">
+              Scanned asset validated!
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <%= asset_form.text_field :expected_asset, class: "form-control is-valid", disabled: true %>
+          </div>
+
+        <% elsif asset.errors.any? %>
+          <div class="col-md-4">
+            <%= asset_form.text_field :scanned_asset, class: "form-control" %>
+            <div class="invalid-feedback">
+              Scanned asset must match expected asset.
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <%= asset_form.text_field :expected_asset, class: "form-control is-invalid", disabled: true %>
+          </div>
+
+        <% else %>
+          <div class="col-md-4">
+            <%= asset_form.text_field :scanned_asset, class: "form-control" %>
+          </div>
+
+          <div class="col-md-4">
+            <%= asset_form.text_field :expected_asset, class: "form-control", disabled: true %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <%= f.submit "Validate", class: "btn btn-outline-primary" %>
+  <%= link_to "Done", @build, class: "btn btn-outline-secondary" %>
+<% end %>

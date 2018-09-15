@@ -1,4 +1,11 @@
-<h1><%= @build.customer.name %></h1>
-<h2>Edit build</h2>
+<h1><%= @build.customer.name %> Build</h1>
 
-<%= render 'form', build: @build %>
+<% if params[:build].has_key?(:asset_numbers_attributes) %>
+
+  <%= render 'asset_form' %>
+
+<% else %>
+
+  <%= render 'form' %>
+
+<% end %>

@@ -41,8 +41,13 @@ class BuildsController < ApplicationController
   # PATCH/PUT /builds/1
   # PATCH/PUT /builds/1.json
   def update
+    asset = (build_params.has_key?(:asset_numbers_attributes)) ? true : nil
+
     respond_to do |format|
-      if @build.update(build_params)
+      if @build.update_attributes(build_params) && asset
+        format.html { render :edit }
+        format.json { render :show, status: :ok, location: @build }
+      elsif @build.update_attributes(build_params)
         format.html { redirect_to @build, flash: { success: 'Build was successfully updated.' } }
         format.json { render :show, status: :ok, location: @build }
       else
@@ -75,6 +80,7 @@ class BuildsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def build_params
-    params.require(:build).permit(*Build.field_keys)
+    params.require(:build).permit(*Build.field_keys,
+       asset_numbers_attributes: [:id, :scanned_asset])
   end
 end

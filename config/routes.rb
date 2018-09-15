@@ -11,7 +11,10 @@ Rails.application.routes.draw do
   end
 
   resources :builds, only: [], shallow: true do
-    resources :serial_numbers
+    resources :asset_numbers do
+      collection { post :import }
+    end
+    resources :serial_numbers, shallow: true
   end
 
   resources :rack_configs, only: [], shallow: true do
