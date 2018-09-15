@@ -3,7 +3,7 @@ class AssetNumber
   include Mongoid::Timestamps
   field :expected_asset, type: String
   field :scanned_asset, type: String
-  field :row_order, type: Integer
+  field :row_order, type: String
   embedded_in :build
   validates :rack_component, presence: true
   validate :validate_scanned, on: :update

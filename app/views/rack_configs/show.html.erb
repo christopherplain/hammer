@@ -26,7 +26,7 @@
   <h3>Elevation</h3>
 
   <% rack = @rack_config.rack_components.where(component_type: "rack").first %>
-  <% rack_u = rack.u_size %>
+  <% rack_u = rack.u_size.to_i %>
 
   <div class="row">
     <div class="col-auto">
@@ -93,8 +93,8 @@
                 <td><%= local_device.u_location %></td>
                 <td><%= part.part_number %></td>
                 <td><%= part.manufacturer %> <%= part.model %></td>
-                <td><%= "U" + local_device.u_location.to_s + ":" + connection.local_port %></td>
-                <td><%= "U" + remote_device.u_location.to_s + ":" + connection.remote_port %></td>
+                <td><%= "U" + local_device.u_location + ":" + connection.local_port %></td>
+                <td><%= "U" + remote_device.u_location + ":" + connection.remote_port %></td>
                 <td><%= connection.cable_type %></td>
                 <td><%= connection.cable_length %></td>
                 <td><%= connection.cable_color %></td>
@@ -141,7 +141,7 @@
                 <td><%= local_device.u_location %></td>
                 <td><%= part.part_number %></td>
                 <td><%= part.manufacturer %> <%= part.model %></td>
-                <td><%= "U" + local_device.u_location.to_s + ":" + connection.local_port %></td>
+                <td><%= "U" + local_device.u_location + ":" + connection.local_port %></td>
                 <td><%= group + ":" + connection.remote_port %></td>
                 <td><%= connection.cable_type %></td>
                 <td><%= connection.cable_length %></td>

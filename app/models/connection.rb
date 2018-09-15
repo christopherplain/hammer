@@ -8,7 +8,7 @@ class Connection
   field :cable_type, type: String
   field :cable_color, type: String
   field :cable_length, type: String
-  field :row_order, type: Integer
+  field :row_order, type: String
   embedded_in :rack_config
 
   # Create manual relations to RackComponent
@@ -46,8 +46,8 @@ class Connection
     connection = rack_config.connections.where(local_device_id: local.id, local_port: local_port).first
 
     # Create new Connection or update existing document.
-    return rack_config.connections.create!(connection_hash) if connection.nil? && local_port
-    connection.update_attributes!(connection_hash) if connection && local_port
+    return rack_config.connections.create(connection_hash) if connection.nil? && local_port
+    connection.update_attributes(connection_hash) if connection && local_port
     connection
   end
 end

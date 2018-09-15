@@ -2,12 +2,12 @@ class RackComponent
   include Mongoid::Document
   include Mongoid::Timestamps
   field :component_type, type: String
-  field :u_location, type: Integer
+  field :u_location, type: String
   field :orientation, type: String
-  field :u_size, type: Integer
+  field :u_size, type: String
   field :sku, type: String
   field :scan_serial, type: Boolean
-  field :row_order, type: Integer
+  field :row_order, type: String
   embedded_in :rack_config
 
   # Create manual relation to Part
@@ -30,8 +30,8 @@ class RackComponent
     rack_component_hash[:part_id] = part ? part.id : nil
 
     # Create new RackComponent or update existing document.
-    return rack_config.rack_components.create!(rack_component_hash) if rack_component.nil?
-    rack_component.update_attributes!(rack_component_hash)
+    return rack_config.rack_components.create(rack_component_hash) if rack_component.nil?
+    rack_component.update_attributes(rack_component_hash)
     rack_component
   end
 end
