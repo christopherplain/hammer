@@ -1,39 +1,85 @@
-<div class="col-12 col-md-6">
-  <h3><%= orientation.capitalize %></h3>
+<div class="card mb-4">
+  <div class="card-header">
+    <h2>Elevation</h2>
+    <a class="badge badge-dark" href="#collapseElevation" data-toggle="collapse" aria-expanded="true" aria-controls="collapseElevation">
+      show/hide
+    </a>
+  </div>
 
-  <table class="table table-bordered table-hover">
-    <thead>
-      <tr>
-        <th scope="col">U</th>
-        <th scope="col">Part Number</th>
-        <th scope="col">Man/Model</th>
-        <th scope="col">SKU</th>
-      </tr>
-    </thead>
+  <div class="collapse show" id="collapseElevation">
+    <div class="card-body">
+      <% rack = @rack_config.rack_components.where(component_type: "rack").first %>
+      <% rack_u = rack.u_size.to_i %>
 
-    <tbody>
-      <% u_array = [] %>
-      <% (rack_u).downto(1) do |u| %>
-        <% component = @rack_config.rack_components.where(u_location: u, orientation: orientation).first %>
-        <% part = component.part if component %>
-        <% u_array.push(u) %>
+      <div class="row">
+        <div class="col-auto">
+          <table class="table table-borderless">
+            <tbody>
+              <tr>
+                <td><strong>Rack part number:</strong></td>
+                <td><%= rack.part.part_number %></td>
+              </tr>
+              <tr>
+                <td><strong>Rack SKU:</strong></td>
+                <td><%= rack.sku %></td>
+              </tr>
+              <tr>
+                <td><strong>Rack height:</strong></td>
+                <td><%= rack_u %></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
 
-        <% unless part.nil? %>
-          <% u_size = component.u_size %>
-          <tr>
-            <td><%= u_array.shift %></td>
-            <td rowspan="<%= u_size %>"><%= part.part_number %></td>
-            <td rowspan="<%= u_size %>"><%= part.manufacturer %> <%= part.model %></td>
-            <td rowspan="<%= u_size %>"><%= component.sku %></td>
-          </tr>
+      <% ["front", "rear"].each do |orientation| %>
+        <div class="card-body">
+          <div class="card-title">
+            <h3 class="card-title"><%= orientation.capitalize %></h3>
+            <a class="badge badge-dark" href="#collapse<%= orientation %>" data-toggle="collapse" aria-expanded="true" aria-controls="collapse<%= orientation %>">
+              show/hide
+            </a>
+          </div>
 
-          <% until u_array.empty? %>
-            <tr>
-              <td><%= u_array.shift %></td>
-            </tr>
-          <% end %>
-        <% end %>
+          <div class="collapse show" id="collapse<%= orientation %>">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">U</th>
+                  <th scope="col">Part Number</th>
+                  <th scope="col">Man/Model</th>
+                  <th scope="col">SKU</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <% u_array = [] %>
+                <% (rack_u).downto(1) do |u| %>
+                  <% component = @rack_config.rack_components.where(u_location: u, orientation: orientation).first %>
+                  <% part = component.part if component %>
+                  <% u_array.push(u) %>
+
+                  <% unless part.nil? %>
+                    <% u_size = component.u_size %>
+                    <tr>
+                      <td><%= u_array.shift %></td>
+                      <td rowspan="<%= u_size %>"><%= part.part_number %></td>
+                      <td rowspan="<%= u_size %>"><%= part.manufacturer %> <%= part.model %></td>
+                      <td rowspan="<%= u_size %>"><%= component.sku %></td>
+                    </tr>
+
+                    <% until u_array.empty? %>
+                      <tr>
+                        <td><%= u_array.shift %></td>
+                      </tr>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
       <% end %>
-    </tbody>
-  </table>
+    </div>
+  </div>
 </div>

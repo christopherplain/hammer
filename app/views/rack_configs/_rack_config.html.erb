@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col-auto">
+    <table class="table table-borderless">
+      <tbody>
+        <tr>
+          <td><strong>SKU:</strong></td>
+          <td><%= @rack_config.sku %></td>
+        </tr>
+        <tr>
+          <td><strong>Created:</strong></td>
+          <td><%= @rack_config.created_at %></td>
+        </tr>
+        <tr>
+          <td><strong>Updated:</strong></td>
+          <td><%= @rack_config.updated_at %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<% if @rack_config.rack_components.first %>
+  <%= render "elevation" %>
+<% else %>
+  <p class="lead">Please upload rack configuration CSV.</p>
+<% end %>
+
+<% if @rack_config.connections.where(connection_type: "network").first %>
+  <%= render "network" %>
+<% end %>
+
+<% if @rack_config.connections.where(connection_type: "network").first %>
+  <%= render "power" %>
+<% end %>
+<hr class="mb-4">
