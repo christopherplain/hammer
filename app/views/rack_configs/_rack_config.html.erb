@@ -33,12 +33,8 @@
     <p class="lead">Please upload rack configuration CSV.</p>
   <% end %>
 
-  <% if @rack_config.connections.where(connection_type: "network").first %>
-    <%= render "rack_configs/network" %>
-  <% end %>
-
-  <% if @rack_config.connections.where(connection_type: "network").first %>
-    <%= render "rack_configs/power" %>
+  <% if @rack_config.connections.first %>
+    <%= render "rack_configs/connection" %>
   <% end %>
 </div>
 <hr class="mb-4">
