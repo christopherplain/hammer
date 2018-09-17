@@ -1,37 +1,44 @@
-<h2>Rack Config<small class="text-muted"> <%= @rack_config.sku %></small></h2>
+<h2>
+  <a class="text-body" href="#collapseRackConfig" data-toggle="collapse" aria-expanded="true" aria-controls="collapseRackConfig">
+    Rack Config
+  </a>
+  <small class="text-muted"> <%= @rack_config.sku %></small>
+</h2>
 
-<div class="row">
-  <div class="col-auto">
-    <table class="table table-borderless">
-      <tbody>
-        <tr>
-          <td><strong>SKU:</strong></td>
-          <td><%= @rack_config.sku %></td>
-        </tr>
-        <tr>
-          <td><strong>Created:</strong></td>
-          <td><%= @rack_config.created_at %></td>
-        </tr>
-        <tr>
-          <td><strong>Updated:</strong></td>
-          <td><%= @rack_config.updated_at %></td>
-        </tr>
-      </tbody>
-    </table>
+<div class="collapse show" id="collapseRackConfig">
+  <div class="row">
+    <div class="col-auto">
+      <table class="table table-borderless">
+        <tbody>
+          <tr>
+            <td><strong>SKU:</strong></td>
+            <td><%= @rack_config.sku %></td>
+          </tr>
+          <tr>
+            <td><strong>Created:</strong></td>
+            <td><%= @rack_config.created_at %></td>
+          </tr>
+          <tr>
+            <td><strong>Updated:</strong></td>
+            <td><%= @rack_config.updated_at %></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
+
+  <% if @rack_config.rack_components.first %>
+    <%= render "rack_configs/elevation" %>
+  <% else %>
+    <p class="lead">Please upload rack configuration CSV.</p>
+  <% end %>
+
+  <% if @rack_config.connections.where(connection_type: "network").first %>
+    <%= render "rack_configs/network" %>
+  <% end %>
+
+  <% if @rack_config.connections.where(connection_type: "network").first %>
+    <%= render "rack_configs/power" %>
+  <% end %>
 </div>
-
-<% if @rack_config.rack_components.first %>
-  <%= render "elevation" %>
-<% else %>
-  <p class="lead">Please upload rack configuration CSV.</p>
-<% end %>
-
-<% if @rack_config.connections.where(connection_type: "network").first %>
-  <%= render "network" %>
-<% end %>
-
-<% if @rack_config.connections.where(connection_type: "network").first %>
-  <%= render "power" %>
-<% end %>
 <hr class="mb-4">

@@ -1,7 +1,9 @@
 <div class="card mb-4">
   <div class="card-header">
-    <h3 href="#collapseElevation" data-toggle="collapse" aria-expanded="true" aria-controls="collapseElevation">
-      Elevation
+    <h3>
+      <a class="text-body" href="#collapseElevation" data-toggle="collapse" aria-expanded="true" aria-controls="collapseElevation">
+        Elevation
+      </a>
     </h3>
   </div>
 
@@ -32,8 +34,10 @@
       </div>
 
       <% ["front", "rear"].each do |orientation| %>
-        <h4 class="card-title" href="#collapse<%= orientation %>" data-toggle="collapse" aria-expanded="true" aria-controls="collapse<%= orientation %>">
-          <%= orientation.capitalize %>
+        <h4>
+          <a class="text-body" href="#collapse<%= orientation %>" data-toggle="collapse" aria-expanded="true" aria-controls="collapse<%= orientation %>">
+            <%= orientation.capitalize %>
+          </a>
         </h4>
 
         <div class="collapse show" id="collapse<%= orientation %>">

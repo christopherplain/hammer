@@ -1,6 +1,6 @@
 <h1><%= @build.customer.name %> Build</h1>
 
-<% if params[:build].has_key?(:asset_numbers_attributes) %>
+<% if params.has_key?(:build) %>
 
   <%= render 'asset_form' %>
 

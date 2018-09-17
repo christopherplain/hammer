@@ -1,6 +1,7 @@
 class BuildsController < ApplicationController
   before_action :set_build, only: [:show, :edit, :update, :destroy]
   before_action :set_customer, only: [:index, :show, :new, :edit, :create, :destroy]
+  before_action :set_rack_config, only: :show
 
   # GET /customers/1/builds
   # GET /customers/1/builds.json
@@ -76,6 +77,10 @@ class BuildsController < ApplicationController
   def set_customer
     @customer ||= Customer.find(params[:customer_id]) if params[:customer_id]
     @customer ||= @build.customer
+  end
+
+  def set_rack_config
+    @rack_config ||= @build.rack_config
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
