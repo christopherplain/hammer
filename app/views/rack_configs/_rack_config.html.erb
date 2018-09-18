@@ -4,6 +4,8 @@
   </a>
   <small class="text-muted"> <%= @rack_config.sku %></small>
 </h2>
+<%= link_to 'Edit', edit_rack_config_path(@rack_config), class: "text-body" %> |
+<%= link_to 'Import', edit_rack_config_path(@rack_config, import: true), class: "text-body" %>
 
 <div class="collapse show" id="collapseRackConfig">
   <div class="row">

@@ -37,22 +37,22 @@
 
               <tbody>
                 <% connections = @rack_config.connections.where(connection_group: group) %>
-                <% connections = connections.sort_by { |hash| @rack_config.rack_components.find(hash[:local_device_id]).u_location.to_i } %>
+                <% connections = connections.sort_by { |hash| @rack_config.rack_components.find(hash[:destination_device_id]).u_location.to_i } %>
                 <% connections.reverse.each do |connection| %>
-                  <% remote_device = connection.remote_device %>
-                  <% local_device = connection.local_device %>
-                  <% part = local_device.part %>
+                  <% source_device = connection.source_device %>
+                  <% destination_device = connection.destination_device %>
+                  <% part = destination_device.part %>
 
                   <tr>
-                    <td><%= local_device.u_location %></td>
+                    <td><%= destination_device.u_location %></td>
                     <td><%= part.part_number %></td>
                     <td><%= part.manufacturer %> <%= part.model %></td>
                     <% if type.eql?("power") %>
-                      <td><%= group + ":" + connection.remote_port %></td>
+                      <td><%= group + ":" + connection.source_port %></td>
                     <% else %>
-                      <td><%= "U" + remote_device.u_location + ":" + connection.remote_port %></td>
+                      <td><%= "U" + source_device.u_location + ":" + connection.source_port %></td>
                     <% end %>
-                    <td><%= "U" + local_device.u_location + ":" + connection.local_port %></td>
+                    <td><%= "U" + destination_device.u_location + ":" + connection.destination_port %></td>
                     <td><%= connection.cable_type %></td>
                     <td><%= connection.cable_length %></td>
                     <td><%= connection.cable_color %></td>
@@ -62,7 +62,7 @@
             </table>
           </div>
           <hr>
-          
+
         <% end %>
       </div>
     </div>

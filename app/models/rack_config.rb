@@ -17,7 +17,9 @@ class RackConfig
       RackComponent.update(row_hash, rack_config)
     end
 
-    # Create/update Connections.
+    # Create Connections.
+    rack_config.connections.destroy_all
+
     CSV.foreach(file.path, headers: true) do |row|
       row_hash = row.to_hash
 

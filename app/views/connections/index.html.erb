@@ -19,8 +19,8 @@
     <% @connections.each do |connection| %>
       <tr>
         <td><%= connection.connection_type %></td>
-        <td><%= connection.local_port %></td>
-        <td><%= connection.remote_port %></td>
+        <td><%= connection.destination_port %></td>
+        <td><%= connection.source_port %></td>
         <td><%= connection.cable_type %></td>
         <td><%= connection.cable_color %></td>
         <td><%= connection.cable_length %></td>
