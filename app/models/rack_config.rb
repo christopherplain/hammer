@@ -15,7 +15,7 @@ class RackConfig
     CSV.foreach(file.path, headers: true) do |row|
       row_hash = row.to_hash
 
-      RackComponent.update(row_hash, rack_config)
+      RackComponent.import(row_hash, rack_config)
     end
 
     # Create Connections.
@@ -25,7 +25,7 @@ class RackConfig
       row_hash = row.to_hash
 
       (1..100).each do |n|
-        connection = Connection.update(row_hash, rack_config, n)
+        connection = Connection.import(row_hash, rack_config, n)
         break if connection.nil?
       end
     end

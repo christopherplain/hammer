@@ -21,7 +21,7 @@ class RackComponent
     self.fields.keys.drop(3)
   end
 
-  def self.update(row_hash, rack_config)
+  def self.import(row_hash, rack_config)
     # Grab rack component data and search for existing RackComponent.
     rack_component_hash = row_hash.slice("id", *RackComponent.field_keys)
     rack_component = rack_config.rack_components.where(id: rack_component_hash["id"]).first

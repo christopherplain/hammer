@@ -27,7 +27,7 @@ class Connection
     self.fields.keys.drop(3)
   end
 
-  def self.update(row_hash, rack_config, n)
+  def self.import(row_hash, rack_config, n)
     # Grab connection data and return nil if no data.
     source_u = row_hash["source_u#{n}"]
     return nil if source_u.nil?

@@ -10,7 +10,11 @@
   <div class="collapse show" id="collapseNotes">
     <div class="card-body">
 
-      <%= markdown(instance_variable.notes) %>
+      <% if instance_variable.notes.blank? %>
+        <p class="lead">Please update notes.</p>
+      <% else %>
+        <%= markdown(instance_variable.notes) %>
+      <% end %>
       <hr>
     </div>
   </div>
