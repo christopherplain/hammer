@@ -3,6 +3,7 @@ class RackConfig
   include Mongoid::Document
   include Mongoid::Timestamps
   field :sku, type: String
+  field :notes, type: String
   embeds_many :rack_components
   embeds_many :connections
   has_many :builds

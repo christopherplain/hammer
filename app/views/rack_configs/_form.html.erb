@@ -1,84 +1,31 @@
-<% if @rack_config.new_record? %>
-  <%= form_with model: [@customer, @rack_config], local: true do |f| %>
-    <% if @rack_config.errors.any? %>
-      <div class="alert alert-danger">
-        <h2>This form contains <%= pluralize(@rack_config.errors.count, "error") %></h2>
+<%= form_with model: [@customer, @rack_config], local: true do |f| %>
 
-        <ul>
-        <% @rack_config.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-        </ul>
-      </div>
-    <% end %>
+  <% if @rack_config.errors.any? %>
+    <div class="alert alert-danger">
+      <h2>This form contains <%= pluralize(@rack_config.errors.count, "error") %></h2>
 
-    <div class="form-group">
-      <%= f.label "SKU"%>
-      <%= f.text_field :sku, class: "form-control" %>
+      <ul>
+      <% @rack_config.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
     </div>
-
-    <%= f.hidden_field :customer_id, value: @customer.id %>
-
-    <%= f.submit "Save", class: "btn btn-outline-primary" %>
-    <%= link_to "Cancel", :back, class: "btn btn-outline-secondary" %>
   <% end %>
 
-<% elsif @import %>
-  <%= form_with url: import_rack_config_path, local: true do |f| %>
-
-    <div class="form-group">
-      <%= f.file_field :file, class: "form-control-file" %>
-    </div>
-
-    <%= f.submit "Import", class: "btn btn-outline-success" %>
-    <%= link_to "Cancel", :back, class: "btn btn-outline-secondary" %>
-  <% end %>
-
-  <div class="row">
-    <div class="col-12 col-md-6">
-      <h3>Rack component ids</h3>
-
-      <table class="table table-bordered table-hover">
-        <thead>
-          <tr>
-            <th scope="col">U</th>
-            <th scope="col">ID</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <% @rack_components.each do |component| %>
-            <tr>
-              <td><%= component.u_location %></td>
-              <td><%= component.id %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
+  <div class="form-group">
+    <%= f.label :sku, "SKU" %>
+    <%= f.text_field :sku, class: "form-control" %>
   </div>
 
-<% else %>
-  <%= form_with model: @rack_config, local: true do |f| %>
-    <% if @rack_config.errors.any? %>
-      <div class="alert alert-danger">
-        <h2>This form contains <%= pluralize(@rack_config.errors.count, "error") %></h2>
+  <div class="form-group">
+    <%= f.label :notes, "Notes" %>
+    <%= f.text_area :notes, class: "form-control text-monospace", rows: "25" %>
+  </div>
 
-        <ul>
-        <% @rack_config.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-        </ul>
-      </div>
-    <% end %>
+  <%= f.submit "Save", class: "btn btn-primary" %>
+  <%= link_to "Cancel", :back, class: "btn btn-secondary" %>
 
-    <div class="form-group">
-      <%= f.label "SKU"%>
-      <%= f.text_field :sku, class: "form-control" %>
-    </div>
-
-    <%= f.submit "Update", class: "btn btn-outline-primary" %>
-    <%= link_to "Cancel", :back, class: "btn btn-outline-secondary" %>
-    <%= link_to 'Delete', rack_config, method: :delete, class: "btn btn-outline-danger", data: { confirm: "Are you sure? This action can't be undone!" } %>
+  <% if @customer.nil? %>
+    <%= link_to 'Delete', @rack_config, method: :delete, class: "btn btn-danger", data: { confirm: "Are you sure? This action can't be undone!" } %>
   <% end %>
 <% end %>

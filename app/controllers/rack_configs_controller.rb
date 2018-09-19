@@ -1,6 +1,6 @@
 class RackConfigsController < ApplicationController
   before_action :set_rack_config, only: [:import, :show, :edit, :update, :destroy]
-  before_action :set_customer, only: [:index, :show, :new, :edit, :create, :destroy]
+  before_action :set_customer, only: [:index, :show, :new, :create, :destroy]
 
   # GET /customers/1/rack_configs
   # GET /customers/1/rack_configs.json
@@ -35,6 +35,7 @@ class RackConfigsController < ApplicationController
   # POST /customers/1/rack_configs.json
   def create
     @rack_config = RackConfig.new(rack_config_params)
+    @rack_config.customer = @customer
 
     respond_to do |format|
       if @rack_config.save

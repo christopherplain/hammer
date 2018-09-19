@@ -1,0 +1,17 @@
+<div class="card mb-4">
+  <div class="card-header">
+    <h3>
+      <a class="text-body" href="#collapseNotes" data-toggle="collapse" aria-expanded="true" aria-controls="collapseNotes">
+        Notes
+      </a>
+    </h3>
+  </div>
+
+  <div class="collapse show" id="collapseNotes">
+    <div class="card-body">
+
+      <%= markdown(instance_variable.notes) %>
+      <hr>
+    </div>
+  </div>
+</div>

@@ -1,8 +1,14 @@
+<%= params.inspect %>
 <h1><%= @rack_config.customer.name %></h1>
+
 <% if @import %>
   <h2>Import CSV</h2>
 <% else %>
-  <h2>Edit rack config</h2>
+  <h2>
+    Rack Config
+    <small class="text-muted"> <%= @rack_config.sku %></small>
+  </h2>
+  <p class="lead">Please edit the rack config.</p>
 <% end %>
 
-<%= render 'form', rack_config: @rack_config %>
+<%= render 'form' %>
