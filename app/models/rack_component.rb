@@ -9,6 +9,7 @@ class RackComponent
   field :manufacturer, type: String
   field :model, type: String
   field :sku, type: String
+  field :hostname, type: String
   embedded_in :rack_config
 
   def self.field_keys
