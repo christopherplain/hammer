@@ -8,7 +8,6 @@
       <table class="table table-borderless">
         <thead>
           <tr>
-            <th scope="col">Part Number</th>
             <th scope="col">Manufacturer</th>
             <th scope="col">Model</th>
             <th scope="col">Description</th>
@@ -19,7 +18,6 @@
         <tbody>
           <% @parts.each do |part| %>
             <tr>
-              <td><%= part.part_number %></td>
               <td><%= part.manufacturer %></td>
               <td><%= part.model %></td>
               <td><%= part.description %></td>

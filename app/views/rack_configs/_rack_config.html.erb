@@ -4,82 +4,42 @@
   </a>
   <small class="text-muted"> <%= @rack_config.sku %></small>
 </h2>
-<%= link_to 'Edit', edit_rack_config_path(@rack_config), class: "text-body" %> |
 
-<!-- Button trigger modal -->
-<a class="text-body" href="#" data-toggle="modal" data-target="#importModal">Import</a>
+<div class="mb-3">
+  <%= link_to 'Edit', edit_rack_config_path(@rack_config), class: "text-body" %> |
 
-<!-- Modal -->
-<div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="importModalLabel">Import Rack Config</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <%= form_with url: import_rack_config_path, local: true do |f| %>
-        <div class="modal-body">
-          <div class="form-group">
-            <%= f.file_field :file, class: "form-control-file" %>
+  <!-- Button trigger modal -->
+  <a class="text-body" href="#" data-toggle="modal" data-target="#importModal">Import</a> |
+
+  <!-- Modal -->
+  <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="importModalLabel">Import Rack Config</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <%= form_with url: import_rack_config_path, local: true do |f| %>
+          <div class="modal-body">
+            <div class="form-group">
+              <%= f.file_field :file, class: "form-control-file" %>
+            </div>
           </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <%= f.submit "Import", class: "btn btn-success" %>
-        </div>
-      <% end %>
-
-      <div class="modal-body">
-        <h3>Rack Component IDs</h3>
-
-        <table class="table table-bordered table-hover">
-          <thead>
-            <tr>
-              <th scope="col">Row Order</th>
-              <th scope="col">U</th>
-              <th scope="col">ID</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            <% @rack_config.rack_components.each do |component| %>
-              <tr>
-                <td><%= component.row_order %></td>
-                <td><%= component.u_location %></td>
-                <td><%= component.id %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <%= f.submit "Import", class: "btn btn-success" %>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>
+
+  <%= link_to 'Export', rack_config_path(@rack_config, format: "csv"), class: "text-body" %>
 </div>
 
 <div class="collapse show" id="collapseRackConfig">
-  <div class="row">
-    <div class="col-auto">
-      <table class="table table-borderless">
-        <tbody>
-          <tr>
-            <td><strong>SKU:</strong></td>
-            <td><%= @rack_config.sku %></td>
-          </tr>
-          <tr>
-            <td><strong>Created:</strong></td>
-            <td><%= @rack_config.created_at %></td>
-          </tr>
-          <tr>
-            <td><strong>Updated:</strong></td>
-            <td><%= @rack_config.updated_at %></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
   <%= render "shared/notes", instance_variable: @rack_config if @rack_config.notes %>
 
   <% if @rack_config.rack_components.first %>

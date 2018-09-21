@@ -21,8 +21,7 @@
         <% rack = component.component_type.eql?("rack") %>
         <% label = "Rack" if rack %>
         <% label = "U#{component.u_location}
-            #{component.orientation.capitalize}
-            #{component.part.part_number}" unless rack %>
+            #{component.orientation.capitalize}" unless rack %>
         <%= asset_form.label :scanned_asset, label, class: "col-md-4 col-form-label font-weight-bold" %>
 
         <% if asset.validated? %>

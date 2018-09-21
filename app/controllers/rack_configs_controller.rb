@@ -17,6 +17,11 @@ class RackConfigsController < ApplicationController
   # GET /rack_configs/1
   # GET /rack_configs/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.csv { send_data @rack_config.export,
+        filename: "#{@rack_config.customer.name}_#{@rack_config.sku}.csv" }
+    end
   end
 
   # GET /customers/1/rack_configs/new

@@ -11,7 +11,7 @@ class Build
   accepts_nested_attributes_for :asset_numbers
   validates :build_type, :project_name, presence: true
 
-  BUILDTYPE = { Rack: "rack", Table: "table" }
+  BUILDTYPE = { Rack: "Rack", Table: "Table" }
 
   def self.field_keys
     self.fields.keys.drop(3)

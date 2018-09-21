@@ -21,7 +21,7 @@
   <% asset = @asset_numbers[:rack] %>
   <%= fields_for "asset_numbers[]", asset do |field| %>
     <div class="form-group row">
-      <%= field.label asset.rack_component.part.part_number, class: "col-sm-2 col-form-label" %>
+      <%= field.label :scanned_asset, "Rack", class: "col-sm-2 col-form-label" %>
       <div class="col-sm-10">
         <%= field.text_field :scanned_asset, class: "form-control" %>
       </div>
@@ -35,7 +35,7 @@
   <% front.each do |asset| %>
     <%= fields_for "asset_numbers[]", asset do |field| %>
       <div class="form-group row">
-        <%= field.label "U#{asset.rack_component.u_location} #{asset.rack_component.part.part_number}", class: "col-sm-2 col-form-label" %>
+        <%= field.label :scanned_asset, "U#{asset.rack_component.u_location}", class: "col-sm-2 col-form-label" %>
         <div class="col-sm-10">
           <%= field.text_field :scanned_asset, class: "form-control" %>
         </div>
@@ -50,7 +50,7 @@
   <% rear.each do |asset| %>
     <%= fields_for "asset_numbers[]", asset do |field| %>
       <div class="form-group row">
-        <%= field.label "U#{asset.rack_component.u_location} #{asset.rack_component.part.part_number}", class: "col-sm-2 col-form-label" %>
+        <%= field.label :scanned_asset, "U#{asset.rack_component.u_location}", class: "col-sm-2 col-form-label" %>
         <div class="col-sm-10">
           <%= field.text_field :scanned_asset, class: "form-control" %>
         </div>
@@ -65,7 +65,7 @@
   <% zero_u.each do |asset| %>
     <%= fields_for "asset_numbers[]", asset do |field| %>
       <div class="form-group row">
-        <%= field.label "#{asset.rack_component.orientation} #{asset.rack_component.part.part_number}", class: "col-sm-2 col-form-label" %>
+        <%= field.label :scanned_asset, "#{asset.rack_component.orientation}", class: "col-sm-2 col-form-label" %>
         <div class="col-sm-10">
           <%= field.text_field :scanned_asset, class: "form-control" %>
         </div>

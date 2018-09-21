@@ -4,7 +4,7 @@
   <% serial = @serial_numbers[:rack] %>
   <%= fields_for "serial_numbers[]", serial do |field| %>
     <div class="form-group">
-      <%= field.label serial.rack_component.part.part_number %>
+      <%= field.label :num, "Rack" %>
       <%= field.text_field :num, class: "form-control" %>
       <%= field.hidden_field :rack_component_id, value: serial.rack_component_id %>
     </div>
@@ -15,7 +15,7 @@
   <% front.each do |serial| %>
     <%= fields_for "serial_numbers[]", serial do |field| %>
       <div class="form-group">
-        <%= field.label "U#{serial.rack_component.u_location} #{serial.rack_component.part.part_number}" %>
+        <%= field.label :num, "U#{serial.rack_component.u_location}" %>
         <%= field.text_field :num, class: "form-control" %>
         <%= field.hidden_field :rack_component_id, value: serial.rack_component_id %>
       </div>
@@ -27,7 +27,7 @@
   <% rear.each do |serial| %>
     <%= fields_for "serial_numbers[]", serial do |field| %>
       <div class="form-group">
-        <%= field.label "U#{serial.rack_component.u_location} #{serial.rack_component.part.part_number}" %>
+        <%= field.label :num, "U#{serial.rack_component.u_location}" %>
         <%= field.text_field :num, class: "form-control" %>
         <%= field.hidden_field :rack_component_id, value: serial.rack_component_id %>
       </div>
@@ -39,7 +39,7 @@
   <% zero_u.each do |serial| %>
     <%= fields_for "serial_numbers[]", serial do |field| %>
       <div class="form-group">
-        <%= field.label "#{serial.rack_component.orientation} #{serial.rack_component.part.part_number}" %>
+        <%= field.label :num, "#{serial.rack_component.orientation}" %>
         <%= field.text_field :num, class: "form-control" %>
         <%= field.hidden_field :rack_component_id, value: serial.rack_component_id %>
       </div>

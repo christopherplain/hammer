@@ -1,18 +1,18 @@
-<% connection_types = @rack_config.connections.distinct(:connection_type) %>
+<% connection_types = @rack_config.connections.distinct(:group_type) %>
 <% connection_types.sort.each do |type| %>
   <div class="card mb-4">
     <div class="card-header">
       <h3>
         <a class="text-body" href="#collapse<%= type.titlecase.delete(" ") %>" data-toggle="collapse" aria-expanded="true" aria-controls="collapse<%= type.titlecase.delete(" ") %>">
-          <%= type.titlecase %>
+          <%= Connection.humanize_type(type).titlecase %>
         </a>
       </h3>
     </div>
 
     <div class="collapse show" id="collapse<%= type.titlecase.delete(" ") %>">
       <div class="card-body">
-        <% connections = @rack_config.connections.where(connection_type: type) %>
-        <% connection_groups = connections.distinct(:connection_group) %>
+        <% connections = @rack_config.connections.where(group_type: type) %>
+        <% connection_groups = connections.distinct(:group_name) %>
         <% connection_groups.each do |group| %>
           <h4 class="card-title">
             <a class="text-body" href="#collapse<%= group.titlecase.delete(" ") %>" data-toggle="collapse" aria-expanded="true" aria-controls="collapse<%= group.titlecase.delete(" ") %>">
@@ -25,8 +25,8 @@
               <thead>
                 <tr>
                   <th scope="col">U</th>
-                  <th scope="col">Part Number</th>
-                  <th scope="col">Manufacturer/Model</th>
+                  <th scope="col">Manufacturer</th>
+                  <th scope="col">Model</th>
                   <th scope="col">Source Port</th>
                   <th scope="col">Destination Port</th>
                   <th scope="col">Type</th>
@@ -36,17 +36,17 @@
               </thead>
 
               <tbody>
-                <% connections = @rack_config.connections.where(connection_group: group) %>
+                <% connections = @rack_config.connections.where(group_name: group) %>
                 <% connections = connections.sort_by { |hash| @rack_config.rack_components.find(hash[:destination_device_id]).u_location.to_i } %>
                 <% connections.reverse.each do |connection| %>
                   <% source_device = connection.source_device %>
                   <% destination_device = connection.destination_device %>
-                  <% part = destination_device.part %>
+                  <% component = @rack_config.rack_components.where(id: connection.destination_device_id).first %>
 
                   <tr>
                     <td><%= destination_device.u_location %></td>
-                    <td><%= part.part_number %></td>
-                    <td><%= part.manufacturer %> <%= part.model %></td>
+                    <td><%= component.manufacturer %></td>
+                    <td><%= component.model %></td>
                     <% if type.eql?("power") %>
                       <td><%= group + ":" + connection.source_port %></td>
                     <% else %>
@@ -64,6 +64,8 @@
           <hr>
 
         <% end %>
+        <%= link_to "Top", "#top", class: "text-body" %>
+
       </div>
     </div>
   </div>
