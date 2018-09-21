@@ -7,6 +7,7 @@ class Connection
   field :group_name, type: String
   field :source_port, type: String
   field :destination_port, type: String
+  field :transceiver, type: String
   field :cable_type, type: String
   field :cable_color, type: String
   field :cable_length, type: String
