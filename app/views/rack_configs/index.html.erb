@@ -1,29 +1,8 @@
 <h1><%= @customer.name %></h1>
 
-<h2>Rack Configs</h2>
+<div class="mb-3">
+  <%= link_to 'New »', new_customer_rack_config_path(@customer), class: "text-body" %>
+</div>
 
-<% if @rack_configs.first %>
-  <div class="row">
-    <div class="col-12">
-      <table class="table table-borderless table-hover">
-        <thead>
-          <tr>
-            <th scope="col">SKU</th>
-            <th scope="col">Updated</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <% @rack_configs.each do |rack_config| %>
-            <tr>
-              <td><%= link_to rack_config.sku, rack_config %></td>
-              <td><%= rack_config.updated_at %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
-  </div>
-<% end %>
-
-<%= link_to 'New', new_customer_rack_config_path(@customer), class: "btn btn-outline-primary col-12 col-sm-auto" %>
+<%= render "shared/rack_configs" %>
+<hr class="mb-4">

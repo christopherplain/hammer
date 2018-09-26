@@ -1,33 +1,8 @@
 <h1><%= @customer.name %></h1>
 
-<h2>Builds</h2>
+<div class="mb-3">
+  <%= link_to 'New »', new_customer_build_path(@customer), class: "text-body" %>
+</div>
 
-<% if @builds.first %>
-  <div class="row">
-    <div class="col-12">
-      <table class="table table-borderless table-hover">
-        <thead>
-          <tr>
-            <th scope="col">Project name</th>
-            <th scope="col">Project reference</th>
-            <th scope="col">Build type</th>
-            <th scope="col">Updated</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <% @builds.each do |build| %>
-            <tr>
-              <td><%= link_to build.project_name, build %></td>
-              <td><%= build.project_reference %></td>
-              <td><%= build.build_type %></td>
-              <td><%= build.updated_at %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
-  </div>
-<% end %>
-
-<%= link_to 'New', new_customer_build_path(@customer), class: "btn btn-outline-primary col-12 col-sm-auto" %>
+<%= render "shared/builds" %>
+<hr class="mb-4">

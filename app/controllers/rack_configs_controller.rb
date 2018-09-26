@@ -20,7 +20,7 @@ class RackConfigsController < ApplicationController
     respond_to do |format|
       format.html
       format.csv { send_data @rack_config.export,
-        filename: "#{@rack_config.customer.name}_#{@rack_config.sku}.csv" }
+        filename: "#{@rack_config.customer.name}_RackConfig_#{@rack_config.sku}.csv" }
     end
   end
 

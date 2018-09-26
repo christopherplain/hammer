@@ -1,5 +1,8 @@
 <% connection_types = @rack_config.connections.distinct(:group_type) %>
-<% connection_types.sort.each do |type| %>
+<% connection_types = connection_types.sort_by { |t|
+  t == "net" ? 1 : t == "misc" ? 2 : t == "stor" ? 3 : 4
+} %>
+<% connection_types.each do |type| %>
   <div class="card mb-4">
     <div class="card-header">
       <h3>
@@ -38,22 +41,29 @@
 
               <tbody>
                 <% connections = @rack_config.connections.where(group_name: group) %>
-                <% connections = connections.sort_by { |hash| @rack_config.rack_components.find(hash[:destination_device_id]).u_location.to_i } %>
-                <% connections.reverse.each do |connection| %>
+                <% connections = connections.sort_by { |c| [
+                  -c.row_order.to_i,
+                  c.source_port.split("/")[0].to_i,
+                  c.source_port.split("/")[1].to_i
+                ] } %>
+                <% connections.each do |connection| %>
                   <% source_device = connection.source_device %>
                   <% destination_device = connection.destination_device %>
-                  <% component = @rack_config.rack_components.where(id: connection.destination_device_id).first %>
 
                   <tr>
                     <td><%= destination_device.u_location %></td>
-                    <td><%= component.manufacturer %></td>
-                    <td><%= component.model %></td>
-                    <% if type.eql?("power") %>
-                      <td><%= group + ":" + connection.source_port %></td>
+                    <td><%= destination_device.manufacturer %></td>
+                    <td><%= destination_device.model %></td>
+                    <% if type.eql?("pwr") %>
+                      <td><%= "#{source_device.hostname}:#{connection.source_port}" %></td>
                     <% else %>
-                      <td><%= "U" + source_device.u_location + ":" + connection.source_port %></td>
+                      <td><%= "U#{source_device.u_location}:#{connection.source_port}" %></td>
                     <% end %>
-                    <td><%= "U" + destination_device.u_location + ":" + connection.destination_port %></td>
+                    <% if destination_device.u_location.start_with?(/^\d/) %>
+                      <td><%= "U#{destination_device.u_location}:#{connection.destination_port}" %></td>
+                    <% else %>
+                      <td><%= "#{destination_device.u_location}:#{connection.destination_port}" %></td>
+                    <% end %>
                     <td><%= connection.transceiver %></td>
                     <td><%= connection.cable_type %></td>
                     <td><%= connection.cable_length %></td>
@@ -66,7 +76,7 @@
           <hr>
 
         <% end %>
-        <%= link_to "Top", "#top", class: "text-body" %>
+        <%= link_to "Top »", "#top", class: "text-body" %>
 
       </div>
     </div>

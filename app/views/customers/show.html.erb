@@ -1,74 +1,10 @@
 <h1><%= @customer.name %></h1>
 
-<h2><%= link_to 'Builds', customer_builds_path(@customer) %></h2>
-<div class="row">
-  <div class="col-12">
-    <table class="table table-borderless table-hover">
-      <thead>
-        <tr>
-          <th scope="col">Project name</th>
-          <th scope="col">Project reference</th>
-          <th scope="col">Build type</th>
-          <th scope="col">Updated</th>
-        </tr>
-      </thead>
-
-      <% if @builds.first %>
-        <tbody>
-          <% @builds.each do |build| %>
-            <tr>
-              <td><%= link_to build.project_name, build %></td>
-              <td><%= build.project_reference %></td>
-              <td><%= build.build_type %></td>
-              <td><%= build.updated_at %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      <% end %>
-    </table>
-  </div>
+<div class="mb-3">
+  <%= link_to 'Edit »', edit_customer_path(@customer), class: "text-body" %>
 </div>
 
-<h2><%= link_to 'Rack configs', customer_rack_configs_path(@customer) %></h2>
-<div class="row">
-  <div class="col-12">
-    <table class="table table-borderless table-hover">
-      <thead>
-        <tr>
-          <th scope="col">SKU</th>
-          <th scope="col">Updated</th>
-        </tr>
-      </thead>
+<%= render "shared/builds" %>
 
-      <% if @rack_configs.first %>
-        <tbody>
-          <% @rack_configs.each do |rack_config| %>
-            <tr>
-              <td><%= link_to rack_config.sku, rack_config %></td>
-              <td><%= rack_config.updated_at %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      <% end %>
-    </table>
-  </div>
-</div>
-
-<% if false %>
-  <h2>Switch Configs</h2>
-<% end %>
-
-<% if false %>
-  <h2>Server Configs</h2>
-<% end %>
-
-<% if false %>
-  <h2>Storage Configs</h2>
-<% end %>
-
-<% if false %>
-  <h2>PDU Configs</h2>
-<% end %>
-
-<%= link_to 'Edit', edit_customer_path(@customer), class: "btn btn-outline-primary" %>
-<%= link_to 'Back', customers_path, class: "btn btn-outline-secondary" %>
+<%= render "shared/rack_configs" %>
+<hr class="mb-4">

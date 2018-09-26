@@ -1,26 +1,31 @@
 <h1>Customers</h1>
 
-<% if @customers.first %>
-  <div class="row">
-    <div class="col-12">
-      <table class="table table-borderless table-hover">
-        <thead>
-          <tr>
-            <th scope="col">Name</th>
-          </tr>
-        </thead>
+<div class="mb-3">
+  <%= link_to 'New »', new_customer_path, class: "text-body" %>
+</div>
 
-        <tbody>
-          <% customers = @customers.sort_by { |hash| hash[:name] } %>
-          <% customers.each do |customer| %>
+<div class="card mb-4">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-auto">
+        <table class="table table-borderless table-hover">
+          <thead>
             <tr>
-              <td><%= link_to customer.name, customer %></td>
+              <th scope="col">Name</th>
             </tr>
-          <% end %>
-        </tbody>
-      </table>
+          </thead>
+
+          <tbody>
+            <% customers = @customers.sort_by { |hash| hash[:name] } %>
+            <% customers.each do |customer| %>
+              <tr>
+                <td><%= link_to customer.name, customer %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-<% end %>
-
-<%= link_to 'New', new_customer_path, class: "btn btn-outline-primary col-12 col-sm-auto" %>
+</div>
+<hr class="mb-4">

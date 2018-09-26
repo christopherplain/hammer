@@ -52,7 +52,7 @@ class RackConfig
         row_hash = {}
         row_hash.merge!(component.attributes)
 
-        connections = self.connections.where(row_order: component["row_order"])
+        connections = self.connections.where(destination_device_id: component["id"])
         connections.each do |connection|
           connection_hash = connection.attributes
           source_device = connection.source_device

@@ -1,0 +1,34 @@
+<div class="card mb-4">
+  <div class="card-header">
+    <h2>Rack Configs</h2>
+    <% if current_page?(customer_path(@customer)) %>
+      <%= link_to 'All »', customer_rack_configs_path(@customer), class: "text-body" %>
+    <% end %>
+  </div>
+
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12">
+        <table class="table table-borderless table-hover">
+          <thead>
+            <tr>
+              <th scope="col">SKU</th>
+              <th scope="col">Updated</th>
+            </tr>
+          </thead>
+
+          <% if @rack_configs.first %>
+            <tbody>
+              <% @rack_configs.each do |rack_config| %>
+                <tr>
+                  <td><%= link_to rack_config.sku, rack_config %></td>
+                  <td><%= rack_config.updated_at %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          <% end %>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

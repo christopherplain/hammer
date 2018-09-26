@@ -54,7 +54,11 @@ class Connection
     connections.each do |connection|
       prefixes << "#{connection.group_type}_#{connection.group_num}"
     end
-    prefixes.uniq!
+    prefixes = prefixes.uniq.sort_by { |p|
+      p.start_with?("net") ? "1#{p.split('_')[1]}" :
+      p.start_with?("misc") ? "2#{p.split('_')[1]}" :
+      p.start_with?("stor") ? "3#{p.split('_')[1]}" : "4#{p.split('_')[1]}"
+    }
 
     prefixed_keys = []
     prefixes.each do |prefix|
@@ -75,13 +79,12 @@ class Connection
       destination_orientation = row_hash["orientation"]
       destination = rack_config.rack_components.where(u_location: destination_u, orientation: destination_orientation).first
 
-      row_order = row_hash["row_order"]
       group_type = prefix.split("_")[0]
       group_num = prefix.split("_")[1]
 
       connection_keys = self.field_keys.map { |key| "#{prefix}-#{key}" }
       connection_hash = row_hash.slice(*connection_keys).transform_keys { |key| key.split("-")[1] }
-      connection_hash[:row_order] = row_order
+      connection_hash[:row_order] = destination_u
       connection_hash[:group_type] = group_type
       connection_hash[:group_num] = group_num
       connection_hash[:destination_device_id] = destination.id

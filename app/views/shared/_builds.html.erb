@@ -1,0 +1,38 @@
+<div class="card mb-4">
+  <div class="card-header">
+    <h2>Builds</h2>
+    <% if current_page?(customer_path(@customer)) %>
+      <%= link_to 'All »', customer_builds_path(@customer), class: "text-body" %>
+    <% end %>
+  </div>
+
+  <div class="card-body">
+    <div class="row">
+      <div class="col-12">
+        <table class="table table-borderless table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Project name</th>
+              <th scope="col">Project reference</th>
+              <th scope="col">Build type</th>
+              <th scope="col">Updated</th>
+            </tr>
+          </thead>
+
+          <% if @builds.first %>
+            <tbody>
+              <% @builds.each do |build| %>
+                <tr>
+                  <td><%= link_to build.project_name, build %></td>
+                  <td><%= build.project_reference %></td>
+                  <td><%= build.build_type %></td>
+                  <td><%= build.updated_at %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          <% end %>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
