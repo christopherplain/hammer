@@ -4,18 +4,18 @@ class RackConfig
   include Mongoid::Timestamps
   field :sku, type: String
   field :notes, type: String
-  embeds_many :rack_components
+  embeds_many :components, as: :component_part
   embeds_many :connections
   has_many :builds
   belongs_to :customer
   validates :sku, presence: true
 
   def self.import(file, rack_config)
-    # Create/update RackComponents.
+    # Create/update Components.
     CSV.foreach(file.path, headers: true) do |row|
       row_hash = row.to_hash
 
-      RackComponent.import(row_hash, rack_config)
+      Component.import(row_hash, rack_config)
     end
 
     # Create Connections.
@@ -44,10 +44,10 @@ class RackConfig
   def export
     CSV.generate(headers: true) do |csv|
       connection_keys = Connection.csv_keys(self)
-      headers = ["_id", *RackComponent.field_keys, *connection_keys]
+      headers = ["_id", *Component.field_keys, *connection_keys]
       csv << headers
 
-      components = self.rack_components.order(row_order: :asc)
+      components = self.components.order(row_order: :asc)
       components.each do |component|
         row_hash = {}
         row_hash.merge!(component.attributes)

@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>U location:</strong>
+  <%= @component.u_location %>
+</p>
+
+<p>
+  <strong>Orientation:</strong>
+  <%= @component.orientation %>
+</p>
+
+<p>
+  <strong>SKU:</strong>
+  <%= @component.sku %>
+</p>
+
+<%= link_to 'Edit', edit_component_path(@component) %> |
+<%= link_to 'Back', components_path %>

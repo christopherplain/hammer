@@ -32,8 +32,8 @@ class RackConfigsController < ApplicationController
   # GET /rack_configs/1/edit
   def edit
     @import = params[:import]
-    @rack_components = @rack_config.rack_components.all
-    @rack_components.order(row_order: :desc)
+    @components = @rack_config.components.all
+    @components.order(row_order: :desc)
   end
 
   # POST /customers/1/rack_configs

@@ -17,7 +17,7 @@
     <%= f.fields_for :asset_numbers, asset do |asset_form| %>
       <%= asset_form.hidden_field :id, value: asset.id %>
       <div class="form-group row">
-        <% component = asset.rack_component %>
+        <% component = asset.component %>
         <% rack = component.component_type.eql?("rack") %>
         <% label = "Rack" if rack %>
         <% label = "U#{component.u_location}

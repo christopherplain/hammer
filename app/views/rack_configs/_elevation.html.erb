@@ -9,7 +9,7 @@
 
   <div class="collapse show" id="collapseElevation">
     <div class="card-body">
-      <% rack = @rack_config.rack_components.where(component_type: "Rack").first %>
+      <% rack = @rack_config.components.where(component_type: "Rack").first %>
       <% rack_u = rack.u_size.to_i %>
 
       <h4 class="card-title">Rack</h4>
@@ -66,7 +66,7 @@
             <tbody>
               <% u_array = [] %>
               <% (rack_u).downto(1) do |u| %>
-                <% component = @rack_config.rack_components.where(u_location: u, orientation: orientation).first %>
+                <% component = @rack_config.components.where(u_location: u, orientation: orientation).first %>
                 <% u_array.push(u) %>
 
                 <% unless component.u_size.nil? %>
@@ -94,7 +94,7 @@
                 <% end %>
               <% end %>
 
-              <% zero_u_components = @rack_config.rack_components.where(u_location: /^0/, orientation: /^#{orientation}/) %>
+              <% zero_u_components = @rack_config.components.where(u_location: /^0/, orientation: /^#{orientation}/) %>
               <% zero_u_components.each do |component| %>
                 <% unless component.nil? %>
                   <tr>

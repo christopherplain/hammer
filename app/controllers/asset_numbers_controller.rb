@@ -80,6 +80,6 @@ class AssetNumbersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def asset_number_params
-      params.require(:asset_number).permit(:id, :expected_asset, :scanned_asset, :rack_component_id)
+      params.require(:asset_number).permit(:id, :expected_asset, :scanned_asset, :component_id)
     end
 end

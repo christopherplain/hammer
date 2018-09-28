@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe "rack_components/show", type: :view do
+RSpec.describe "components/show", type: :view do
   before(:each) do
-    @rack_component = assign(:rack_component, RackComponent.create!(
+    @component = assign(:component, Component.create!(
       :u_location => 2,
       :orientation => "Orientation",
       :part_number => "Part Number",

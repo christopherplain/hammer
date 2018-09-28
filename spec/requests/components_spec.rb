@@ -1,9 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe "RackComponents", type: :request do
-  describe "GET /rack_components" do
+RSpec.describe "Components", type: :request do
+  describe "GET /components" do
     it "works! (now write some real specs)" do
-      get rack_components_path
+      get components_path
       expect(response).to have_http_status(200)
     end
   end

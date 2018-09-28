@@ -34,7 +34,7 @@ class SerialNumbersController < ApplicationController
       serial_number = @build.serial_numbers.build(sn_params)
 
         if serial_number.save!
-          old_serials.where(rack_component_id: serial_number.rack_component.id).destroy
+          old_serials.where(component_id: serial_number.component.id).destroy
         else
           format.html { render :new }
           format.json { render json: serial_number.errors, status: :unprocessable_entity }

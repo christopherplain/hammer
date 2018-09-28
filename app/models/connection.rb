@@ -13,16 +13,16 @@ class Connection
   field :cable_length, type: String
   embedded_in :rack_config
 
-  # Create manual relations to RackComponent
+  # Create manual relations to Component
   field :source_device_id, type: BSON::ObjectId
   field :destination_device_id, type: BSON::ObjectId
 
   def source_device
-    rack_config.rack_components.find(self.source_device_id) if source_device_id
+    rack_config.components.find(self.source_device_id) if source_device_id
   end
 
   def destination_device
-    rack_config.rack_components.find(self.destination_device_id) if destination_device_id
+    rack_config.components.find(self.destination_device_id) if destination_device_id
   end
 
   def self.humanize_type(group_type)
@@ -73,11 +73,11 @@ class Connection
       source_u = row_hash["#{prefix}-source_u"]
       next if source_u.nil?
       source_orientation = row_hash["#{prefix}-source_orientation"]
-      source = rack_config.rack_components.where(u_location: source_u, orientation: source_orientation).first
+      source = rack_config.components.where(u_location: source_u, orientation: source_orientation).first
 
       destination_u = row_hash["u_location"]
       destination_orientation = row_hash["orientation"]
-      destination = rack_config.rack_components.where(u_location: destination_u, orientation: destination_orientation).first
+      destination = rack_config.components.where(u_location: destination_u, orientation: destination_orientation).first
 
       group_type = prefix.split("_")[0]
       group_num = prefix.split("_")[1]

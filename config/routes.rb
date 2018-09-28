@@ -19,7 +19,7 @@ Rails.application.routes.draw do
 
   resources :rack_configs, only: [], shallow: true do
     resources :connections
-    resources :rack_components
+    resources :components
   end
   post 'rack_configs/:id/import(.:format)', to: 'rack_configs#import', as: 'import_rack_config'
 

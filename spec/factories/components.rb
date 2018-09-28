@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :rack_component do
+  factory :component do
     u_location 1
     orientation "MyString"
     part_number "MyString"

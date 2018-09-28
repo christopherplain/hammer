@@ -1,10 +1,10 @@
-<%= form_with(model: rack_component, local: true) do |form| %>
-  <% if rack_component.errors.any? %>
+<%= form_with(model: component, local: true) do |form| %>
+  <% if component.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(rack_component.errors.count, "error") %> prohibited this rack_component from being saved:</h2>
+      <h2><%= pluralize(component.errors.count, "error") %> prohibited this component from being saved:</h2>
 
       <ul>
-      <% rack_component.errors.full_messages.each do |message| %>
+      <% component.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
       </ul>
