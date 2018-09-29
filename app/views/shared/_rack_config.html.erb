@@ -43,11 +43,11 @@
   <%= render "shared/notes", instance_variable: @rack_config if @rack_config.notes %>
 
   <% if @rack_config.components.first %>
-    <%= render "rack_configs/elevation" %>
+    <%= render "shared/elevation" %>
   <% else %>
     <p class="lead">Please upload rack configuration CSV.</p>
   <% end %>
 
-  <%= render "rack_configs/connection" if @rack_config.connections.first %>
+  <%= render "shared/connection" if @rack_config.connections.first %>
 </div>
 <hr class="mb-4">
