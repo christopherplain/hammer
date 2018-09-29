@@ -1,58 +1,23 @@
 <h1><%= @customer.name %></h1>
 <h2>Build <small class="text-muted"><%= @build.project_name %></small></h2>
-<%= link_to 'Edit', edit_build_path(@build), class: "text-body" %>
 
-<div class="row">
-  <div class="col-auto">
-    <table class="table table-borderless">
-      <tbody>
-        <tr>
-          <td><strong>Project name:</strong></td>
-          <td><%= @build.project_name %></td>
-        </tr>
-        <tr>
-          <td><strong>Project reference:</strong></td>
-          <td><%= @build.project_reference %></td>
-        </tr>
-        <tr>
-          <td><strong>Build type:</strong></td>
-          <td><%= @build.build_type %></td>
-        </tr>
-        <tr>
-          <td><strong>Updated:</strong></td>
-          <td><%= @build.updated_at %></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-<hr class="mb-4">
+<div class="mb-3">
+  <%= link_to 'Edit', edit_build_path(@build), class: "text-body" %> |
 
-<%= render "rack_configs/rack_config" if @build.rack_config %>
-
-<h2>
-  <a class="text-body" href="#collapseScan" data-toggle="collapse" aria-expanded="true" aria-controls="collapseScan">
-    Scan
-  </a>
-</h2>
-
-<div class="collapse show" id="collapseScan">
   <!-- Button trigger modal -->
-  <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#importModal">
-    Import Assets
-  </button>
+  <a class="text-body" href="#" data-toggle="modal" data-target="#importModal">Import</a> |
 
   <!-- Modal -->
   <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="importModalLabel">Import asset numbers</h5>
+          <h5 class="modal-title" id="importModalLabel">Import Build</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <%= form_with url: import_build_asset_numbers_path(@build), local: true do |f| %>
+        <%= form_with url: import_build_path, local: true do |f| %>
           <div class="modal-body">
             <div class="form-group">
               <%= f.file_field :file, class: "form-control-file" %>
@@ -60,17 +25,17 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <%= f.submit "Import", class: "btn btn-outline-success" %>
+            <%= f.submit "Import", class: "btn btn-success" %>
           </div>
         <% end %>
       </div>
     </div>
   </div>
 
-  <%= link_to 'Assets', edit_build_path(@build, build: { asset_numbers_attributes: true }), class: "btn btn-outline-primary" %>
-  <%= link_to 'Serials', new_build_serial_number_path(@build), class: "btn btn-outline-primary" %>
+  <%= link_to 'Export', build_path(@build, format: "csv"), class: "text-body" %>
 </div>
+
+<%= render "scan" %>
 <hr class="mb=4">
 
-<%= link_to 'Edit', edit_build_path(@build), class: "btn btn-outline-primary" %>
-<%= link_to 'Back', customer_builds_path(@customer), class: "btn btn-outline-secondary" %>
+<%= render "rack_configs/rack_config" if @build.rack_config %>

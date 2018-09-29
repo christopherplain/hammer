@@ -17,11 +17,11 @@
   </div>
 
   <% if @customer.new_record? %>
-    <%= f.submit "Save", class: "btn btn-outline-primary" %>
-    <%= link_to "Cancel", :back, class: "btn btn-outline-secondary" %>
+    <%= f.submit "Save", class: "btn btn-primary" %>
+    <%= link_to "Cancel", :back, class: "btn btn-secondary" %>
   <% else %>
-    <%= f.submit "Update", class: "btn btn-outline-primary" %>
-    <%= link_to "Cancel", :back, class: "btn btn-outline-secondary" %>
-    <%= link_to 'Delete', customer, method: :delete, class: "btn btn-outline-danger", data: { confirm: "Are you sure? This action can't be undone!" } %>
+    <%= f.submit "Update", class: "btn btn-primary" %>
+    <%= link_to "Cancel", :back, class: "btn btn-secondary" %>
+    <%= link_to 'Delete', customer, method: :delete, class: "btn btn-danger", data: { confirm: "Are you sure? This action can't be undone!" } %>
   <% end %>
 <% end %>

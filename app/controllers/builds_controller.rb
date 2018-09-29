@@ -1,5 +1,5 @@
 class BuildsController < ApplicationController
-  before_action :set_build, only: [:show, :edit, :update, :destroy]
+  before_action :set_build, only: [:import, :show, :edit, :update, :destroy]
   before_action :set_customer, only: [:index, :show, :new, :edit, :create, :destroy]
   before_action :set_rack_config, only: :show
 
@@ -7,6 +7,12 @@ class BuildsController < ApplicationController
   # GET /customers/1/builds.json
   def index
     @builds = @customer.builds.order(project_name: :asc)
+  end
+
+  # POST /builds/1/import
+  def import
+    Build.import(params[:file], @build)
+    redirect_to build_path(@build), flash: { success: "Build successfully imported." }
   end
 
   # GET /builds/1
@@ -42,13 +48,8 @@ class BuildsController < ApplicationController
   # PATCH/PUT /builds/1
   # PATCH/PUT /builds/1.json
   def update
-    asset = (build_params.has_key?(:asset_numbers_attributes)) ? true : nil
-
     respond_to do |format|
-      if @build.update_attributes(build_params) && asset
-        format.html { render :edit }
-        format.json { render :show, status: :ok, location: @build }
-      elsif @build.update_attributes(build_params)
+      if @build.update_attributes(build_params)
         format.html { redirect_to @build, flash: { success: 'Build was successfully updated.' } }
         format.json { render :show, status: :ok, location: @build }
       else
@@ -69,23 +70,26 @@ class BuildsController < ApplicationController
   end
 
   private
-  # Use callbacks to share common setup or constraints between actions.
-  def set_build
-    @build ||= Build.find(params[:id])
-  end
+    # Use callbacks to share common setup or constraints between actions.
+    def set_build
+      @build ||= Build.find(params[:id])
+    end
 
-  def set_customer
-    @customer ||= Customer.find(params[:customer_id]) if params[:customer_id]
-    @customer ||= @build.customer
-  end
+    def set_customer
+      @customer ||= Customer.find(params[:customer_id]) if params[:customer_id]
+      @customer ||= @build.customer
+    end
 
-  def set_rack_config
-    @rack_config ||= @build.rack_config
-  end
+    def set_rack_config
+      @rack_config ||= @build.rack_config
+    end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
-  def build_params
-    params.require(:build).permit(*Build.field_keys,
-       asset_numbers_attributes: [:id, :scanned_asset])
-  end
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def build_params
+      params.require(:build).permit(
+        *Build.field_keys,
+        asset_numbers_attributes: [:id, :scanned_asset],
+        serial_numbers_attributes: [:id, :serial]
+      )
+    end
 end

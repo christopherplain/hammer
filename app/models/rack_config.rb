@@ -10,12 +10,17 @@ class RackConfig
   belongs_to :customer
   validates :sku, presence: true
 
+  def self.field_keys
+    self.fields.keys.drop(3)
+  end
+
   def self.import(file, rack_config)
     # Create/update Components.
     CSV.foreach(file.path, headers: true) do |row|
       row_hash = row.to_hash
+      rack_component = row_hash["allocation"].eql? "Rack"
 
-      Component.import(row_hash, rack_config)
+      Component.import(row_hash, rack_config) if rack_component
     end
 
     # Create Connections.
@@ -32,13 +37,10 @@ class RackConfig
 
     CSV.foreach(file.path, headers: true) do |row|
       row_hash = row.to_hash
+      rack_component = row_hash["allocation"].eql? "Rack"
 
-      Connection.import(row_hash, rack_config, prefixes)
+      Connection.import(row_hash, rack_config, prefixes) if rack_component
     end
-  end
-
-  def self.field_keys
-    self.fields.keys.drop(3)
   end
 
   def export

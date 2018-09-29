@@ -54,7 +54,7 @@
                     <td><%= destination_device.u_location %></td>
                     <td><%= destination_device.manufacturer %></td>
                     <td><%= destination_device.model %></td>
-                    <% if type.eql?("pwr") %>
+                    <% if type.eql? "pwr" %>
                       <td><%= "#{source_device.hostname}:#{connection.source_port}" %></td>
                     <% else %>
                       <td><%= "U#{source_device.u_location}:#{connection.source_port}" %></td>

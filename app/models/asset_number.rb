@@ -12,7 +12,9 @@ class AssetNumber
   field :component_id, type: BSON::ObjectId
 
   def component
-    build.rack_config.components.find(self.component_id) if self.component_id
+    rack_component = build.rack_config.components.where(id: self.component_id).first
+    return rack_component if rack_component
+    return build.components.where(id: self.component_id).first
   end
 
   def self.field_keys
@@ -26,22 +28,19 @@ class AssetNumber
   end
 
   def validated?
-    self.scanned_asset.eql?(self.expected_asset)
+    self.scanned_asset.eql? self.expected_asset
   end
 
   # Import asset numbers from CSV
-  def self.import(file, build)
-    CSV.foreach(file.path, headers: true) do |row|
-      row_hash = row.to_hash
+  def self.import(row_hash, build)
+    # Grab asset number data and search for existing AssetNumber.
+    asset_hash = row_hash.slice(*AssetNumber.field_keys)
+    asset_hash[:component_id] = row_hash["_id"]
+    asset_number = build.asset_numbers.where(component_id: row_hash["_id"]).first
 
-      # Grab asset number data and search for existing AssetNumber.
-      asset_hash = row_hash.slice(*AssetNumber.field_keys)
-      asset_hash[:component_id] = row_hash["id"]
-      asset_number = build.asset_numbers.where(component_id: asset_hash["component_id"]).first
-
-      # Create new AssetNumber or update existing document.
-      build.asset_numbers.create(asset_hash) if asset_hash["expected_asset"] && asset_number.nil?
-      asset_number.update_attributes(asset_hash) if asset_hash["expected_asset"] && asset_number
-    end
+    # Create new AssetNumber or update existing document.
+    return build.asset_numbers.create(asset_hash) if asset_number.nil?
+    asset_number = asset_number.update_attributes(asset_hash)
+    asset_number
   end
 end

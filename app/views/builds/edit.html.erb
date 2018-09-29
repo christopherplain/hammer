@@ -1,8 +1,13 @@
-<h1><%= @build.customer.name %> Build</h1>
+<h1><%= @build.customer.name %></h1>
+<h2>Build <small class="text-muted"><%= @build.project_name %></small></h2>
 
-<% if params.has_key?(:build) %>
+<% if params.dig(:build, :asset_numbers_attributes) %>
 
   <%= render 'asset_form' %>
+
+<% elsif params.dig(:build, :serial_numbers_attributes) %>
+
+  <%= render 'serial_form' %>
 
 <% else %>
 

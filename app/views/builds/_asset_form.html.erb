@@ -18,27 +18,18 @@
       <%= asset_form.hidden_field :id, value: asset.id %>
       <div class="form-group row">
         <% component = asset.component %>
-        <% rack = component.component_type.eql?("rack") %>
+        <% rack = component.component_type.eql? "Rack" %>
         <% label = "Rack" if rack %>
-        <% label = "U#{component.u_location}
-            #{component.orientation.capitalize}" unless rack %>
+        <%
+          label = "
+            U#{component.u_location}, #{component.orientation}, #{component.component_type}
+          " unless rack
+        %>
         <%= asset_form.label :scanned_asset, label, class: "col-md-4 col-form-label font-weight-bold" %>
 
-        <% if asset.validated? %>
+        <% if asset.errors.any? %>
           <div class="col-md-4">
-            <%= asset_form.text_field :scanned_asset, class: "form-control is-valid" %>
-            <div class="valid-feedback">
-              Scanned asset validated!
-            </div>
-          </div>
-
-          <div class="col-md-4">
-            <%= asset_form.text_field :expected_asset, class: "form-control is-valid", disabled: true %>
-          </div>
-
-        <% elsif asset.errors.any? %>
-          <div class="col-md-4">
-            <%= asset_form.text_field :scanned_asset, class: "form-control" %>
+            <%= asset_form.text_field :scanned_asset, class: "form-control is-invalid" %>
             <div class="invalid-feedback">
               Scanned asset must match expected asset.
             </div>
@@ -61,6 +52,6 @@
     <% end %>
   <% end %>
 
-  <%= f.submit "Validate", class: "btn btn-outline-primary" %>
-  <%= link_to "Done", @build, class: "btn btn-outline-secondary" %>
+  <%= f.submit "Save", class: "btn btn-primary" %>
+  <%= link_to "Cancel", :back, class: "btn btn-secondary" %>
 <% end %>
