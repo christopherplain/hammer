@@ -22,9 +22,5 @@ Rails.application.routes.draw do
   end
   post 'rack_configs/:id/import(.:format)', to: 'rack_configs#import', as: 'import_rack_config'
 
-  resources :parts do
-    collection { post :import }
-  end
-
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
