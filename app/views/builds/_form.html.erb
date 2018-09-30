@@ -32,6 +32,11 @@
       <%= f.collection_select :rack_config_id, RackConfig.where(customer_id: @customer.id), :id, :sku, { prompt: "Select the rack config" }, class: "form-control" %>
     </div>
 
+    <div class="form-group">
+      <%= f.label :notes, "Notes" %>
+      <%= f.text_area :notes, class: "form-control text-monospace", rows: "25" %>
+    </div>
+
     <%= f.hidden_field :customer_id, value: @customer.id %>
 
     <%= f.submit "Save", class: "btn btn-primary" %>
@@ -70,6 +75,11 @@
     <div class="form-group">
       <%= f.label "Rack config"%>
       <%= f.collection_select :rack_config_id, RackConfig.where(customer_id: @build.customer.id), :id, :sku, { prompt: "Select the rack config" }, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :notes, "Notes" %>
+      <%= f.text_area :notes, class: "form-control text-monospace", rows: "25" %>
     </div>
 
     <%= f.submit "Update", class: "btn btn-primary" %>

@@ -4,6 +4,7 @@ class Build
   field :build_type, type: String
   field :project_name, type: String
   field :project_reference, type: String
+  field :notes, type: String
   embeds_many :asset_numbers
   embeds_many :components, as: :component_part
   embeds_many :serial_numbers

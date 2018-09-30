@@ -35,6 +35,8 @@
   <%= link_to 'Export', build_path(@build, format: "csv"), class: "text-body" %>
 </div>
 
+<%= render "shared/notes", instance_variable: @build if @build.notes %>
+
 <%= render "scan" %>
 <hr class="mb=4">
 
