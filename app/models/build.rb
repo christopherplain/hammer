@@ -30,4 +30,23 @@ class Build
       SerialNumber.import(row_hash, build) if row_hash["scan_serial"]
     end
   end
+
+  def export
+    CSV.generate(headers: true) do |csv|
+      headers = ["_id", *Component.field_keys, "expected_asset", "scan_serial"]
+      csv << headers
+
+      components = self.rack_config.components.order(row_order: :asc)
+      components.merge!(self.components.order(row_order: :asc))
+      components.each do |component|
+        row_hash = {}
+        row_hash.merge!(component.attributes)
+        asset_number = self.asset_numbers.where(component_id: component["id"]).first
+        serial_number = self.asset_numbers.where(component_id: component["id"]).first
+        row_hash["expected_asset"] = asset_number.expected_asset if asset_number
+        row_hash["scan_serial"] = true if serial_number
+        csv << row_hash.values_at(*headers)
+      end
+    end
+  end
 end

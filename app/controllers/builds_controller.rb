@@ -18,6 +18,13 @@ class BuildsController < ApplicationController
   # GET /builds/1
   # GET /builds/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.csv {
+        send_data @build.export,
+        filename: "#{@build.customer.name}_Build_#{@build.project_name}.csv"
+      }
+    end
   end
 
   # GET /customers/1/builds/new
