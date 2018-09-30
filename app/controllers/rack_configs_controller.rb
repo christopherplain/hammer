@@ -1,6 +1,6 @@
 class RackConfigsController < ApplicationController
   before_action :set_rack_config, only: [:import, :show, :edit, :update, :destroy]
-  before_action :set_customer, only: [:index, :show, :new, :create, :destroy]
+  before_action :set_customer, only: [:index, :new, :create]
 
   # GET /customers/1/rack_configs
   # GET /customers/1/rack_configs.json
@@ -19,28 +19,26 @@ class RackConfigsController < ApplicationController
   def show
     respond_to do |format|
       format.html
-      format.csv { send_data @rack_config.export,
-        filename: "#{@rack_config.customer.name}_RackConfig_#{@rack_config.sku}.csv" }
+      format.csv {
+        send_data @rack_config.export,
+        filename: "#{@rack_config.customer.name}_RackConfig_#{@rack_config.sku}.csv"
+      }
     end
   end
 
   # GET /customers/1/rack_configs/new
   def new
-    @rack_config = RackConfig.new
+    @rack_config = @customer.rack_configs.new
   end
 
   # GET /rack_configs/1/edit
   def edit
-    @import = params[:import]
-    @components = @rack_config.components.all
-    @components.order(row_order: :desc)
   end
 
   # POST /customers/1/rack_configs
   # POST /customers/1/rack_configs.json
   def create
-    @rack_config = RackConfig.new(rack_config_params)
-    @rack_config.customer = @customer
+    @rack_config = @customer.rack_configs.new(rack_config_params)
 
     respond_to do |format|
       if @rack_config.save
@@ -70,9 +68,10 @@ class RackConfigsController < ApplicationController
   # DELETE /rack_configs/1
   # DELETE /rack_configs/1.json
   def destroy
+    customer = @rack_config.customer
     @rack_config.destroy
     respond_to do |format|
-      format.html { redirect_to customer_rack_configs_path(@customer), flash: { success: 'Rack config was successfully deleted.' } }
+      format.html { redirect_to customer_rack_configs_path(customer), flash: { success: 'Rack config was successfully deleted.' } }
       format.json { head :no_content }
     end
   end
@@ -84,8 +83,7 @@ class RackConfigsController < ApplicationController
     end
 
     def set_customer
-      @customer ||= Customer.find(params[:customer_id]) if params[:customer_id]
-      @customer ||= @rack_config.customer
+      @customer ||= Customer.find(params[:customer_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
