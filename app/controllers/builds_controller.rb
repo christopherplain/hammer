@@ -1,7 +1,6 @@
 class BuildsController < ApplicationController
   before_action :set_build, only: [:import, :show, :edit, :update, :destroy]
-  before_action :set_customer, only: [:index, :show, :new, :edit, :create, :destroy]
-  before_action :set_rack_config, only: :show
+  before_action :set_customer, only: [:index , :new, :create]
 
   # GET /customers/1/builds
   # GET /customers/1/builds.json
@@ -19,7 +18,7 @@ class BuildsController < ApplicationController
   # GET /builds/1.json
   def show
     respond_to do |format|
-      format.html
+      format.html { @rack_config = @build.rack_config }
       format.csv {
         send_data @build.export,
         filename: "#{@build.customer.name}_Build_#{@build.project_name}.csv"
@@ -29,7 +28,7 @@ class BuildsController < ApplicationController
 
   # GET /customers/1/builds/new
   def new
-    @build = Build.new
+    @build = @customer.builds.new
   end
 
   # GET /builds/1/edit
@@ -39,7 +38,7 @@ class BuildsController < ApplicationController
   # POST /customers/1/builds
   # POST /customers/1/builds.json
   def create
-    @build = Build.new(build_params)
+    @build = @customer.builds.new(build_params)
 
     respond_to do |format|
       if @build.save
@@ -69,9 +68,10 @@ class BuildsController < ApplicationController
   # DELETE /builds/1
   # DELETE /builds/1.json
   def destroy
+    customer = @build.customer
     @build.destroy
     respond_to do |format|
-      format.html { redirect_to customer_builds_path(@customer), flash: { success: 'Build was successfully deleted.' } }
+      format.html { redirect_to customer_builds_path(customer), flash: { success: 'Build was successfully deleted.' } }
       format.json { head :no_content }
     end
   end
@@ -83,12 +83,7 @@ class BuildsController < ApplicationController
     end
 
     def set_customer
-      @customer ||= Customer.find(params[:customer_id]) if params[:customer_id]
-      @customer ||= @build.customer
-    end
-
-    def set_rack_config
-      @rack_config ||= @build.rack_config
+      @customer ||= Customer.find(params[:customer_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
