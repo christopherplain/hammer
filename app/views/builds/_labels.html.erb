@@ -5,22 +5,70 @@
         Labels
       </a>
     </h3>
-    <ul class="list-inline font-weight-light">
-      <li class="list-inline-item">
-        <%= link_to 'Format »', edit_build_path(@build, build: { label_templates_attributes: true }), class: "text-body" %>
-      </li>
-      <li class="list-inline-item">
-        <%= link_to 'Edit »', edit_build_path(@build, build: { cable_labels_attributes: true }), class: "text-body" %>
-      </li>
-      <li class="list-inline-item">
-        <%= link_to 'Export »', build_cable_labels_path(@build, format: "csv"), class: "text-body" %>
-      </li>
-    </ul>
   </div>
 
   <div class="collapse" id="collapseLabels">
     <div class="card-body">
+      <ul class="list-inline font-weight-light">
+        <li class="list-inline-item">
+          <%= link_to 'Format »', edit_build_path(@build, build: { label_templates_attributes: true }), class: "text-body" %>
+        </li>
+        <li class="list-inline-item">
+          <%= link_to 'Edit »', edit_build_path(@build, build: { cable_labels_attributes: true }), class: "text-body" %>
+        </li>
+        <li class="list-inline-item">
+          <%= link_to 'Export »', build_cable_labels_path(@build, format: "csv"), class: "text-body" %>
+        </li>
+      </ul>
+
+      <div class="card-columns">
+        <% connection_groups = @build.rack_config.connections.distinct(:group_name) %>
+        <% connection_groups.each do |group| %>
+          <div class="card">
+            <div class="card-body">
+            <h4 class="card-title"><%= group %></h4>
+
+            <% template = @build.label_templates.where(group_name: group).first %>
+            <% template_a = template.template_a %>
+            <% template_b = template.template_b %>
+
+            <% connections = @build.rack_config.connections.where(group_name: group) %>
+            <%
+              connections = connections.sort_by { |c| [
+                -c.row_order.to_i,
+                c.source_port.split("/")[0].to_i,
+                c.source_port.split("/")[1].to_i
+              ] }
+            %>
+
+            <ul class="list-unstyled text-monospace">
+              <% connections.each do |connection| %>
+                <% label = @build.cable_labels.where(connection_id: connection.id).first %>
+                <% variables = label.template_var_hash %>
+
+                <li>
+                  <% if label.label_a.blank? %>
+                    <%= template_a % variables %>
+                  <% else %>
+                    <%= label.label_a %>
+                  <% end %>
+                </li>
+
+                <li>
+                  <% if label.label_a.blank? %>
+                    <%= template_b % variables %>
+                  <% else %>
+                    <%= label.label_b %>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+          </div>
+        <% end %>
+      </div>
       <hr>
+
       <%= link_to "Top »", "#top", class: "text-body font-weight-light" %>
     </div>
   </div>
