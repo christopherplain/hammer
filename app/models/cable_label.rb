@@ -37,38 +37,48 @@ class CableLabel
 
   def self.export(build)
     CSV.generate do |csv|
-      connection_groups = build.rack_config.connections.distinct(:group_name)
-      connection_groups.each do |group|
-        csv << [group]
+      connection_types = build.rack_config.connections.distinct(:group_type)
+      connection_types = connection_types.sort_by { |t|
+        t == "net" ? 1 : t == "misc" ? 2 : t == "stor" ? 3 : 4
+      }
 
-        template = build.label_templates.where(group_name: group).first
-        template_a = template.template_a
-        template_b = template.template_b
+      connection_types.each do |type|
+        connections = build.rack_config.connections.where(group_type: type)
+        connection_groups = connections.distinct(:group_name)
 
-        connections = build.rack_config.connections.where(group_name: group)
-        connections = connections.sort_by { |c| [
-          -c.row_order.to_i,
-          c.source_port.split("/")[0].to_i,
-          c.source_port.split("/")[1].to_i
-        ] }
-        connections.each do |connection|
-          label = build.cable_labels.where(connection_id: connection.id).first
-          variables = label.template_var_hash
+        connection_groups.each do |group|
+          csv << [group]
 
-          if label.label_a.blank?
-            csv << [template_a % variables]
-          else
-            csv << [label.label_a]
+          template = build.label_templates.where(group_name: group).first
+          template_a = template.template_a
+          template_b = template.template_b
+
+          connections = build.rack_config.connections.where(group_name: group)
+          connections = connections.sort_by { |c| [
+            -c.row_order.to_i,
+            c.source_port.split("/")[0].to_i,
+            c.source_port.split("/")[1].to_i
+          ] }
+          
+          connections.each do |connection|
+            label = build.cable_labels.where(connection_id: connection.id).first
+            variables = label.template_var_hash
+
+            if label.label_a.blank?
+              csv << [template_a % variables]
+            else
+              csv << [label.label_a]
+            end
+
+            if label.label_b.blank?
+              csv << [template_b % variables]
+            else
+              csv << [label.label_b]
+            end
           end
 
-          if label.label_b.blank?
-            csv << [template_b % variables]
-          else
-            csv << [label.label_b]
-          end
+          csv << []
         end
-
-        csv << []
       end
     end
   end
