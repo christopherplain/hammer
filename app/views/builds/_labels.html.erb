@@ -22,49 +22,60 @@
       </ul>
 
       <div class="card-columns">
-        <% connection_groups = @build.rack_config.connections.distinct(:group_name) %>
-        <% connection_groups.each do |group| %>
-          <div class="card">
-            <div class="card-body">
-            <h4 class="card-title"><%= group %></h4>
+        <% connection_types = @build.rack_config.connections.distinct(:group_type) %>
+        <% connection_types = connection_types.sort_by { |t|
+          t == "net" ? 1 : t == "misc" ? 2 : t == "stor" ? 3 : 4
+        } %>
 
-            <% template = @build.label_templates.where(group_name: group).first %>
-            <% template_a = template.template_a %>
-            <% template_b = template.template_b %>
+        <% connection_types.each do |type| %>
+          <% connections = @build.rack_config.connections.where(group_type: type) %>
+          <% connection_groups = connections.distinct(:group_name) %>
 
-            <% connections = @build.rack_config.connections.where(group_name: group) %>
-            <%
-              connections = connections.sort_by { |c| [
-                -c.row_order.to_i,
-                c.source_port.split("/")[0].to_i,
-                c.source_port.split("/")[1].to_i
-              ] }
-            %>
+          <% connection_groups.each do |group| %>
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">
+                  <%= group %>
+                </h4>
 
-            <ul class="list-unstyled text-monospace">
-              <% connections.each do |connection| %>
-                <% label = @build.cable_labels.where(connection_id: connection.id).first %>
-                <% variables = label.template_var_hash %>
+                <% template = @build.label_templates.where(group_name: group).first %>
+                <% template_a = template.template_a %>
+                <% template_b = template.template_b %>
 
-                <li>
-                  <% if label.label_a.blank? %>
-                    <%= template_a % variables %>
-                  <% else %>
-                    <%= label.label_a %>
+                <% connections = @build.rack_config.connections.where(group_name: group) %>
+                <%
+                  connections = connections.sort_by { |c| [
+                    -c.row_order.to_i,
+                    c.source_port.split("/")[0].to_i,
+                    c.source_port.split("/")[1].to_i
+                  ] }
+                %>
+
+                <ul class="list-unstyled text-monospace">
+                  <% connections.each do |connection| %>
+                    <% label = @build.cable_labels.where(connection_id: connection.id).first %>
+                    <% variables = label.template_var_hash %>
+
+                    <li>
+                      <% if label.label_a.blank? %>
+                        <%= template_a % variables %>
+                      <% else %>
+                        <%= label.label_a %>
+                      <% end %>
+                    </li>
+
+                    <li>
+                      <% if label.label_a.blank? %>
+                        <%= template_b % variables %>
+                      <% else %>
+                        <%= label.label_b %>
+                      <% end %>
+                    </li>
                   <% end %>
-                </li>
-
-                <li>
-                  <% if label.label_a.blank? %>
-                    <%= template_b % variables %>
-                  <% else %>
-                    <%= label.label_b %>
-                  <% end %>
-                </li>
-              <% end %>
-            </ul>
-          </div>
-          </div>
+                </ul>
+              </div>
+            </div>
+          <% end %>
         <% end %>
       </div>
       <hr>
