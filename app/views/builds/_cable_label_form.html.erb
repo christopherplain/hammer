@@ -13,53 +13,62 @@
 
   <p class="lead">Please verify dynamically generated cable labels.</p>
 
-  <% connection_groups = @build.rack_config.connections.distinct(:group_name) %>
-  <% connection_groups.each do |group| %>
-    <div class="row">
-      <div class="col mb-2 font-weight-bold">
-        <%= group %>
+  <% connection_types = @build.rack_config.connections.distinct(:group_type) %>
+  <% connection_types = connection_types.sort_by { |t|
+    t == "net" ? 1 : t == "misc" ? 2 : t == "stor" ? 3 : 4
+  } %>
+
+  <% connection_types.each do |type| %>
+    <% connections = @build.rack_config.connections.where(group_type: type) %>
+    <% connection_groups = connections.distinct(:group_name) %>
+
+    <% connection_groups.each do |group| %>
+      <div class="row">
+        <div class="col mb-2 font-weight-bold">
+          <%= group %>
+        </div>
       </div>
-    </div>
 
-    <% template = @build.label_templates.where(group_name: group).first %>
-    <% template_a = template.template_a %>
-    <% template_b = template.template_b %>
+      <% template = @build.label_templates.where(group_name: group).first %>
+      <% template_a = template.template_a %>
+      <% template_b = template.template_b %>
 
-    <% connections = @build.rack_config.connections.where(group_name: group) %>
-    <%
-      connections = connections.sort_by { |c| [
-        -c.row_order.to_i,
-        c.source_port.split("/")[0].to_i,
-        c.source_port.split("/")[1].to_i
-      ] }
-    %>
-    <% connections.each do |connection| %>
+      <% connections = @build.rack_config.connections.where(group_name: group) %>
+      <%
+        connections = connections.sort_by { |c| [
+          -c.row_order.to_i,
+          c.source_port.split("/")[0].to_i,
+          c.source_port.split("/")[1].to_i
+        ] }
+      %>
+      <% connections.each do |connection| %>
 
-      <% label = @build.cable_labels.where(connection_id: connection.id).first %>
-      <% variables = label.template_var_hash %>
+        <% label = @build.cable_labels.where(connection_id: connection.id).first %>
+        <% variables = label.template_var_hash %>
 
-      <%= f.fields_for :cable_labels, label do |label_form| %>
-        <%= label_form.hidden_field :id, value: label.id %>
+        <%= f.fields_for :cable_labels, label do |label_form| %>
+          <%= label_form.hidden_field :id, value: label.id %>
 
-        <div class="row">
-          <div class="form-group col-md-6">
-            <%= label_form.text_field :label_a, class: "form-control", value: template_a % variables, disabled: true %>
+          <div class="row">
+            <div class="form-group col-md-6">
+              <%= label_form.text_field :label_a, class: "form-control text-monospace", value: template_a % variables, disabled: true %>
+            </div>
+
+            <div class="form-group col-md-6">
+              <%= label_form.text_field :label_a, class: "form-control text-monospace" %>
+            </div>
           </div>
 
-          <div class="form-group col-md-6">
-            <%= label_form.text_field :label_a, class: "form-control" %>
-          </div>
-        </div>
+          <div class="row">
+            <div class="form-group col-md-6">
+              <%= label_form.text_field :label_b, class: "form-control text-monospace", value: template_b % variables, disabled: true %>
+            </div>
 
-        <div class="row">
-          <div class="form-group col-md-6">
-            <%= label_form.text_field :label_b, class: "form-control", value: template_b % variables, disabled: true %>
+            <div class="form-group col-md-6">
+              <%= label_form.text_field :label_b, class: "form-control text-monospace" %>
+            </div>
           </div>
-
-          <div class="form-group col-md-6">
-            <%= label_form.text_field :label_b, class: "form-control" %>
-          </div>
-        </div>
+        <% end %>
       <% end %>
     <% end %>
   <% end %>
