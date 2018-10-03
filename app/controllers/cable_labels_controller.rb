@@ -5,7 +5,13 @@ class CableLabelsController < ApplicationController
   # GET /builds/1/cable_labels
   # GET /builds/1/cable_labels.json
   def index
-    @cable_labels = CableLabel.all
+    respond_to do |format|
+      format.html { @cable_labels = CableLabel.all }
+      format.csv {
+        send_data CableLabel.export(@build),
+        filename: "#{@build.customer.name}_CableLabels_#{@build.project_name}.csv"
+      }
+    end
   end
 
   # GET /cable_labels/1
@@ -43,7 +49,7 @@ class CableLabelsController < ApplicationController
   def update
     respond_to do |format|
       if @cable_label.update(cable_label_params)
-        format.html { redirect_to @cable_label, flash: { success: { 'Cable label was successfully updated.' } }
+        format.html { redirect_to @cable_label, flash: { success: 'Cable label was successfully updated.' } }
         format.json { render :show, status: :ok, location: @cable_label }
       else
         format.html { render :edit }
@@ -57,7 +63,7 @@ class CableLabelsController < ApplicationController
   def destroy
     @cable_label.destroy
     respond_to do |format|
-      format.html { redirect_to cable_labels_url, flash: { success: { 'Cable label was successfully deleted.' } }
+      format.html { redirect_to cable_labels_url, flash: { success: 'Cable label was successfully deleted.' } }
       format.json { head :no_content }
     end
   end

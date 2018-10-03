@@ -10,7 +10,10 @@
         <%= link_to 'Format »', edit_build_path(@build, build: { label_templates_attributes: true }), class: "text-body" %>
       </li>
       <li class="list-inline-item">
-        <%= link_to 'Labels »', edit_build_path(@build, build: { cable_labels_attributes: true }), class: "text-body" %>
+        <%= link_to 'Edit »', edit_build_path(@build, build: { cable_labels_attributes: true }), class: "text-body" %>
+      </li>
+      <li class="list-inline-item">
+        <%= link_to 'Export »', build_cable_labels_path(@build, format: "csv"), class: "text-body" %>
       </li>
     </ul>
   </div>
