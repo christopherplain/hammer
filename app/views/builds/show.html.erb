@@ -47,8 +47,10 @@
 
 <%= render "shared/notes", instance_variable: @build if @build.notes %>
 
-<%= render "scans" %>
 <%= render "labels" %>
+
+<%= render "scans" %>
+
 <hr class="mb=4">
 
 <%= render "shared/rack_config" if @build.rack_config %>
