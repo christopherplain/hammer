@@ -22,18 +22,33 @@
     <% end %>
   </ul>
 
-  <% @build.label_templates.each do |template| %>
-    <%= f.fields_for :label_templates, template do |template_form| %>
-      <%= template_form.hidden_field :id, value: template.id %>
-      <p class="mb-2 font-weight-bold"><%= template.group_name %></p>
+  <% connection_types = @build.rack_config.connections.distinct(:group_type) %>
+  <%
+    connection_types = connection_types.sort_by { |t|
+    t == "net" ? 1 : t == "misc" ? 2 : t == "stor" ? 3 : 4
+    }
+  %>
 
-      <div class="form-group">
-        <%= template_form.text_field :template_a, class: "form-control", placeholder: "Template Label A" %>
-      </div>
+  <% connection_types.each do |type| %>
+    <% connections = @build.rack_config.connections.where(group_type: type) %>
+    <% connection_groups = connections.distinct(:group_name) %>
 
-      <div class="form-group">
-        <%= template_form.text_field :template_b, class: "form-control", placeholder: "Template Label B" %>
-      </div>
+    <% connection_groups.each do |group| %>
+      <% templates = @build.label_templates.where(group_name: group) %>
+      <% templates.each do |template| %>
+        <%= f.fields_for :label_templates, template do |template_form| %>
+          <%= template_form.hidden_field :id, value: template.id %>
+          <p class="mb-2 font-weight-bold"><%= template.group_name %></p>
+
+          <div class="form-group">
+            <%= template_form.text_field :template_a, class: "form-control text-monospace", placeholder: "Template Label A" %>
+          </div>
+
+          <div class="form-group">
+            <%= template_form.text_field :template_b, class: "form-control text-monospace", placeholder: "Template Label B" %>
+          </div>
+        <% end %>
+      <% end %>
     <% end %>
   <% end %>
   <hr class="mb-4">
