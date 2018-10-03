@@ -12,6 +12,8 @@ Rails.application.routes.draw do
 
   resources :builds, only: [], shallow: true do
     resources :asset_numbers
+    resources :cable_labels
+    resources :label_templates
     resources :serial_numbers
   end
   post 'builds/:id/import(.:format)', to: 'builds#import', as: 'import_build'

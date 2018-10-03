@@ -90,8 +90,10 @@ class BuildsController < ApplicationController
     def build_params
       params.require(:build).permit(
         *Build.field_keys,
-        asset_numbers_attributes: [:id, :scanned_asset],
-        serial_numbers_attributes: [:id, :serial]
+        asset_numbers_attributes: [:id, *AssetNumber.field_keys],
+        cable_labels_attributes: [:id, *CableLabel.field_keys],
+        label_templates_attributes: [:id, *LabelTemplate.field_keys],
+        serial_numbers_attributes: [:id, *SerialNumber.field_keys]
       )
     end
 end

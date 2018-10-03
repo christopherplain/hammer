@@ -6,11 +6,13 @@ class Build
   field :project_reference, type: String
   field :notes, type: String
   embeds_many :asset_numbers
+  embeds_many :cable_labels
   embeds_many :components, as: :component_part
+  embeds_many :label_templates
   embeds_many :serial_numbers
   belongs_to :customer
   belongs_to :rack_config, optional: true
-  accepts_nested_attributes_for :asset_numbers, :serial_numbers
+  accepts_nested_attributes_for :asset_numbers, :cable_labels, :label_templates, :serial_numbers
   validates :build_type, :project_name, presence: true
 
   BUILDTYPE = ["Rack", "Table"]
@@ -30,6 +32,8 @@ class Build
       AssetNumber.import(row_hash, build) if row_hash["expected_asset"]
       SerialNumber.import(row_hash, build) if row_hash["scan_serial"]
     end
+    CableLabel.generate(build)
+    LabelTemplate.generate(build)    
   end
 
   def export

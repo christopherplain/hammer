@@ -1,43 +1,54 @@
 <h1><%= @build.customer.name %></h1>
+<ul class="list-inline font-weight-light">
+  <li class="list-inline-item">
+    <%= link_to 'Builds »', customer_builds_path(@build.customer), class: "text-body" %>
+  </li>
+</ul>
+
+
 <h2>Build <small class="text-muted"><%= @build.project_name %></small></h2>
+<ul class="list-inline font-weight-light">
+  <li class="list-inline-item">
+    <%= link_to 'Edit »', edit_build_path(@build), class: "text-body" %>
+  </li>
+  <li class="list-inline-item">
+    <!-- Trigger modal -->
+    <a class="text-body" href="#" data-toggle="modal" data-target="#importModal">Import »</a>
+  </li>
+  <li class="list-inline-item">
+    <%= link_to 'Export »', build_path(@build, format: "csv"), class: "text-body" %>
+  </li>
+</ul>
 
-<div class="mb-3">
-  <%= link_to 'Edit', edit_build_path(@build), class: "text-body" %> |
-
-  <!-- Button trigger modal -->
-  <a class="text-body" href="#" data-toggle="modal" data-target="#importModal">Import</a> |
-
-  <!-- Modal -->
-  <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="importModalLabel">Import Build</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <%= form_with url: import_build_path, local: true do |f| %>
-          <div class="modal-body">
-            <div class="form-group">
-              <%= f.file_field :file, class: "form-control-file" %>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <%= f.submit "Import", class: "btn btn-success" %>
-          </div>
-        <% end %>
+<!-- Modal -->
+<div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="importModalLabel">Import Build</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
+      <%= form_with url: import_build_path, local: true do |f| %>
+        <div class="modal-body">
+          <div class="form-group">
+            <%= f.file_field :file, class: "form-control-file" %>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <%= f.submit "Import", class: "btn btn-success" %>
+        </div>
+      <% end %>
     </div>
   </div>
-
-  <%= link_to 'Export', build_path(@build, format: "csv"), class: "text-body" %>
 </div>
 
 <%= render "shared/notes", instance_variable: @build if @build.notes %>
 
-<%= render "scan" %>
+<%= render "scans" %>
+<%= render "labels" %>
 <hr class="mb=4">
 
 <%= render "shared/rack_config" if @build.rack_config %>

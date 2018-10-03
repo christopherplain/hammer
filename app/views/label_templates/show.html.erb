@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @label_template.name %>
+</p>
+
+<p>
+  <strong>Format a:</strong>
+  <%= @label_template.template_a %>
+</p>
+
+<p>
+  <strong>Format b:</strong>
+  <%= @label_template.template_b %>
+</p>
+
+<%= link_to 'Edit', edit_label_template_path(@label_template) %> |
+<%= link_to 'Back', label_templates_path %>

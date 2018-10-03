@@ -1,0 +1,70 @@
+<%= form_with model: @build, local: true do |f| %>
+  <% if @build.errors.any? %>
+    <div class="alert alert-danger">
+      <% count = 0 %>
+
+      <% @build.cable_labels.each do |label| %>
+        <% count += label.errors.count if label.errors.any? %>
+      <% end %>
+
+      Please correct <%= pluralize(count, "error") %> below.
+    </div>
+  <% end %>
+
+  <p class="lead">Please verify dynamically generated cable labels.</p>
+
+  <% connection_groups = @build.rack_config.connections.distinct(:group_name) %>
+  <% connection_groups.each do |group| %>
+    <div class="row">
+      <div class="col mb-2 font-weight-bold">
+        <%= group %>
+      </div>
+    </div>
+
+    <% template = @build.label_templates.where(group_name: group).first %>
+    <% template_a = template.template_a %>
+    <% template_b = template.template_b %>
+
+    <% connections = @build.rack_config.connections.where(group_name: group) %>
+    <%
+      connections = connections.sort_by { |c| [
+        -c.row_order.to_i,
+        c.source_port.split("/")[0].to_i,
+        c.source_port.split("/")[1].to_i
+      ] }
+    %>
+    <% connections.each do |connection| %>
+
+      <% label = @build.cable_labels.where(connection_id: connection.id).first %>
+      <% variables = label.template_var_hash %>
+
+      <%= f.fields_for :cable_labels, label do |label_form| %>
+        <%= label_form.hidden_field :id, value: label.id %>
+
+        <div class="row">
+          <div class="form-group col-md-6">
+            <%= label_form.text_field :label_a, class: "form-control", value: template_a % variables, disabled: true %>
+          </div>
+
+          <div class="form-group col-md-6">
+            <%= label_form.text_field :label_a, class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-md-6">
+            <%= label_form.text_field :label_b, class: "form-control", value: template_b % variables, disabled: true %>
+          </div>
+
+          <div class="form-group col-md-6">
+            <%= label_form.text_field :label_b, class: "form-control" %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+  <hr class="mb-4">
+
+  <%= f.submit "Save", class: "btn btn-primary" %>
+  <%= link_to "Cancel", :back, class: "btn btn-secondary" %>
+<% end %>

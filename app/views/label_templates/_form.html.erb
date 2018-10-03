@@ -1,0 +1,32 @@
+<%= form_with(model: label_template, local: true) do |form| %>
+  <% if label_template.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(label_template.errors.count, "error") %> prohibited this label_template from being saved:</h2>
+
+      <ul>
+      <% label_template.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :template_a %>
+    <%= form.text_field :template_a %>
+  </div>
+
+  <div class="field">
+    <%= form.label :template_b %>
+    <%= form.text_field :template_b %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

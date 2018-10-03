@@ -5,6 +5,14 @@
 
   <%= render 'asset_form' %>
 
+<% elsif params.dig(:build, :cable_labels_attributes) %>
+
+  <%= render 'cable_label_form' %>
+
+<% elsif params.dig(:build, :label_templates_attributes) %>
+
+  <%= render 'label_template_form' %>
+
 <% elsif params.dig(:build, :serial_numbers_attributes) %>
 
   <%= render 'serial_form' %>

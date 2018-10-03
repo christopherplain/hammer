@@ -1,0 +1,43 @@
+<%= form_with model: @build, local: true do |f| %>
+  <% if @build.errors.any? %>
+    <div class="alert alert-danger">
+      <% count = 0 %>
+
+      <% @build.label_templates.each do |template| %>
+        <% count += template.errors.count if template.errors.any? %>
+      <% end %>
+
+      Please correct <%= pluralize(count, "error") %> below.
+    </div>
+  <% end %>
+
+  <p class="lead">Please enter a format for the labels.</p>
+
+  <span class="font-weight-bold">Variables</span>
+  <ul class="list-unstyled">
+    <% LabelTemplate::VARIABLES.each do |variable| %>
+      <li class="text-monospace">
+        <%= variable %>
+      </li>
+    <% end %>
+  </ul>
+
+  <% @build.label_templates.each do |template| %>
+    <%= f.fields_for :label_templates, template do |template_form| %>
+      <%= template_form.hidden_field :id, value: template.id %>
+      <p class="mb-2 font-weight-bold"><%= template.group_name %></p>
+
+      <div class="form-group">
+        <%= template_form.text_field :template_a, class: "form-control", placeholder: "Template Label A" %>
+      </div>
+
+      <div class="form-group">
+        <%= template_form.text_field :template_b, class: "form-control", placeholder: "Template Label B" %>
+      </div>
+    <% end %>
+  <% end %>
+  <hr class="mb-4">
+
+  <%= f.submit "Save", class: "btn btn-primary" %>
+  <%= link_to "Cancel", :back, class: "btn btn-secondary" %>
+<% end %>
