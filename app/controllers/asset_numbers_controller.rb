@@ -5,7 +5,13 @@ class AssetNumbersController < ApplicationController
   # GET /build/1/asset_numbers
   # GET /build/1/asset_numbers.json
   def index
-    @asset_numbers = AssetNumber.all
+    respond_to do |format|
+      format.html { @asset_numbers = AssetNumber.all }
+      format.csv {
+        send_data AssetNumber.export(@build),
+        filename: "#{@build.customer.name}_AssetNumbers_#{@build.project_name}.csv"
+      }
+    end
   end
 
   # POST /build/1/asset_numbers/import

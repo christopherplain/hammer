@@ -43,4 +43,12 @@ class AssetNumber
     asset_number = asset_number.update_attributes(asset_hash)
     asset_number
   end
+
+  def self.export(build)
+    CSV.generate do |csv|
+      build.asset_numbers.each do |asset|
+        csv << [asset.expected_asset]
+      end
+    end
+  end
 end

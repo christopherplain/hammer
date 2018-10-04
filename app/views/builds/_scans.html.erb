@@ -14,6 +14,9 @@
           <%= link_to 'Assets »', edit_build_path(@build, build: { asset_numbers_attributes: true }), class: "text-body" %>
         </li>
         <li class="list-inline-item">
+          <%= link_to 'Export »', build_asset_numbers_path(@build, format: "csv"), class: "text-body" %>
+        </li>
+        <li class="list-inline-item">
           <%= link_to 'Serials »', edit_build_path(@build, build: { serial_numbers_attributes: true }), class: "text-body" %>
         </li>
       </ul>
