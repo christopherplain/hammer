@@ -5,19 +5,48 @@
         Scans
       </a>
     </h3>
-    <ul class="list-inline font-weight-light">
-      <li class="list-inline-item">
-        <%= link_to 'Assets »', edit_build_path(@build, build: { asset_numbers_attributes: true }), class: "text-body" %>
-      </li>
-      <li class="list-inline-item">
-        <%= link_to 'Serials »', edit_build_path(@build, build: { serial_numbers_attributes: true }), class: "text-body" %>
-      </li>
-    </ui>
   </div>
 
   <div class="collapse" id="collapseScans">
     <div class="card-body">
+      <ul class="list-inline font-weight-light">
+        <li class="list-inline-item">
+          <%= link_to 'Assets »', edit_build_path(@build, build: { asset_numbers_attributes: true }), class: "text-body" %>
+        </li>
+        <li class="list-inline-item">
+          <%= link_to 'Serials »', edit_build_path(@build, build: { serial_numbers_attributes: true }), class: "text-body" %>
+        </li>
+      </ul>
+
+      <div class="card-columns">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">
+              Assets
+            </h4>
+
+            <dl class="row">
+              <% @build.asset_numbers.each do |asset| %>
+                <% component = asset.component %>
+                <% rack = component.component_type.eql? "Rack" %>
+                <% label = "Rack" if rack %>
+                <%
+                  label = "U#{component.u_location}, #{component.orientation}" unless rack
+                %>
+
+                <dt class="col-md-6"><%= label %></dt>
+                <% if asset.scanned_asset.blank? %>
+                  <dd class="col-md-6 text-monospace text-danger">Required!</dd>
+                <% else %>
+                  <dd class="col-md-6 text-monospace"><%= asset.scanned_asset  %></dd>
+                <% end %>
+              <% end %>
+            </dl>
+          </div>
+        </div>
+      </div>
       <hr>
+
       <%= link_to "Top »", "#top", class: "text-body font-weight-light" %>
     </div>
   </div>
