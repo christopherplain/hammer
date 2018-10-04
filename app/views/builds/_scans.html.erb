@@ -38,7 +38,33 @@
                 <% if asset.scanned_asset.blank? %>
                   <dd class="col-md-6 text-monospace text-danger">Required!</dd>
                 <% else %>
-                  <dd class="col-md-6 text-monospace"><%= asset.scanned_asset  %></dd>
+                  <dd class="col-md-6 text-monospace"><%= asset.scanned_asset %></dd>
+                <% end %>
+              <% end %>
+            </dl>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">
+              Serials
+            </h4>
+
+            <dl class="row">
+              <% @build.serial_numbers.each do |serial| %>
+                <% component = serial.component %>
+                <% rack = component.component_type.eql? "Rack" %>
+                <% label = "Rack" if rack %>
+                <%
+                  label = "U#{component.u_location}, #{component.orientation}" unless rack
+                %>
+
+                <dt class="col-md-6"><%= label %></dt>
+                <% if serial.serial.blank? %>
+                  <dd class="col-md-6 text-monospace text-danger">Required!</dd>
+                <% else %>
+                  <dd class="col-md-6 text-monospace"><%= serial.serial %></dd>
                 <% end %>
               <% end %>
             </dl>
