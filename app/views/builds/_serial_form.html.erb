@@ -16,23 +16,20 @@
   <% @build.serial_numbers.each do |serial| %>
     <%= f.fields_for :serial_numbers, serial do |serial_form| %>
       <%= serial_form.hidden_field :id, value: serial.id %>
-      <div class="form-group row">
+      <div class="row">
         <% component = serial.component %>
         <% rack = component.component_type.eql? "Rack" %>
         <% label = "Rack" if rack %>
-        <%
-          label = "
-            U#{component.u_location}, #{component.orientation}, #{component.component_type}
-          " unless rack
-        %>
-        <%= serial_form.label :serial, label, class: "col-md-4 col-form-label font-weight-bold" %>
+        <% label = "U#{component.u_location}, #{component.orientation}" unless rack %>
+        <%= serial_form.label :serial, label, class: "col-md-2 col-form-label font-weight-bold" %>
 
-        <div class="col-md-8">
-          <%= serial_form.text_field :serial, class: "form-control" %>
+        <div class="form-group col-md-10">
+          <%= serial_form.text_field :serial, class: "form-control text-monospace" %>
         </div>
       </div>
     <% end %>
   <% end %>
+  <hr class="mb-4">
 
   <%= f.submit "Save", class: "btn btn-primary" %>
   <%= link_to "Cancel", :back, class: "btn btn-secondary" %>
