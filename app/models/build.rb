@@ -2,6 +2,8 @@ class Build
   include Mongoid::Document
   include Mongoid::Timestamps
   field :build_type, type: String
+  field :sales_order, type: String
+  field :related_orders, type: String
   field :project_name, type: String
   field :project_reference, type: String
   field :notes, type: String
@@ -13,7 +15,7 @@ class Build
   belongs_to :customer
   belongs_to :rack_config, optional: true
   accepts_nested_attributes_for :asset_numbers, :cable_labels, :label_templates, :serial_numbers
-  validates :build_type, :project_name, presence: true
+  validates :build_type, :sales_order, :project_name, presence: true
 
   BUILDTYPE = ["Rack", "Table"]
 
@@ -33,7 +35,7 @@ class Build
       SerialNumber.import(row_hash, build) if row_hash["scan_serial"]
     end
     CableLabel.generate(build)
-    LabelTemplate.generate(build)    
+    LabelTemplate.generate(build)
   end
 
   def export

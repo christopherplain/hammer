@@ -1,5 +1,5 @@
 <h1><%= @build.customer.name %></h1>
-<h2>Build <small class="text-muted"><%= @build.project_name %></small></h2>
+<h2>Build <small class="text-muted"><%= @build.sales_order %>, <%= @build.project_name %></small></h2>
 
 <% if params.dig(:build, :asset_numbers_attributes) %>
 
