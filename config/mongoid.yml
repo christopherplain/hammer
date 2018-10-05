@@ -164,12 +164,9 @@ test:
         max_pool_size: 1
 
 production:
-  sessions:
-    default:
-      options:
-        ssl: true
   clients:
     default:
      uri: <%= ENV['MONGODB_URI'] %>
      options:
        connect_timeout: 15
+       ssl: true
