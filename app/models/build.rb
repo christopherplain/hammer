@@ -34,8 +34,8 @@ class Build
       AssetNumber.import(row_hash, build) if row_hash["expected_asset"]
       SerialNumber.import(row_hash, build) if row_hash["scan_serial"]
     end
-    CableLabel.generate(build)
     LabelTemplate.generate(build)
+    CableLabel.generate(build)
   end
 
   def export

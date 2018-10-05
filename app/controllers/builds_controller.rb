@@ -42,6 +42,9 @@ class BuildsController < ApplicationController
 
     respond_to do |format|
       if @build.save
+        LabelTemplate.generate(@build)
+        CableLabel.generate(@build)
+
         format.html { redirect_to @build, flash: { success: 'Build was successfully created.' } }
         format.json { render :show, status: :created, location: @build }
       else

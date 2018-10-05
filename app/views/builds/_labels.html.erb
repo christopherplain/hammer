@@ -57,7 +57,9 @@
                     <% variables = label.template_var_hash %>
 
                     <li>
-                      <% if label.label_a.blank? %>
+                      <% if label.label_a.blank? && template_a.blank? %>
+                        <span class="text-danger">Label needed!</span>
+                      <% elsif label.label_a.blank? %>
                         <%= template_a % variables %>
                       <% else %>
                         <%= label.label_a %>
@@ -65,7 +67,9 @@
                     </li>
 
                     <li>
-                      <% if label.label_a.blank? %>
+                      <% if label.label_b.blank? && template_b.blank? %>
+                        <span class="text-danger">Label needed!</span>
+                      <% elsif label.label_b.blank? %>
                         <%= template_b % variables %>
                       <% else %>
                         <%= label.label_b %>
