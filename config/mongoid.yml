@@ -1,16 +1,16 @@
-development:
+# development:
   # Configure available database clients. (required)
-  clients:
+  # clients:
     # Defines the default client. (required)
-    default:
+    # default:
       # Defines the name of the default database that Mongoid can connect to.
       # (required).
-      database: hammer_development
+      # database: development
       # Provides the hosts the default client can connect to. Must be an array
       # of host:port pairs. (required)
-      hosts:
-        - host.docker.internal:27017
-      options:
+      # hosts:
+        # - host.docker.internal:27017
+      # options:
         # Note that all options listed below are Ruby driver client options (the mongo gem).
         # Please refer to the driver documentation of the version of the mongo gem you are using
         # for the most up-to-date list of options.
@@ -107,7 +107,7 @@ development:
 
 
   # Configure Mongoid specific options. (optional)
-  options:
+  # options:
     # Includes the root model name in json serialization. (default: false)
     # include_root_in_json: false
 
@@ -152,20 +152,42 @@ development:
 
     # Use background indexes by default if `background` option not specified. (default: false)
     # background_indexing: false
+
+development:
+  clients:
+    default:
+      database: development
+      hosts:
+        - <%= ENV['DB_HOST'] %>
 test:
   clients:
     default:
-      database: hammer_test
+      database: test
       hosts:
-        - host.docker.internal:27017
+        - <%= ENV['DB_HOST'] %>
       options:
         read:
           mode: :primary
         max_pool_size: 1
 
+staging:
+  clients:
+    default:
+      database: staging
+      hosts:
+        - <%= ENV['DB_HOST'] %>
+      options:
+        user: <%= ENV['DB_USER'] %>
+        password: <%= ENV['DB_PASSWORD'] %>
+        ssl: <%= ENV['DB_SSL'] %>
+
 production:
   clients:
     default:
-     uri: <%= Rails.application.credentials[:azure][:cosmosdb][:dev][:uri] %>
-     options:
-       connect_timeout: 15
+      database: production
+      hosts:
+        - <%= ENV['DB_HOST'] %>
+      options:
+        user: <%= ENV['DB_USER'] %>
+        password: <%= ENV['DB_PASSWORD'] %>
+        ssl: <%= ENV['DB_SSL'] %>

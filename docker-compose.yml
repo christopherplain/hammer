@@ -1,14 +1,19 @@
 version: '3.4'
 services:
-  app: &app_base
+  app:
     image: hammer_app_development
     build:
       context: .
       args:
+        - ADDITIONAL_PACKAGES=nodejs
+        - EXECJS_RUNTIME=Node
+        - NODE_ENV=development
+        - RAILS_ENV=development
         - RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
     environment:
+      - DB_HOST=host.docker.internal:27017
+      - RAILS_ENV=development
       - RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
-    command: bundle exec rails server -b '0.0.0.0'
     ports:
       - "3000:3000"
     volumes:
