@@ -1,0 +1,24 @@
+<%= form_for resource, as: resource_name, url: session_path(resource_name), html: { class: "form-signin"} do |f| %>
+
+  <%= image_tag "R-icon_002.png", width: "72", height: "72", class: "mb-4", alt: "Redapt Logo" %>
+  <h1 class="h3 mb-3 font-weight-normal">Please sign in.</h1>
+
+  <%= f.label :email, "Email address", class: "sr-only" %>
+  <%= f.email_field :email, required: true, autofocus: true, autocomplete: "email", placeholder: "Email address", class: "form-control" %>
+
+  <%= f.label :password, "Password", class: "sr-only" %>
+  <%= f.password_field :password, required: true, autocomplete: "current-password", placeholder: "Password", class: "form-control" %>
+
+  <% if devise_mapping.rememberable? -%>
+    <div class="checkbox mb-3">
+      <%= f.check_box :remember_me %>
+      <%= f.label :remember_me %>
+    </div>
+  <% end -%>
+
+  <%= f.submit "Sign in", class: "btn btn-lg btn-primary btn-block" %>
+
+  <%= render "users/shared/links" %>
+
+  <p class="mt-5 mb-3 text-muted">&copy; <%= Time.current.year %> Redapt, Inc.</p>
+<% end %>
