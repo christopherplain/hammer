@@ -1,4 +1,12 @@
 <%= form_for resource, as: resource_name, url: session_path(resource_name), html: { class: "form-signin"} do |f| %>
+  <% flash.each do |name, msg| %>
+    <div class="<%= flash_class(name) %> alert-dismissible fade show" role="alert">
+      <%= msg %>
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  <% end %>
 
   <%= image_tag "R-icon_002.png", width: "72", height: "72", class: "mb-4", alt: "Redapt Logo" %>
   <h1 class="h3 mb-3 font-weight-normal">Please sign in.</h1>
