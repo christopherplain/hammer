@@ -1,10 +1,10 @@
 Rails.application.routes.draw do
-  devise_for :users
   root 'static_pages#home'
-
   get 'static_pages/home'
   get 'static_pages/about'
   get 'static_pages/help'
+
+  devise_for :users
 
   resources :customers, shallow: true do
     resources :builds
