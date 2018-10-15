@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  root 'static_pages#home'
+  authenticated :user do
+    root to: 'static_pages#home', as: :authenticated_root
+  end
+  root to: redirect('/users/sign_in')
+
   get 'static_pages/home'
   get 'static_pages/about'
   get 'static_pages/help'
