@@ -9,6 +9,10 @@ Rails.application.routes.draw do
   get 'static_pages/help'
 
   devise_for :users
+  as :user do
+    get 'users/edit', to: 'devise/registrations#edit', as: 'edit_user_registration'
+    patch 'users', to: 'devise/registrations#update', as: 'user_registration'
+  end
 
   resources :customers, shallow: true do
     resources :builds
