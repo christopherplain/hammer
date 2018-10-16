@@ -1,4 +1,4 @@
-<%= form_for resource, as: resource_name, url: session_path(resource_name), html: { class: "form-signin"} do |f| %>
+<%= form_for resource, as: resource_name, url: session_path(resource_name), html: { class: "form-user"} do |f| %>
   <%= image_tag "R-icon_002.png", width: "72", height: "72", class: "mb-4", alt: "Redapt Logo" %>
   <h1 class="h3 mb-3 font-weight-normal">Please sign in.</h1>
 
@@ -15,9 +15,9 @@
     </div>
   <% end -%>
 
-  <%= f.submit "Sign in", class: "btn btn-lg btn-primary btn-block" %>
+  <%= f.submit "Sign in", class: "btn btn-lg btn-outline-light btn-block" %>
 
-  <%= link_to "Forgot your password?", new_password_path(resource_name) %>
+  <%= link_to "Forgot your password?", new_password_path(resource_name), class: "btn btn-sm btn-outline-light btn-block" %>
 
   <p class="mt-5 mb-3 text-muted">&copy; <%= Time.current.year %> Redapt, Inc.</p>
 <% end %>

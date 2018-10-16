@@ -1,12 +1,14 @@
-<h2><%= t "devise.invitations.new.header" %></h2>
-
-<%= form_for resource, :as => resource_name, :url => invitation_path(resource_name), :html => {:method => :post} do |f| %>
+<%= form_for resource, as: resource_name, url: invitation_path(resource_name), html: { class: "form-user"} do |f| %>
   <%= devise_error_messages! %>
+  <%= image_tag "R-icon_002.png", width: "72", height: "72", class: "mb-4", alt: "Redapt Logo" %>
+  <h1 class="h3 mb-3 font-weight-normal">Please send invitation.</h1>
 
-<% resource.class.invite_key_fields.each do |field| -%>
-  <p><%= f.label field %><br />
-  <%= f.text_field field %></p>
-<% end -%>
+  <%= f.label :email, "Email address", class: "sr-only" %>
+  <%= f.email_field :email, required: true, autofocus: true, autocomplete: "email", placeholder: "Email address", class: "form-control" %>
 
-  <p><%= f.submit t("devise.invitations.new.submit_button") %></p>
+  <%= f.submit "Send", class: "btn btn-lg btn-outline-light btn-block" %>
+
+  <%= link_to "Cancel", :back, class: "btn btn-sm btn-outline-light btn-block" %>
+
+  <p class="mt-5 mb-3 text-muted">&copy; <%= Time.current.year %> Redapt, Inc.</p>
 <% end %>

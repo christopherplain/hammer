@@ -1,25 +1,19 @@
-<h2>Change your password</h2>
-
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+<%= form_for resource, as: resource_name, url: password_path(resource_name), html: { method: :patch, class: "form-user"} do |f| %>
   <%= devise_error_messages! %>
+  <%= image_tag "R-icon_002.png", width: "72", height: "72", class: "mb-4", alt: "Redapt Logo" %>
+  <h1 class="h3 mb-3 font-weight-normal">Please reset your password.</h1>
+
   <%= f.hidden_field :reset_password_token %>
 
-  <div class="field">
-    <%= f.label :password, "New password" %><br />
-    <% if @minimum_password_length %>
-      <em>(<%= @minimum_password_length %> characters minimum)</em><br />
-    <% end %>
-    <%= f.password_field :password, autofocus: true, autocomplete: "new-password" %>
-  </div>
+  <%= f.label :password, "New password", class: "sr-only" %>
+  <%= f.password_field :password, required: true, autofocus: true, autocomplete: "new-password", placeholder: "New password (#{@minimum_password_length} character min.)", class: "form-control" %>
 
-  <div class="field">
-    <%= f.label :password_confirmation, "Confirm new password" %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "off" %>
-  </div>
+  <%= f.label :password_confirmation, "Confirm new password", class: "sr-only" %>
+  <%= f.password_field :password_confirmation, required: true, autocomplete: "off", placeholder: "Confirm new password", class: "form-control" %>
 
-  <div class="actions">
-    <%= f.submit "Change my password" %>
-  </div>
+  <%= f.submit "Submit", class: "btn btn-lg btn-outline-light btn-block" %>
+
+  <%= link_to "Cancel", :back, class: "btn btn-sm btn-outline-light btn-block" %>
+
+  <p class="mt-5 mb-3 text-muted">&copy; <%= Time.current.year %> Redapt, Inc.</p>
 <% end %>
-
-<%= render "users/shared/links" %>
