@@ -53,6 +53,6 @@ class User
   end
 
   def admin?
-    self.group.name == "admin"
+    self.group.name.downcase == "admin"
   end
 end
