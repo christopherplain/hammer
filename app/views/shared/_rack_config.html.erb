@@ -48,6 +48,6 @@
     <p class="lead">Please upload rack configuration CSV.</p>
   <% end %>
 
-  <%= render "shared/connection" if @rack_config.connections.first %>
+  <%= render "rack_configs/connections" if @rack_config.connections.first %>
 </div>
 <hr class="mb-4">
