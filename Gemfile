@@ -40,9 +40,7 @@ gem 'jquery-rails'
 gem 'redcarpet'
 
 # Use Devise and AzureAD for user authentication
-gem 'devise', '~> 4.2'
-gem 'devise_invitable', '~> 1.7.0'
-gem 'omniauth-azure_active_directory', github: 'christopherplain/omniauth-azure_active_directory'
+gem 'devise'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

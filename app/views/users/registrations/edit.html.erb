@@ -9,8 +9,8 @@
   <%= f.label :password, "New password", class: "sr-only" %>
   <%= f.password_field :password, required: true, autocomplete: "new-password", placeholder: "New password (#{@minimum_password_length} character min.)", class: "form-control" %>
 
-  <%= f.label :password_confirmation, "Confirm new password", class: "sr-only" %>
-  <%= f.password_field :password_confirmation, required: true, autocomplete: "off", placeholder: "Confirm new password", class: "form-control" %>
+  <%= f.label :password_confirmation, "Confirm password", class: "sr-only" %>
+  <%= f.password_field :password_confirmation, required: true, autocomplete: "off", placeholder: "Confirm password", class: "form-control" %>
 
   <%= f.submit "Submit", class: "btn btn-lg btn-outline-light btn-block" %>
 
