@@ -43,7 +43,7 @@
   <%= render "shared/notes", instance_variable: @rack_config if @rack_config.notes %>
 
   <% if @rack_config.components.first %>
-    <%= render "shared/elevation" %>
+    <%= render "rack_configs/elevation" %>
   <% else %>
     <p class="lead">Please upload rack configuration CSV.</p>
   <% end %>
