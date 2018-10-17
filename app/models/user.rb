@@ -50,6 +50,10 @@ class User
   # index( {invitation_token: 1}, {:background => true} )
   # index( {invitation_by_id: 1}, {:background => true} )
 
+  def self.field_keys
+    self.fields.keys.drop(3)
+  end
+
   def set_default_group
     self.group ||= Group.where(name: "user").first
   end
