@@ -11,6 +11,7 @@
         <table class="table table-borderless table-hover">
           <thead>
             <tr>
+              <th scope="col">Name</th>
               <th scope="col">Email</th>
             </tr>
           </thead>
@@ -18,7 +19,8 @@
           <tbody>
             <% @users.each do |user| %>
               <tr>
-                <td><%= link_to "#{user.email} »", admin_user_path(user), class: "text-body" %></td>
+                <td><%= link_to "#{user.full_name} »", admin_user_path(user), class: "text-body" %></td>
+                <td><%= user.email %></td>
               </tr>
             <% end %>
           </tbody>

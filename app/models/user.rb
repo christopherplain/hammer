@@ -1,6 +1,8 @@
 class User
   include Mongoid::Document
   include Mongoid::Timestamps
+  field :first_name, type: String, default: ""
+  field :last_name, type: String, default: ""
   belongs_to :group, optional: true
   after_initialize :set_default_group, if: :new_record?
 
@@ -50,6 +52,10 @@ class User
 
   def set_default_group
     self.group ||= Group.where(name: "user").first
+  end
+
+  def full_name
+    "#{self.first_name} #{self.last_name}"
   end
 
   def admin?

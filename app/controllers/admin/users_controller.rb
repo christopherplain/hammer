@@ -5,7 +5,7 @@ class Admin::UsersController < ApplicationController
   # GET /admin/users
   # GET /admin/users.json
   def index
-    @users = User.all.order(email: :asc)
+    @users = User.all.order(last_name: :asc, first_name: :asc, email: :asc)
   end
 
   # GET /admin/users/1
