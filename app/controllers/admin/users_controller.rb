@@ -25,11 +25,14 @@ class Admin::UsersController < ApplicationController
   # POST /admin/users
   # POST /admin/users.json
   def create
+    generated_password = Devise.friendly_token(length = 25)
     @user = User.new(user_params)
+    @user.password = generated_password
 
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        @user.send_reset_password_instructions
+        format.html { redirect_to admin_user_path(@user), flash: { success: 'User was successfully created.' } }
         format.json { render :show, status: :created, location: @user }
       else
         format.html { render :new }

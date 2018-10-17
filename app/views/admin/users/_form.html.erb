@@ -1,7 +1,7 @@
 <%= form_with model: [:admin, @user], local: true do |f| %>
   <% if @user.errors.any? %>
     <div class="alert alert-danger">
-      <h2>This form contains <%= pluralize(@build.errors.count, "error") %></h2>
+      <h2>This form contains <%= pluralize(@user.errors.count, "error") %></h2>
 
       <ul>
       <% @user.errors.full_messages.each do |message| %>

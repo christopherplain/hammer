@@ -21,7 +21,7 @@ en:
       confirmation_instructions:
         subject: "Confirmation instructions"
       reset_password_instructions:
-        subject: "Redapt Hammer password reset instructions"
+        subject: "Redapt Hammer access instructions"
       unlock_instructions:
         subject: "Unlock instructions"
       email_changed:
