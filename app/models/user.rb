@@ -1,6 +1,9 @@
 class User
   include Mongoid::Document
   include Mongoid::Timestamps
+  belongs_to :group, optional: true
+  after_initialize :set_default_group, if: :new_record?
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :recoverable, :rememberable,
@@ -44,4 +47,12 @@ class User
 
   # index( {invitation_token: 1}, {:background => true} )
   # index( {invitation_by_id: 1}, {:background => true} )
+
+  def set_default_group
+    self.group ||= Group.where(name: "user").first
+  end
+
+  def admin?
+    self.group.name == "admin"
+  end
 end

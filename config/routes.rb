@@ -14,6 +14,12 @@ Rails.application.routes.draw do
     patch 'users', to: 'devise/registrations#update', as: 'user_registration'
   end
 
+  resources :groups
+
+  namespace :admin do
+    resources :users
+  end
+
   resources :customers, shallow: true do
     resources :builds
     resources :rack_configs

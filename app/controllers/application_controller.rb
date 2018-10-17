@@ -16,4 +16,12 @@ class ApplicationController < ActionController::Base
         "application"
       end
     end
+
+    # Determine if current user is a member of the admin group.
+    def verify_admin!
+      unless current_user.admin?
+        flash[:alert] = t("devise.failure.restricted", url: request.original_fullpath)
+        redirect_to root_path
+      end
+    end
 end

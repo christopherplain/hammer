@@ -12,32 +12,32 @@
   <% end %>
 
   <div class="form-group">
-    <%= f.label :sales_order, "Sales Order"%>
+    <%= f.label :sales_order, "Sales Order" %>
     <%= f.text_field :sales_order, class: "form-control" %>
   </div>
 
   <div class="form-group">
-    <%= f.label :related_orders, "Related Orders"%>
+    <%= f.label :related_orders, "Related Orders" %>
     <%= f.text_field :related_orders, class: "form-control" %>
   </div>
 
   <div class="form-group">
-    <%= f.label :project_name, "Project Name"%>
+    <%= f.label :project_name, "Project Name" %>
     <%= f.text_field :project_name, class: "form-control" %>
   </div>
 
   <div class="form-group">
-    <%= f.label :project_reference, "Project Reference"%>
+    <%= f.label :project_reference, "Project Reference" %>
     <%= f.text_field :project_reference, class: "form-control" %>
   </div>
 
   <div class="form-group">
-    <%= f.label :build_type, "Build Type"%>
+    <%= f.label :build_type, "Build Type" %>
     <%= f.select :build_type, Build::BUILDTYPE, { prompt: "Select build type" }, class: "form-control" %>
   </div>
 
   <div class="form-group">
-    <%= f.label :rack_config_id, "Rack Config"%>
+    <%= f.label :rack_config_id, "Rack Config" %>
     <%= f.collection_select :rack_config_id, RackConfig.where(customer_id: @build.customer.id), :id, :sku, { prompt: "Select the rack config" }, class: "form-control" %>
   </div>
 
