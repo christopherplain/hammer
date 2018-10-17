@@ -58,6 +58,11 @@
                 <% end %>
               </div>
             </li>
+            <% if current_user.admin? %>
+              <li class="nav-item">
+                <%= link_to 'Users', admin_users_path, class: 'nav-link' %>
+              </li>
+            <% end %>
           </ul>
 
           <form class="form-inline my-2 my-lg-0">
