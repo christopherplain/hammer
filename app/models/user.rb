@@ -45,7 +45,7 @@ class User
   end
 
   def set_default_group
-    self.group ||= Group.where(name: "user").first
+    self.group ||= Group.where(name: "User").first
   end
 
   def full_name
