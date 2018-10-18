@@ -5,9 +5,8 @@
   </li>
 </ul>
 
-
 <h2>Build <small class="text-muted"><%= @build.sales_order %>, <%= @build.project_name %></small></h2>
-<ul class="list-inline font-weight-light">
+<ul class="list-inline font-weight-light <%= visibility %>">
   <li class="list-inline-item">
     <%= link_to 'Edit »', edit_build_path(@build), class: "text-body" %>
   </li>

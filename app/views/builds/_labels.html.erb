@@ -10,12 +10,14 @@
   <div class="collapse" id="collapseLabels">
     <div class="card-body">
       <ul class="list-inline font-weight-light">
-        <li class="list-inline-item">
-          <%= link_to 'Format »', edit_build_path(@build, build: { label_templates_attributes: true }), class: "text-body" %>
-        </li>
-        <li class="list-inline-item">
-          <%= link_to 'Edit »', edit_build_path(@build, build: { cable_labels_attributes: true }), class: "text-body" %>
-        </li>
+        <% if current_user.admin? %>
+          <li class="list-inline-item">
+            <%= link_to 'Format »', edit_build_path(@build, build: { label_templates_attributes: true }), class: "text-body" %>
+          </li>
+          <li class="list-inline-item">
+            <%= link_to 'Edit »', edit_build_path(@build, build: { cable_labels_attributes: true }), class: "text-body" %>
+          </li>
+        <% end %>
         <li class="list-inline-item">
           <%= link_to 'Export »', build_cable_labels_path(@build, format: "csv"), class: "text-body" %>
         </li>
@@ -82,7 +84,6 @@
           <% end %>
         <% end %>
       </div>
-      <hr>
 
       <%= link_to "Top »", "#top", class: "text-body font-weight-light" %>
     </div>

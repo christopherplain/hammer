@@ -1,12 +1,26 @@
 <div class="card mb-4">
   <div class="card-header">
     <h2>Rack Configs</h2>
-    <% if current_page?(customer_path(@customer)) %>
-      <%= link_to 'All »', customer_rack_configs_path(@customer), class: "text-body" %>
-    <% end %>
   </div>
 
   <div class="card-body">
+    <% if current_page?(customer_path(@customer)) %>
+      <ul class="list-inline font-weight-light">
+        <li class="list-inline-item">
+          <%= link_to 'All »', customer_rack_configs_path(@customer), class: "text-body" %>
+        </li>
+        <li class="list-inline-item">
+          <%= link_to 'New »', new_customer_rack_config_path(@customer), class: "text-body #{visibility}" %>
+        </li>
+      </ul>
+    <% elsif current_user.admin? %>
+      <ul class="list-inline font-weight-light">
+        <li class="list-inline-item">
+          <%= link_to 'New »', new_customer_rack_config_path(@customer), class: "text-body" %>
+        </li>
+      </ul>
+    <% end %>
+
     <div class="row">
       <div class="col-12">
         <table class="table table-borderless table-hover">
@@ -21,7 +35,7 @@
             <tbody>
               <% @rack_configs.each do |rack_config| %>
                 <tr>
-                  <td><%= link_to rack_config.sku, rack_config %></td>
+                  <td><%= link_to "#{rack_config.sku} »", rack_config, class: "text-body" %></td>
                   <td><%= rack_config.updated_at %></td>
                 </tr>
               <% end %>

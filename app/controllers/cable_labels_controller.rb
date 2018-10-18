@@ -7,7 +7,7 @@ class CableLabelsController < ApplicationController
     respond_to do |format|
       format.csv {
         send_data CableLabel.export(@build),
-        filename: "#{@build.customer.name}_CableLabels_#{@build.project_name}.csv"
+        filename: "#{@build.customer.name}_CableLabels_#{@build.sales_order}.csv"
       }
     end
   end

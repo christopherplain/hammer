@@ -5,11 +5,18 @@
   <small class="text-muted"> <%= @rack_config.sku %></small>
 </h2>
 
-<div class="mb-3">
-  <%= link_to 'Edit', edit_rack_config_path(@rack_config), class: "text-body" %> |
-
-  <!-- Button trigger modal -->
-  <a class="text-body" href="#" data-toggle="modal" data-target="#importModal">Import</a> |
+<ul class="list-inline font-weight-light <%= visibility %>">
+  <li class="list-inline-item">
+    <%= link_to 'Edit »', edit_rack_config_path(@rack_config), class: "text-body" %>
+  </li>
+  <li class="list-inline-item">
+    <!-- Button trigger modal -->
+    <a class="text-body" href="#" data-toggle="modal" data-target="#importModal">Import »</a>
+  </li>
+  <li class="list-inline-item">
+    <%= link_to 'Export »', rack_config_path(@rack_config, format: "csv"), class: "text-body" %>
+  </li>
+</ul>
 
   <!-- Modal -->
   <div class="modal fade" id="importModal" tabindex="-1" role="dialog" aria-labelledby="importModalLabel" aria-hidden="true">
@@ -35,8 +42,6 @@
       </div>
     </div>
   </div>
-
-  <%= link_to 'Export', rack_config_path(@rack_config, format: "csv"), class: "text-body" %>
 </div>
 
 <div class="collapse show" id="collapseRackConfig">
@@ -50,4 +55,3 @@
 
   <%= render "rack_configs/connections" if @rack_config.connections.first %>
 </div>
-<hr class="mb-4">

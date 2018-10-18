@@ -1,4 +1,5 @@
 class RackConfigsController < ApplicationController
+  before_action :verify_admin!, only: [:import, :new, :edit, :create, :update, :destroy]
   before_action :set_rack_config, only: [:import, :show, :edit, :update, :destroy]
   before_action :set_customer, only: [:index, :new, :create]
 

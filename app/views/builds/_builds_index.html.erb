@@ -1,17 +1,32 @@
 <div class="card mb-4">
   <div class="card-header">
     <h2>Builds</h2>
-    <% if current_page?(customer_path(@customer)) %>
-      <%= link_to 'All »', customer_builds_path(@customer), class: "text-body" %>
-    <% end %>
   </div>
 
   <div class="card-body">
+    <% if current_page?(customer_path(@customer)) %>
+      <ul class="list-inline font-weight-light">
+        <li class="list-inline-item">
+          <%= link_to 'All »', customer_builds_path(@customer), class: "text-body" %>
+        </li>
+        <li class="list-inline-item">
+          <%= link_to 'New »', new_customer_build_path(@customer), class: "text-body #{visibility}" %>
+        </li>
+      </ul>
+    <% elsif current_user.admin? %>
+      <ul class="list-inline font-weight-light">
+        <li class="list-inline-item">
+          <%= link_to 'New »', new_customer_build_path(@customer), class: "text-body" %>
+        </li>
+      </ul>
+    <% end %>
+
     <div class="row">
       <div class="col-12">
         <table class="table table-borderless table-hover">
           <thead>
             <tr>
+              <th scope="col">Sales order</th>
               <th scope="col">Project name</th>
               <th scope="col">Project reference</th>
               <th scope="col">Build type</th>
@@ -23,7 +38,8 @@
             <tbody>
               <% @builds.each do |build| %>
                 <tr>
-                  <td><%= link_to build.project_name, build %></td>
+                  <td><%= link_to "#{build.sales_order} »", build, class: "text-body" %></td>
+                  <td><%= build.project_name %></td>
                   <td><%= build.project_reference %></td>
                   <td><%= build.build_type %></td>
                   <td><%= build.updated_at %></td>

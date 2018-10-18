@@ -7,7 +7,7 @@ class AssetNumbersController < ApplicationController
     respond_to do |format|
       format.csv {
         send_data AssetNumber.export(@build),
-        filename: "#{@build.customer.name}_AssetNumbers_#{@build.project_name}.csv"
+        filename: "#{@build.customer.name}_AssetNumbers_#{@build.sales_order}.csv"
       }
     end
   end

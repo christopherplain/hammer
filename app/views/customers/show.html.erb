@@ -1,10 +1,10 @@
 <h1><%= @customer.name %></h1>
-
-<div class="mb-3">
-  <%= link_to 'Edit »', edit_customer_path(@customer), class: "text-body" %>
-</div>
+<ul class="list-inline font-weight-light">
+  <li class="list-inline-item">
+    <%= link_to 'Edit »', edit_customer_path(@customer), class: "text-body #{visibility}" %>
+  </li>
+</ul>
 
 <%= render "builds/builds_index" %>
 
 <%= render "rack_configs/rack_configs_index" %>
-<hr class="mb-4">

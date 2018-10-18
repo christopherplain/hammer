@@ -28,4 +28,8 @@ module ApplicationHelper
 
     markdown.render(text).html_safe
   end
+
+  def visibility
+    (current_user.admin?) ? "visible" : "invisible"
+  end
 end

@@ -6,24 +6,24 @@
   <div class="card mb-4">
     <div class="card-header">
       <h3>
-        <a class="text-body" href="#collapse<%= type.titlecase.delete(" ") %>" data-toggle="collapse" aria-expanded="true" aria-controls="collapse<%= type.titlecase.delete(" ") %>">
+        <a class="text-body" href="#collapse<%= type.titlecase.delete(" ").delete("(").delete(")") %>" data-toggle="collapse" aria-expanded="true" aria-controls="collapse<%= type.titlecase.delete(" ").delete("(").delete(")") %>">
           <%= Connection.humanize_type(type).titlecase %>
         </a>
       </h3>
     </div>
 
-    <div class="collapse show" id="collapse<%= type.titlecase.delete(" ") %>">
+    <div class="collapse show" id="collapse<%= type.titlecase.delete(" ").delete("(").delete(")") %>">
       <div class="card-body">
         <% connections = @rack_config.connections.where(group_type: type) %>
         <% connection_groups = connections.distinct(:group_name) %>
         <% connection_groups.each do |group| %>
           <h4 class="card-title">
-            <a class="text-body" href="#collapse<%= group.titlecase.delete(" ") %>" data-toggle="collapse" aria-expanded="true" aria-controls="collapse<%= group.titlecase.delete(" ") %>">
+            <a class="text-body" href="#collapse<%= group.titlecase.delete(" ").delete("(").delete(")") %>" data-toggle="collapse" aria-expanded="true" aria-controls="collapse<%= group.titlecase.delete(" ").delete("(").delete(")") %>">
               <%= group %>
             </a>
           </h4>
 
-          <div class="collapse show" id="collapse<%= group.titlecase.delete(" ") %>">
+          <div class="collapse show" id="collapse<%= group.titlecase.delete(" ").delete("(").delete(")") %>">
             <table class="table table-bordered table-hover">
               <thead>
                 <tr>
@@ -73,11 +73,9 @@
               </tbody>
             </table>
           </div>
-          <hr>
-
         <% end %>
-        <%= link_to "Top »", "#top", class: "text-body" %>
 
+        <%= link_to "Top »", "#top", class: "text-body font-weight-light" %>
       </div>
     </div>
   </div>

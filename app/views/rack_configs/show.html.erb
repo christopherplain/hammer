@@ -1,3 +1,8 @@
 <h1><%= @rack_config.customer.name %></h1>
+<ul class="list-inline font-weight-light">
+  <li class="list-inline-item">
+    <%= link_to 'Rack configs »', customer_rack_configs_path(@rack_config.customer), class: "text-body" %>
+  </li>
+</ul>
 
 <%= render "rack_configs/rack_config" %>

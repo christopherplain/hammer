@@ -1,8 +1,9 @@
 <h1>Customers</h1>
-
-<div class="mb-3">
-  <%= link_to 'New »', new_customer_path, class: "text-body" %>
-</div>
+<ul class="list-inline font-weight-light">
+  <li class="list-inline-item">
+    <%= link_to 'New »', new_customer_path, class: "text-body #{visibility}" %>
+  </li>
+</ul>
 
 <div class="card mb-4">
   <div class="card-body">
@@ -19,7 +20,7 @@
             <% customers = @customers.sort_by { |hash| hash[:name] } %>
             <% customers.each do |customer| %>
               <tr>
-                <td><%= link_to customer.name, customer %></td>
+                <td><%= link_to "#{customer.name} »", customer, class: "text-body" %></td>
               </tr>
             <% end %>
           </tbody>
@@ -28,4 +29,3 @@
     </div>
   </div>
 </div>
-<hr class="mb-4">

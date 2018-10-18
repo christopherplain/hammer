@@ -1,4 +1,5 @@
 class BuildsController < ApplicationController
+  before_action :verify_admin!, only: [:import, :new, :create, :destroy]
   before_action :set_build, only: [:import, :show, :edit, :update, :destroy]
   before_action :set_customer, only: [:index , :new, :create]
 
@@ -21,7 +22,7 @@ class BuildsController < ApplicationController
       format.html { @rack_config = @build.rack_config }
       format.csv {
         send_data @build.export,
-        filename: "#{@build.customer.name}_Build_#{@build.project_name}.csv"
+        filename: "#{@build.customer.name}_Build_#{@build.sales_order}.csv"
       }
     end
   end
@@ -91,12 +92,21 @@ class BuildsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def build_params
-      params.require(:build).permit(
-        *Build.field_keys,
-        asset_numbers_attributes: [:id, *AssetNumber.field_keys],
-        cable_labels_attributes: [:id, *CableLabel.field_keys],
-        label_templates_attributes: [:id, *LabelTemplate.field_keys],
-        serial_numbers_attributes: [:id, *SerialNumber.field_keys]
-      )
+      if current_user.admin?
+        params.require(:build).permit(
+          *Build.field_keys,
+          asset_numbers_attributes: [:id, *AssetNumber.field_keys],
+          cable_labels_attributes: [:id, *CableLabel.field_keys],
+          label_templates_attributes: [:id, *LabelTemplate.field_keys],
+          serial_numbers_attributes: [:id, *SerialNumber.field_keys]
+        )
+      else
+        params.require(:build).permit(
+          asset_numbers_attributes: [:id, *AssetNumber.field_keys],
+          cable_labels_attributes: [:id, *CableLabel.field_keys],
+          label_templates_attributes: [:id, *LabelTemplate.field_keys],
+          serial_numbers_attributes: [:id, *SerialNumber.field_keys]
+        )
+      end
     end
 end
