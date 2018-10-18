@@ -5,9 +5,6 @@ Rails.application.routes.draw do
   root to: redirect('/users/sign_in')
 
   get 'static_pages/home'
-  get 'static_pages/about'
-  get 'static_pages/help'
-
   devise_for :users
   as :user do
     get 'users/edit', to: 'devise/registrations#edit', as: 'edit_user_registration'
@@ -26,17 +23,11 @@ Rails.application.routes.draw do
   end
 
   resources :builds, only: [], shallow: true do
-    resources :asset_numbers
-    resources :cable_labels
-    resources :label_templates
-    resources :serial_numbers
+    resources :asset_numbers, only: :index
+    resources :cable_labels, only: :index
   end
-  post 'builds/:id/import(.:format)', to: 'builds#import', as: 'import_build'
 
-  resources :rack_configs, only: [], shallow: true do
-    resources :connections
-    resources :components
-  end
+  post 'builds/:id/import(.:format)', to: 'builds#import', as: 'import_build'
   post 'rack_configs/:id/import(.:format)', to: 'rack_configs#import', as: 'import_rack_config'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
