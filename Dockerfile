@@ -54,6 +54,7 @@ ENV RAILS_SERVE_STATIC_FILES true
 # Install Ubuntu packages
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
     && apt-get update && apt-get install -y \
+      netcat-traditional \
       ${ADDITIONAL_PACKAGES}
 
 # Copy app with gems from former build stage
@@ -68,4 +69,4 @@ EXPOSE 3000
 # Save timestamp of image build
 RUN date -u > BUILD_TIME
 
-CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
+CMD ["docker/start-rails.sh"]

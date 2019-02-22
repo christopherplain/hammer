@@ -15,6 +15,7 @@ services:
       - APP_HOST=redapt-hammer.azurewebsites.net
       - APP_PORT
       - DB_HOST=${DB_HOST}
+      - DB_POrT=${DB_PORT}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_SSL=true

@@ -158,13 +158,13 @@ development:
     default:
       database: development
       hosts:
-        - <%= ENV['DB_HOST'] %>
+        - <%= ENV['DB_HOST'] %>:<%= ENV['DB_PORT'] %>
 test:
   clients:
     default:
       database: test
       hosts:
-        - <%= ENV['DB_HOST'] %>
+        - <%= ENV['DB_HOST'] %>:<%= ENV['DB_PORT'] %>
       options:
         read:
           mode: :primary
@@ -175,7 +175,7 @@ staging:
     default:
       database: staging
       hosts:
-        - <%= ENV['DB_HOST'] %>
+        - <%= ENV['DB_HOST'] %>:<%= ENV['DB_PORT'] %>
       options:
         user: <%= ENV['DB_USER'] %>
         password: <%= ENV['DB_PASSWORD'] %>
@@ -186,7 +186,7 @@ production:
     default:
       database: production
       hosts:
-        - <%= ENV['DB_HOST'] %>
+        - <%= ENV['DB_HOST'] %>:<%= ENV['DB_PORT'] %>
       options:
         user: <%= ENV['DB_USER'] %>
         password: <%= ENV['DB_PASSWORD'] %>
