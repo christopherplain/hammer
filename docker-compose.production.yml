@@ -1,5 +1,13 @@
 version: '3.4'
 services:
+  proxy:
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+
   db:
     image: mongo:4.0.6
     # environment:
@@ -38,6 +46,7 @@ services:
       - SMTP_PORT=587
       - SMTP_SERVER=smtp.sendgrid.net
       - SMTP_USERNAME=${SMTP_USERNAME}
+      - VIRTUAL_HOST=hammer.westus.cloudapp.azure.com
     ports:
       - "3000:3000"
     restart: always
