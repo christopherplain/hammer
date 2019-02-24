@@ -1,35 +1,20 @@
-version: '3.4'
+version: '3.7'
 services:
-  proxy:
-    image: jwilder/nginx-proxy
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ~/docker-share/nginx/certs:/etc/nginx/certs
-      - vhost:/etc/nginx/vhost.d
-      - html:/usr/share/nginx/html
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-
-  letsencrypt:
-    image: jrcs/letsencrypt-nginx-proxy-companion
-    volumes:
-      - ~/docker-share/nginx/certs:/etc/nginx/certs
-      - vhost:/etc/nginx/vhost.d
-      - html:/usr/share/nginx/html
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-
-  db:
+  mongodb:
     image: mongo:4.0.6
+    container_name: mongodb
     # environment:
     #   - MONGO_INITDB_ROOT_USERNAME=${DB_USER}
     #   - MONGO_INITDB_ROOT_PASSWORD=${DB_PASSWORD}
     restart: always
     volumes:
       - /data/db:/data/db
+    networks:
+      - hammer-backend
 
-  app:
+  hammer-app:
     image: hammer_app_production
+    container_name: hammer-app
     build:
       context: .
       args:
@@ -58,14 +43,18 @@ services:
       - SMTP_SERVER=smtp.sendgrid.net
       - SMTP_USERNAME=${SMTP_USERNAME}
       - VIRTUAL_HOST=hammer.westus.cloudapp.azure.com
-      - VIRTUAL_PORT=3000
       - LETSENCRYPT_HOST=hammer.westus.cloudapp.azure.com"
       - LETSENCRYPT_EMAIL=cplain@attunix.com
     restart: always
     volumes:
       - type: tmpfs
         target: /app/tmp/pids/
+    networks:
+      - hammer-frontend
+      - hammer-backend
 
-volumes:
-  html:
-  vhost:
+networks:
+  hammer-frontend:
+    name: hammer-frontend
+  hammer-backend:
+    name: hammer-backend

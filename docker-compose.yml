@@ -1,23 +1,19 @@
-version: '3.4'
+version: '3.7'
 services:
-  proxy:
-    image: jwilder/nginx-proxy
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-
-  db:
+  mongodb:
     image: mongo:4.0.6
+    container_name: mongodb
     # environment:
     #   - MONGO_INITDB_ROOT_USERNAME=${DB_USER}
     #   - MONGO_INITDB_ROOT_PASSWORD=${DB_PASSWORD}
     volumes:
       - /data/db:/data/db
+    networks:
+      - hammer-backend
 
-  app:
+  hammer-app:
     image: hammer_app_development
+    container_name: hammer-app
     build:
       context: .
       args:
@@ -44,8 +40,16 @@ services:
       - SMTP_SERVER=smtp.sendgrid.net
       - SMTP_USERNAME=${SMTP_USERNAME}
       - VIRTUAL_HOST=test.domain.local
-      - VIRTUAL_PORT=3000
     volumes:
       - .:/app
       - type: tmpfs
         target: /app/tmp/pids/
+    networks:
+      - hammer-frontend
+      - hammer-backend
+
+networks:
+  hammer-frontend:
+    name: hammer-frontend
+  hammer-backend:
+    name: hammer-backend
