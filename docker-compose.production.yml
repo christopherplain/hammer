@@ -6,7 +6,18 @@ services:
       - "80:80"
       - "443:443"
     volumes:
+      - ~/docker-share/nginx/certs:/etc/nginx/certs
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
       - /var/run/docker.sock:/tmp/docker.sock:ro
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    volumes:
+      - ~/docker-share/nginx/certs:/etc/nginx/certs
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - /var/run/docker.sock:/var/run/docker.sock:ro
 
   db:
     image: mongo:4.0.6
@@ -47,9 +58,14 @@ services:
       - SMTP_SERVER=smtp.sendgrid.net
       - SMTP_USERNAME=${SMTP_USERNAME}
       - VIRTUAL_HOST=hammer.westus.cloudapp.azure.com
-    ports:
-      - "3000:3000"
+      - VIRTUAL_PORT=3000
+      - LETSENCRYPT_HOST=hammer.westus.cloudapp.azure.com"
+      - LETSENCRYPT_EMAIL=cplain@attunix.com
     restart: always
     volumes:
       - type: tmpfs
         target: /app/tmp/pids/
+
+volumes:
+  html:
+  vhost:

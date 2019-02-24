@@ -44,8 +44,7 @@ services:
       - SMTP_SERVER=smtp.sendgrid.net
       - SMTP_USERNAME=${SMTP_USERNAME}
       - VIRTUAL_HOST=test.domain.local
-    ports:
-      - "3000:3000"
+      - VIRTUAL_PORT=3000
     volumes:
       - .:/app
       - type: tmpfs
