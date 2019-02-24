@@ -43,7 +43,7 @@ services:
       - SMTP_SERVER=smtp.sendgrid.net
       - SMTP_USERNAME=${SMTP_USERNAME}
       - VIRTUAL_HOST=hammer.westus.cloudapp.azure.com
-      - LETSENCRYPT_HOST=hammer.westus.cloudapp.azure.com"
+      - LETSENCRYPT_HOST=hammer.westus.cloudapp.azure.com
       - LETSENCRYPT_EMAIL=cplain@attunix.com
     restart: always
     volumes:
